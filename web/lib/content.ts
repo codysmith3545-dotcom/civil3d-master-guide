@@ -10,20 +10,9 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeStringify from "rehype-stringify";
 
-export type Frontmatter = {
-  title?: string;
-  section?: string;
-  order?: number;
-  visibility?: "public" | "invite";
-  tags?: string[];
-  appliesTo?: string[];
-  relatedCommands?: string[];
-  relatedCalculators?: string[];
-  jurisdictionRefs?: string[];
-  updated?: string;
-  sources?: { title: string; url: string; verified?: string }[];
-  [key: string]: unknown;
-};
+// Import the canonical Frontmatter type from the shared package and re-export.
+import type { Frontmatter } from "@civil3d-master-guide/content";
+export type { Frontmatter };
 
 export type Page = {
   /** Path-style slug from the content root, with no extension. e.g. `civil3d/surfaces/index`. */

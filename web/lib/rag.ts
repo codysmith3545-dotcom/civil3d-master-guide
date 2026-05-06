@@ -1,5 +1,14 @@
+/**
+ * Server-side retrieval for the /api/chat route.
+ *
+ * Reads the pre-built search-index.json and uses BM25 scoring with field
+ * boosts for title/heading/tags. Shared tokenization and excerpt generation
+ * from @civil3d-master-guide/search.
+ */
+
 import fs from "node:fs";
 import path from "node:path";
+import { tokenize, buildExcerpt } from "@civil3d-master-guide/search";
 
 export type RetrievedChunk = {
   path: string;
@@ -23,17 +32,12 @@ type IndexEntry = {
 
 type LoadedIndex = {
   docs: IndexEntry[];
-  // Pre-tokenized doc fields (lazily built once per process).
   bodyTokens: string[][];
   titleTokens: string[][];
   headingTokens: string[][];
   tagTokens: string[][];
-  // BM25 statistics.
   avgdl: number;
-  // term -> document-frequency (number of docs containing the term anywhere
-  // searchable). Computed on first query.
   df: Map<string, number> | null;
-  // Cached IDF for terms we've already seen.
   idf: Map<string, number>;
 };
 
@@ -49,14 +53,12 @@ function loadIndex(): LoadedIndex {
     if (Array.isArray(parsed?.docs)) {
       docs = parsed.docs as IndexEntry[];
     } else if (Array.isArray(parsed)) {
-      // Backward compat with old flat-array index shape.
       docs = parsed as IndexEntry[];
     }
   } catch {
     docs = [];
   }
 
-  // Filter invite-only at load time so they never participate in scoring.
   docs = docs.filter((d) => d.visibility !== "invite");
 
   const bodyTokens = docs.map((d) => tokenize(d.body));
@@ -80,20 +82,6 @@ function loadIndex(): LoadedIndex {
   return cache;
 }
 
-function tokenize(s: string): string[] {
-  if (!s) return [];
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9\s\-]/g, " ")
-    .split(/\s+/)
-    .filter(Boolean);
-}
-
-/**
- * Compute document-frequency for the corpus once. A term counts if it
- * appears in ANY of body / title / heading / tags for that doc — that way
- * matches in metadata still get IDF mass.
- */
 function buildDocumentFrequency(idx: LoadedIndex): Map<string, number> {
   const df = new Map<string, number>();
   for (let i = 0; i < idx.docs.length; i++) {
@@ -118,8 +106,6 @@ function idfFor(idx: LoadedIndex, term: string): number {
   if (!idx.df) idx.df = buildDocumentFrequency(idx);
   const N = idx.docs.length || 1;
   const n = idx.df.get(term) ?? 0;
-  // BM25 IDF (Robertson/Sparck-Jones), clamped to >=0 to avoid negative
-  // scores for very common terms.
   const raw = Math.log(1 + (N - n + 0.5) / (n + 0.5));
   const v = Math.max(0, raw);
   idx.idf.set(term, v);
@@ -132,10 +118,6 @@ const TITLE_BOOST = 5;
 const HEADING_BOOST = 5;
 const TAG_BOOST = 2;
 
-/**
- * BM25 score for a single document against the query terms, with field
- * boosts for title/heading/tags.
- */
 function scoreBM25(idx: LoadedIndex, docIdx: number, queryTokens: string[]): number {
   const body = idx.bodyTokens[docIdx];
   const title = idx.titleTokens[docIdx];
@@ -165,35 +147,6 @@ function countOccurrences(tokens: string[], term: string): number {
   return n;
 }
 
-function makeExcerpt(body: string, queryTokens: string[]): string {
-  if (!body) return "";
-  const MAX = 240;
-  const PAD = 80;
-  const lower = body.toLowerCase();
-  let bestIdx = -1;
-  let bestLen = 0;
-  for (const q of queryTokens) {
-    const i = lower.indexOf(q);
-    if (i !== -1 && (bestIdx === -1 || i < bestIdx)) {
-      bestIdx = i;
-      bestLen = q.length;
-    }
-  }
-  if (bestIdx === -1) {
-    const slice = body.slice(0, MAX).trim();
-    return slice + (body.length > MAX ? "…" : "");
-  }
-  const center = bestIdx + bestLen / 2;
-  let start = Math.max(0, Math.floor(center - PAD - bestLen / 2));
-  let end = Math.min(body.length, start + MAX);
-  // If we hit the right edge, shift left so we still return up to MAX chars.
-  if (end - start < MAX && start > 0) {
-    start = Math.max(0, end - MAX);
-  }
-  const slice = body.slice(start, end).trim();
-  return (start > 0 ? "…" : "") + slice + (end < body.length ? "…" : "");
-}
-
 /**
  * Retrieve top-N chunks ranked by BM25 against the query. Deduplicates by
  * parentSlug so the result set isn't dominated by multiple sections of the
@@ -214,7 +167,6 @@ export async function retrieve(
   }
   ranked.sort((a, b) => b.s - a.s);
 
-  // Deduplicate by parentSlug so the top-N spans distinct pages.
   const seen = new Set<string>();
   const out: RetrievedChunk[] = [];
   for (const { i } of ranked) {
@@ -225,7 +177,7 @@ export async function retrieve(
     out.push({
       path: d.href,
       title: d.title,
-      excerpt: makeExcerpt(d.body, tokens),
+      excerpt: buildExcerpt(d.body, tokens),
     });
     if (out.length >= topN) break;
   }
