@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -63,6 +64,9 @@ const fields: FieldDef[] = [
 ];
 
 export default function DistanceDistanceIntersectionPage() {
+  useEffect(() => {
+    trackCalculator("distance-distance-intersection");
+  }, []);
   const [values, setValues] = useState<Record<string, string>>({
     n1: "1000",
     e1: "1000",

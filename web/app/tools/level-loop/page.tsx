@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -17,6 +18,9 @@ type ObservationRow = {
 };
 
 export default function LevelLoopPage() {
+  useEffect(() => {
+    trackCalculator("level-loop");
+  }, []);
   const [benchmarks, setBenchmarks] = useState<BenchmarkRow[]>([
     { name: "BM-1", elevation: "100" },
   ]);

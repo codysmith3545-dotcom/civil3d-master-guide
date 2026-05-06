@@ -4,6 +4,7 @@ import Link from "next/link";
 import SearchBox from "@/components/SearchBox";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 import OutdoorModeToggle from "@/components/OutdoorModeToggle";
+import { Analytics } from "@/components/Analytics";
 
 export const metadata: Metadata = {
   title: {
@@ -54,6 +55,7 @@ export default function RootLayout({
         </header>
         <ServiceWorkerRegistrar />
         <main>{children}</main>
+        <Analytics />
         <footer className="border-t border-ink-100 py-6 text-center text-xs text-ink-500">
           Civil 3D Master Guide. Original content licensed CC BY-SA 4.0.
         </footer>

@@ -112,3 +112,47 @@ pnpm verify:links  # checks jurisdiction links
 - Acronyms are spelled out on first use per page (`Triangulated Irregular Network (TIN)`).
 - Code/commands in backticks. Civil 3D commands match Autodesk's casing (e.g. `CreateAlignmentEntities`).
 - Numeric standards always include units.
+
+## Releases
+
+Publishing the SDK and MCP server to npm is automated by `.github/workflows/release.yml`.
+
+1. Bump versions in `packages/sdk/package.json` and `mcp-server/package.json`.
+2. Commit and push to `main`.
+3. Tag with a SemVer tag matching `v*.*.*` and push the tag:
+
+   ```bash
+   git tag v0.2.0
+   git push origin v0.2.0
+   ```
+
+The workflow will:
+
+- install, build, and run tests
+- publish `@civil3d-master-guide/sdk` to npm with provenance
+- publish `@civil3d-master-guide/mcp` (the MCP server) to npm with provenance
+- create a GitHub release with auto-generated notes
+
+### Required secrets
+
+Set these in **Settings -> Secrets and variables -> Actions**:
+
+- `NPM_TOKEN`: an npm automation token with publish rights to the
+  `@civil3d-master-guide` scope. The workflow consumes it as `NODE_AUTH_TOKEN`.
+
+`GITHUB_TOKEN` is provided automatically by Actions; no manual setup needed.
+
+## Analytics
+
+The web app emits privacy-respecting events (page views, searches, calculator
+usage, chat messages) via `web/lib/analytics.ts`. Events carry only an
+anonymous per-session UUID and event-specific properties; no IP, no user
+agent, no user identifier. Events are appended to NDJSON on disk
+(default `web/.analytics/events.ndjson`, override with `ANALYTICS_LOG_PATH`)
+and optionally mirrored to Supabase if `SUPABASE_URL` and
+`SUPABASE_SERVICE_ROLE_KEY` are set.
+
+The content-gap endpoint (`GET /api/analytics/gaps`) returns the top 20
+zero-result search queries from the last 30 days. It is gated by
+`Authorization: Bearer <ANALYTICS_GAPS_TOKEN>`; if the env var is unset
+the endpoint returns 503.
