@@ -14,10 +14,13 @@ updated: 2026-05-06
 
 ## A
 
+- **Acquiescence** — Doctrine by which a boundary line is established by long-standing mutual recognition, typically evidenced by a fence or physical marker. → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md).
+- **Adverse possession** — Legal doctrine allowing a person to claim ownership of land after meeting statutory requirements (in Indiana: open, notorious, hostile, continuous, exclusive for 10 years under IC 32-21-7). → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md).
 - **Alignment** — A horizontal centerline made of lines, curves, and (optionally) spirals, carrying stationing. → [Alignments](civil3d/alignments/index.md).
 - **ALTA/NSPS** — National survey standard for title-insurance-grade boundary surveys (current: 2021). → [Boundary & ALTA](field-and-boundary/boundary-and-alta/index.md).
-- **Assembly** — The cross-section template applied along an alignment+profile to build a corridor. → [Corridors](civil3d/corridors/index.md).
 - **As-built** — Survey of what was actually constructed, including deviations from plan. → [As-builts](field-and-boundary/as-builts/index.md).
+- **ASPRS** — American Society for Photogrammetry and Remote Sensing. Publishes positional accuracy standards for geospatial data.
+- **Assembly** — The cross-section template applied along an alignment+profile to build a corridor. → [Corridors](civil3d/corridors/index.md).
 
 ## B
 
@@ -26,15 +29,18 @@ updated: 2026-05-06
 
 ## C
 
+- **Collimation** — The alignment of a survey instrument's optical/electronic axis. Checked and adjusted regularly to maintain measurement accuracy. → [Survey Equipment & Technology](field-and-boundary/survey-equipment/index.md).
 - **Combined scale factor** — Grid scale × elevation factor; converts ground distance to grid distance. → [Coordinate systems](field-and-boundary/coordinate-systems/index.md).
+- **CORS** — Continuously Operating Reference Station. A permanent GNSS receiver that provides correction data for RTK and post-processing. Indiana's network is InCORS. → [Control Networks & Adjustment](field-and-boundary/control-networks/index.md).
 - **Corridor** — The 3D model produced by sweeping an assembly along an alignment+profile. → [Corridors](civil3d/corridors/index.md).
 - **CSF** — See *combined scale factor*.
 
 ## D
 
-- **Daylight** — The point where a graded slope meets existing ground. → [Grading](civil3d/grading/index.md).
 - **Data shortcut** — Lightweight cross-drawing reference to a Civil 3D object (alignment, surface, profile, pipe network). → [Data shortcuts](civil3d/data-shortcuts/index.md).
+- **Daylight** — The point where a graded slope meets existing ground. → [Grading](civil3d/grading/index.md).
 - **Description key** — Rule that maps a point's raw description to a style, label style, layer, and full description. → [Description keys](civil3d/points/description-keys.md).
+- **DMD** — Double Meridian Distance. A method for computing area from traverse data using departures and meridian distances. → [Control Networks & Adjustment](field-and-boundary/control-networks/index.md).
 - **DWT** — AutoCAD/Civil 3D drawing template. → [Templates](customization/templates-and-kits/index.md).
 
 ## E
@@ -45,6 +51,7 @@ updated: 2026-05-06
 
 - **FBK** — Field book file format used by Civil 3D Survey to import processed survey data. → [Survey](civil3d/survey/index.md).
 - **Feature line** — A 3D line with elevation; backbone of grading. → [Grading](civil3d/grading/index.md).
+- **FGDC** — Federal Geographic Data Committee. Publishes geospatial positioning accuracy standards (FGDC-STD-007). → [Control Networks & Adjustment](field-and-boundary/control-networks/index.md).
 - **Figure** — A linework feature defined in the survey database, often used as breakline source.
 
 ## G
@@ -67,8 +74,9 @@ updated: 2026-05-06
 
 ## L
 
-- **Layout profile** — Designed profile (as opposed to a sampled surface profile).
 - **LandXML** — Open XML schema for civil/survey data exchange.
+- **Layout profile** — Designed profile (as opposed to a sampled surface profile).
+- **Localization** — A site calibration that transforms GNSS-derived coordinates to match local project control, producing a combined scale factor. → [Control Networks & Adjustment](field-and-boundary/control-networks/index.md).
 
 ## M
 
@@ -79,6 +87,7 @@ updated: 2026-05-06
 
 - **NCS** — National CAD Standard (NIBS). → [CAD layer standards](standards/cad-layer-standards/index.md).
 - **NGS** — National Geodetic Survey (NOAA agency).
+- **NTRIP** — Networked Transport of RTCM via Internet Protocol. The standard for streaming GNSS corrections over the internet for RTK surveying. → [Survey Equipment & Technology](field-and-boundary/survey-equipment/index.md).
 
 ## P
 
@@ -87,11 +96,14 @@ updated: 2026-05-06
 - **PNEZD** — Default point file format: Point, Northing, Easting, Z (elevation), Description.
 - **Point group** — Filter that selects points by criteria; controls visibility, plotting, export.
 - **Profile view** — The "window" that draws profiles in plan production.
+- **Proportioning** — The BLM method for restoring lost PLSS corners by proportional measurement between existing corners. Single proportioning uses one line; double proportioning uses two. → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md).
 - **PROWAG** — Public Right-of-Way Accessibility Guidelines (US Access Board, 2023). → [ADA](engineering/ada-and-accessibility/index.md).
 
 ## R
 
 - **Right-of-way (ROW)** — A specific kind of easement, usually for transit. → [Easements & ROW](field-and-boundary/easements-and-row/index.md).
+- **Riparian** — Relating to the bank of a river or stream. Riparian rights and boundaries follow the water's ordinary high water mark. → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md).
+- **RTK** — Real-Time Kinematic. A GNSS technique providing centimeter-level positioning in real time using carrier-phase corrections from a base station or VRS network. → [Survey Equipment & Technology](field-and-boundary/survey-equipment/index.md).
 
 ## S
 

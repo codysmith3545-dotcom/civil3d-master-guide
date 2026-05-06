@@ -65,7 +65,7 @@ See [content/00-index.md](content/00-index.md) for the full table of contents.
 
 ## Status
 
-Initial scaffold + seeded content. Phase 1 (MVP) targets: full tree scaffolded, top ~50 pages with substantive content, Indiana jurisdictions seeded, web app running.
+Phase 3 complete. 430+ content pages, 17 interactive calculators (engineering + survey), Indiana jurisdictions (8 counties + 60 municipalities), framework infrastructure (config.yaml, SDK, exports pipeline). Web app and MCP server fully functional.
 
 ## License
 

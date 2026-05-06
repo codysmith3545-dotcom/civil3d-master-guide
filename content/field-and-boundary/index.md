@@ -22,6 +22,10 @@ updated: 2026-05-06
 - [Monuments & evidence](monuments-and-evidence/index.md)
 - [Easements & right-of-way](easements-and-row/index.md)
 - [Coordinate systems, datums, projections](coordinate-systems/index.md)
+- [Survey Equipment & Technology](survey-equipment/index.md) — Total station setup, GNSS/RTK, auto levels, data collectors, calibration, robotic/scanning.
+- [Control Networks & Adjustment](control-networks/index.md) — Network design, least squares, traverse types, level networks, GNSS static, accuracy standards, localization.
+- [Professional Practice](professional-practice/index.md) — Indiana 865 IAC, minimum technical standards, liability, title companies, plat preparation, ethics, records.
+- [Advanced Boundary Topics](advanced-boundary/index.md) — Riparian/littoral, adverse possession, boundary disputes, acquiescence, PLSS corner restoration.
 
 ## Related
 
