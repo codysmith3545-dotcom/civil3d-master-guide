@@ -65,6 +65,9 @@ export function bearingBearingIntersection(
   const e2 = requireFinite(input?.e2, "e2");
   const bearing2 = requireFinite(input?.bearing2_deg, "bearing2_deg");
 
+  if (bearing1 < 0 || bearing1 >= 360) throw new Error("bearing1_deg must be in [0, 360)");
+  if (bearing2 < 0 || bearing2 >= 360) throw new Error("bearing2_deg must be in [0, 360)");
+
   // Direction vectors from azimuth: azimuth 0=north means dN=cos, dE=sin
   const az1 = bearing1 * DEG;
   const az2 = bearing2 * DEG;

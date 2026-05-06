@@ -82,7 +82,7 @@ export function traverseClosure(input: TraverseClosureInput): TraverseClosureRes
   }
 
   if (input.legs.length < 2) {
-    notes.push("A traverse must have at least two legs.");
+    throw new Error("A traverse must have at least two legs.");
   }
 
   // Compute raw latitudes and departures.

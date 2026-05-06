@@ -63,16 +63,7 @@ export function areaByCoordinates(
   }
 
   if (coords.length < 3) {
-    notes.push("At least three coordinates are required to form a closed polygon.");
-    return {
-      area_sqft: 0,
-      area_acres: 0,
-      perimeter_ft: 0,
-      is_clockwise: false,
-      source: "",
-      notes,
-      relatedContent: AREA_RELATED,
-    };
+    throw new Error("At least three coordinates are required to form a closed polygon.");
   }
 
   const n = coords.length;

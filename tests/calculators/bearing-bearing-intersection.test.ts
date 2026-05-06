@@ -14,13 +14,13 @@ describe("bearingBearingIntersection", () => {
     expect(r.distance_from_p2).toBeCloseTo(70.7107, 3);
   });
 
-  it("parallel bearings (both 45°) return NaN with a parallel-lines note (edge case)", () => {
-    const r = bearingBearingIntersection({
-      n1: 0, e1: 0, bearing1_deg: 45,
-      n2: 100, e2: 0, bearing2_deg: 45,
-    });
-    expect(Number.isNaN(r.n_intersection)).toBe(true);
-    expect(r.notes.some((n) => n.toLowerCase().includes("parallel"))).toBe(true);
+  it("parallel bearings (both 45°) throw (edge case)", () => {
+    expect(() =>
+      bearingBearingIntersection({
+        n1: 0, e1: 0, bearing1_deg: 45,
+        n2: 100, e2: 0, bearing2_deg: 45,
+      }),
+    ).toThrow(/parallel/i);
   });
 
   it("throws on out-of-range bearing (input validation)", () => {

@@ -131,15 +131,7 @@ export function metesAndBoundsWriter(
   }
 
   if (coords.length < 3) {
-    return {
-      description: "",
-      area_sqft: 0,
-      area_acres: 0,
-      perimeter_ft: 0,
-      source: "",
-      notes: ["At least three coordinates are required to form a closed polygon."],
-      relatedContent: "field-and-boundary/legal-descriptions/writing-metes-and-bounds",
-    };
+    throw new Error("At least three coordinates are required to form a closed polygon.");
   }
 
   const n = coords.length;
