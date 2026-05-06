@@ -37,7 +37,7 @@ sources:
 - [New Whiteland](municipalities/new-whiteland/index.md)
 - [Trafalgar](municipalities/trafalgar/index.md)
 - [Princes Lakes](municipalities/princes-lakes/index.md)
-- [Edinburgh](municipalities/edinburgh/index.md) — straddles Bartholomew, Johnson, Shelby.
+- [Edinburgh](../shelby-county/municipalities/edinburgh/index.md) — straddles Bartholomew, Johnson, and Shelby counties; page lives under Shelby County.
 
 ## Related
 
