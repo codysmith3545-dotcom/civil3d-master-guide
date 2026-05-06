@@ -31,6 +31,8 @@ import {
   rationalMethod,
   manningsOpenChannel,
   statePlaneIndianaCsf,
+  traverseClosure,
+  metesAndBoundsWriter,
 } from "./calculators/index.js";
 
 function jsonResult(data: unknown): CallToolResult {
@@ -351,7 +353,7 @@ export function buildTools(): ToolDef[] {
     {
       name: "run_calculator",
       description:
-        "Run a built-in engineering calculator. Available calculators: 'vertical_curve', 'horizontal_curve', 'rational_method', 'mannings_open_channel', 'state_plane_indiana_csf'. Provide `name` and the corresponding `inputs` object.",
+        "Run a built-in engineering calculator. Available calculators: 'vertical_curve', 'horizontal_curve', 'rational_method', 'mannings_open_channel', 'state_plane_indiana_csf', 'traverse_closure', 'metes_and_bounds'. Provide `name` and the corresponding `inputs` object.",
       schema: RunCalculatorInput,
       handler: async (args) => {
         const parsed = RunCalculatorInput.parse(args);
@@ -366,6 +368,10 @@ export function buildTools(): ToolDef[] {
             return jsonResult(manningsOpenChannel(parsed.inputs));
           case "state_plane_indiana_csf":
             return jsonResult(statePlaneIndianaCsf(parsed.inputs));
+          case "traverse_closure":
+            return jsonResult(traverseClosure(parsed.inputs));
+          case "metes_and_bounds":
+            return jsonResult(metesAndBoundsWriter(parsed.inputs));
         }
       },
     },
