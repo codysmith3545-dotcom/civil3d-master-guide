@@ -10,6 +10,7 @@ import {
 import { canView } from "@/lib/access";
 import Sidebar from "@/components/Sidebar";
 import OnThisPage from "@/components/OnThisPage";
+import CopyForAI from "@/components/CopyForAI";
 
 type RouteProps = { params: { slug: string[] } };
 
@@ -58,6 +59,12 @@ export default async function DocPage({ params }: RouteProps) {
   const { html, headings } = await renderMarkdown(page.body);
   const fm = page.frontmatter;
 
+  // Extract TL;DR: first blockquote block from the raw body
+  const tldrMatch = page.body.match(/^>\s*.+(?:\n>.*)*$/m);
+  const tldr = tldrMatch
+    ? tldrMatch[0].replace(/^>\s?/gm, "").trim()
+    : "";
+
   return (
     <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-8 lg:grid-cols-[16rem_minmax(0,1fr)_14rem]">
       <Sidebar nav={nav} currentHref={page.href} />
@@ -68,9 +75,18 @@ export default async function DocPage({ params }: RouteProps) {
               {fm.section as string}
             </p>
           ) : null}
-          <h1 className="mt-1 text-3xl font-semibold tracking-tight text-ink-900">
-            {(fm.title as string) ?? params.slug.join("/")}
-          </h1>
+          <div className="flex items-start justify-between gap-4">
+            <h1 className="mt-1 text-3xl font-semibold tracking-tight text-ink-900">
+              {(fm.title as string) ?? params.slug.join("/")}
+            </h1>
+            {tldr ? (
+              <CopyForAI
+                title={(fm.title as string) ?? params.slug.join("/")}
+                tldr={tldr}
+                section={(fm.section as string) ?? params.slug.join("/")}
+              />
+            ) : null}
+          </div>
           {fm.updated ? (
             <p className="mt-2 text-xs text-ink-500">
               Updated {String(fm.updated)}

@@ -20,6 +20,9 @@ llms-full.txt
 content/civil3d/commands/_index.generated.md
 web/public/search-index.json
 web/public/jurisdictions.geojson
+exports/system-prompt.txt
+exports/gpt-config.json
+exports/llms-*.txt
 
 # Editor
 .vscode/

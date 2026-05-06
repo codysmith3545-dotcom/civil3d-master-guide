@@ -5,7 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { search, type SearchHit } from "@/lib/search-index";
 
-export default function SearchBox() {
+interface SearchBoxProps {
+  size?: "default" | "large";
+  placeholder?: string;
+}
+
+export default function SearchBox({
+  size = "default",
+  placeholder = "Search docs",
+}: SearchBoxProps) {
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<SearchHit[]>([]);
   const [open, setOpen] = useState(false);
@@ -45,8 +53,14 @@ export default function SearchBox() {
 
   return (
     <div ref={containerRef} className="relative">
-      <label className="flex items-center gap-2 rounded-md border border-ink-200 bg-white px-2 py-1.5 text-sm focus-within:border-ink-400">
-        <Search className="h-4 w-4 text-ink-500" />
+      <label
+        className={
+          size === "large"
+            ? "flex items-center gap-3 rounded-lg border border-ink-300 bg-white px-4 py-3 text-base shadow-sm focus-within:border-ink-500 focus-within:ring-2 focus-within:ring-ink-200"
+            : "flex items-center gap-2 rounded-md border border-ink-200 bg-white px-2 py-1.5 text-sm focus-within:border-ink-400"
+        }
+      >
+        <Search className={size === "large" ? "h-5 w-5 text-ink-500" : "h-4 w-4 text-ink-500"} />
         <input
           type="search"
           value={q}
@@ -55,7 +69,7 @@ export default function SearchBox() {
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
-          placeholder="Search docs"
+          placeholder={placeholder}
           className="flex-1 bg-transparent outline-none placeholder:text-ink-400"
           aria-label="Search the knowledge base"
         />

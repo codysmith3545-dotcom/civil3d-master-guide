@@ -1,22 +1,26 @@
 import Link from "next/link";
+import SearchBox from "@/components/SearchBox";
 
 export default function HomePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-16">
-      <section className="mb-16">
+      {/* Hero with prominent search */}
+      <section className="mb-16 text-center">
         <p className="text-sm font-medium uppercase tracking-wider text-ink-500">
           A working reference for civil 3d
         </p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight text-ink-900 md:text-5xl">
           Survey, design, and jurisdictional standards in one place.
         </h1>
-        <p className="mt-5 max-w-2xl text-lg text-ink-600">
-          Civil 3D Master Guide is a hand-curated knowledge base for land
-          surveyors and civil engineers. Browse the docs, run the calculators,
-          look up local design standards, or ask the chat assistant — every
-          answer cites the source page it came from.
+        <p className="mx-auto mt-5 max-w-2xl text-lg text-ink-600">
+          400+ pages of hand-curated reference material, 17 survey and
+          engineering calculators, Indiana jurisdictional standards, and an AI
+          assistant that cites every answer.
         </p>
-        <div className="mt-7 flex flex-wrap gap-3">
+        <div className="mx-auto mt-8 max-w-xl">
+          <SearchBox size="large" placeholder="What are you looking for?" />
+        </div>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Link href="/docs" className="btn btn-primary">
             Browse the docs
           </Link>
@@ -31,24 +35,24 @@ export default function HomePage() {
 
       <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <FeatureCard
+          title="Survey Tools"
+          href="/tools"
+          body="17 calculators: traverse closure, bearing-bearing intersection, metes and bounds, solar observation, grid-to-ground, state plane CSF, and more."
+        />
+        <FeatureCard
           title="Chat"
           href="/chat"
-          body="A retrieval-grounded assistant that answers from this guide and cites the page it pulled from. Bring your own Anthropic API key — no operator funds spent."
-        />
-        <FeatureCard
-          title="Map"
-          href="/docs/jurisdictions"
-          body="Indiana jurisdictions: state DOT, eight Indianapolis-region counties, and every incorporated municipality, with links to design manuals and ordinances."
-        />
-        <FeatureCard
-          title="Calculators"
-          href="/tools"
-          body="Vertical curve K and L, horizontal curve geometry, and Rational Method peak flow with a Kirpich tc helper. Same code the MCP server will expose."
+          body="A retrieval-grounded assistant that answers from this guide and cites the page it pulled from. Bring your own Anthropic API key."
         />
         <FeatureCard
           title="Jurisdictions"
           href="/docs/jurisdictions/indiana"
-          body="Marion, Hamilton, Hancock, Shelby, Johnson, Morgan, Hendricks, and Boone counties — with their cities and towns linked through."
+          body="Marion, Hamilton, Hancock, Shelby, Johnson, Morgan, Hendricks, and Boone counties — with their cities, towns, and design manuals."
+        />
+        <FeatureCard
+          title="Standards"
+          href="/docs/standards"
+          body="AASHTO Green Book, ALTA/NSPS 2021, INDOT Design Manual, NCS layer naming, and Ten States Standards — summarized with source links."
         />
       </section>
 
@@ -68,10 +72,16 @@ export default function HomePage() {
             — points, surfaces, alignments, profiles, corridors.
           </li>
           <li>
-            <Link href="/docs/standards" className="text-[--accent] underline">
-              Standards
+            <Link href="/docs/engineering" className="text-[--accent] underline">
+              Engineering
             </Link>{" "}
-            — AASHTO summaries, ALTA/NSPS, NCS layer naming, plotting.
+            — stormwater, grading, road design, and utility reference.
+          </li>
+          <li>
+            <Link href="/docs/field-and-boundary" className="text-[--accent] underline">
+              Field &amp; boundary
+            </Link>{" "}
+            — real-world survey practice, legal descriptions, monumentation.
           </li>
         </ul>
       </section>

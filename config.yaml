@@ -1,0 +1,47 @@
+brand:
+  name: "Civil 3D Master Guide"
+  short_name: "C3D Guide"
+  domain: "civil3dguide.com"
+  company: "Smith Surveying"
+  logo: "assets/logo.svg"
+  footer: "Original content licensed CC BY-SA 4.0."
+
+knowledge:
+  focus: "Land surveying and civil engineering"
+  geography: "Indiana, USA"
+  primary_standards:
+    - "AASHTO Green Book"
+    - "ALTA/NSPS 2021"
+    - "INDOT Design Manual"
+    - "Ten States Standards (GLUMRB)"
+  content_dir: "content"
+
+ai:
+  persona: "a senior land surveyor and Civil 3D expert with 20 years of Indiana practice"
+  citation_style: "always cite the source page path"
+  system_prompt_template: "prompts/system.md"
+
+calculators:
+  enabled:
+    - { slug: "vertical-curve", name: "Vertical Curve", category: "engineering" }
+    - { slug: "horizontal-curve", name: "Horizontal Curve", category: "engineering" }
+    - { slug: "rational-method", name: "Rational Method", category: "engineering" }
+    - { slug: "mannings", name: "Manning's Equation", category: "engineering" }
+    - { slug: "inverse", name: "Inverse", category: "survey" }
+    - { slug: "bearing-bearing-intersection", name: "Bearing-Bearing Intersection", category: "survey" }
+    - { slug: "bearing-distance-intersection", name: "Bearing-Distance Intersection", category: "survey" }
+    - { slug: "distance-distance-intersection", name: "Distance-Distance Intersection", category: "survey" }
+    - { slug: "traverse-closure", name: "Traverse Closure", category: "survey" }
+    - { slug: "metes-and-bounds", name: "Metes & Bounds Writer", category: "survey" }
+    - { slug: "area-by-coordinates", name: "Area by Coordinates", category: "survey" }
+    - { slug: "curve-stakeout", name: "Curve Stakeout", category: "survey" }
+    - { slug: "level-loop", name: "Level Loop Adjustment", category: "survey" }
+    - { slug: "trig-leveling", name: "Trigonometric Leveling", category: "survey" }
+    - { slug: "solar-observation", name: "Solar Observation", category: "survey" }
+    - { slug: "grid-to-ground", name: "Grid-to-Ground", category: "survey" }
+    - { slug: "state-plane-indiana", name: "State Plane Indiana CSF", category: "survey" }
+
+deploy:
+  web: "vercel"
+  mcp_npm_scope: "@civil3d-master-guide"
+  sdk_npm_scope: "@civil3d-master-guide"
