@@ -26,6 +26,10 @@ updated: 2026-05-06
 | Write a legal description | [field-and-boundary/legal-descriptions](field-and-boundary/legal-descriptions/index.md) |
 | Set up a new project's CAD standards | [standards/cad-layer-standards](standards/cad-layer-standards/index.md), [customization/templates-and-kits](customization/templates-and-kits/index.md) |
 | Find good books / channels / forums | [resources](resources/index.md) |
+| Set up survey equipment | [field-and-boundary/survey-equipment](field-and-boundary/survey-equipment/index.md) |
+| Adjust a control network | [field-and-boundary/control-networks](field-and-boundary/control-networks/index.md) |
+| Understand surveyor regulations | [field-and-boundary/professional-practice](field-and-boundary/professional-practice/index.md) |
+| Handle a tricky boundary | [field-and-boundary/advanced-boundary](field-and-boundary/advanced-boundary/index.md) |
 | Look up a term | [glossary](glossary.md) |
 
 ## Sections
@@ -54,6 +58,10 @@ updated: 2026-05-06
 - [Monuments & evidence](field-and-boundary/monuments-and-evidence/index.md)
 - [Easements & right-of-way](field-and-boundary/easements-and-row/index.md)
 - [Coordinate systems](field-and-boundary/coordinate-systems/index.md)
+- [Survey Equipment & Technology](field-and-boundary/survey-equipment/index.md)
+- [Control Networks & Adjustment](field-and-boundary/control-networks/index.md)
+- [Professional Practice](field-and-boundary/professional-practice/index.md)
+- [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md)
 
 ### Engineering
 - [Stormwater](engineering/stormwater/index.md)
