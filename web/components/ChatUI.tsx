@@ -2,13 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import {
+  saveKey as saveEncryptedKey,
+  loadKey as loadEncryptedKey,
+  clearKey as clearEncryptedKey,
+} from "@/lib/api-key-store";
 
 type Source = { path: string; title: string; excerpt: string };
 type Message =
   | { role: "user"; content: string }
   | { role: "assistant"; content: string; sources?: Source[] };
-
-const KEY_STORAGE = "kb_anthropic_api_key";
 
 export default function ChatUI() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -20,7 +23,7 @@ export default function ChatUI() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setApiKey(localStorage.getItem(KEY_STORAGE) ?? "");
+    void loadEncryptedKey().then((k) => setApiKey(k ?? ""));
   }, []);
 
   useEffect(() => {
@@ -29,7 +32,11 @@ export default function ChatUI() {
 
   function saveKey(k: string) {
     setApiKey(k);
-    localStorage.setItem(KEY_STORAGE, k);
+    if (k) {
+      void saveEncryptedKey(k);
+    } else {
+      clearEncryptedKey();
+    }
   }
 
   async function send() {
