@@ -1,0 +1,47 @@
+{
+  "name": "@civil3d-master-guide/mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing the Civil 3D Master Guide knowledge base (pages, command catalog, jurisdictions, resources, calculators) to Claude Desktop, Claude Code, Cursor, and other MCP-aware clients.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "civil3d-master-guide-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "gray-matter": "^4.0.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  },
+  "keywords": [
+    "civil3d",
+    "mcp",
+    "model-context-protocol",
+    "land-surveying",
+    "civil-engineering",
+    "aashto",
+    "knowledge-base"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codysmith3545-dotcom/civil3d-master-guide"
+  }
+}
