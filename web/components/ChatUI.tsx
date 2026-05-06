@@ -2,11 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import ChatFeedback from "@/components/ChatFeedback";
 
 type Source = { path: string; title: string; excerpt: string };
 type Message =
   | { role: "user"; content: string }
-  | { role: "assistant"; content: string; sources?: Source[] };
+  | { role: "assistant"; content: string; sources?: Source[]; id?: string };
+
+function newId() {
+  return `m_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+}
 
 const KEY_STORAGE = "kb_anthropic_api_key";
 
@@ -73,7 +78,8 @@ export default function ChatUI() {
       let assistantText = "";
       let assistantSources: Source[] | undefined;
       // Push a placeholder assistant message we will mutate as the stream lands.
-      setMessages((m) => [...m, { role: "assistant", content: "" }]);
+      const assistantId = newId();
+      setMessages((m) => [...m, { role: "assistant", content: "", id: assistantId }]);
 
       while (true) {
         const { value, done } = await reader.read();
@@ -98,6 +104,7 @@ export default function ChatUI() {
                     role: "assistant",
                     content: assistantText,
                     sources: assistantSources,
+                    id: last.id,
                   };
                 }
                 return copy;
@@ -112,6 +119,7 @@ export default function ChatUI() {
                     role: "assistant",
                     content: assistantText,
                     sources: assistantSources,
+                    id: last.id,
                   };
                 }
                 return copy;
@@ -178,9 +186,22 @@ export default function ChatUI() {
             detention?&quot; or &quot;K-value for a 45 mph crest curve&quot;.
           </div>
         ) : null}
-        {messages.map((m, i) => (
-          <MessageBubble key={i} message={m} />
-        ))}
+        {messages.map((m, i) => {
+          const prev = i > 0 ? messages[i - 1] : undefined;
+          const prevQuery =
+            prev && prev.role === "user" ? prev.content : undefined;
+          return (
+            <div key={i} className="flex flex-col gap-1">
+              <MessageBubble message={m} />
+              {m.role === "assistant" && m.content ? (
+                <ChatFeedback
+                  messageId={m.id ?? `idx_${i}`}
+                  query={prevQuery}
+                />
+              ) : null}
+            </div>
+          );
+        })}
         <div ref={bottomRef} />
       </div>
 
