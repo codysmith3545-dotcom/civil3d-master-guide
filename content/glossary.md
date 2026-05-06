@@ -1,0 +1,117 @@
+---
+title: "Glossary"
+section: ""
+order: 999
+visibility: public
+tags: [glossary, reference]
+updated: 2026-05-06
+---
+
+> **TL;DR**
+> 1. Definitions of terms used throughout the guide. Hover-cards on the web app pull from this page.
+> 2. Each term has a one-line definition and a link to the page where it's used most.
+> 3. Add a term: alphabetical, lowercase first word, definition under 30 words, link to relevant page.
+
+## A
+
+- **Alignment** — A horizontal centerline made of lines, curves, and (optionally) spirals, carrying stationing. → [Alignments](civil3d/alignments/index.md).
+- **ALTA/NSPS** — National survey standard for title-insurance-grade boundary surveys (current: 2021). → [Boundary & ALTA](field-and-boundary/boundary-and-alta/index.md).
+- **Assembly** — The cross-section template applied along an alignment+profile to build a corridor. → [Corridors](civil3d/corridors/index.md).
+- **As-built** — Survey of what was actually constructed, including deviations from plan. → [As-builts](field-and-boundary/as-builts/index.md).
+
+## B
+
+- **Basis of bearings** — The reference frame for the directions in a survey or description (grid, geodetic, magnetic, assumed). → [Legal descriptions](field-and-boundary/legal-descriptions/index.md).
+- **Breakline** — A 3D linear feature added to a TIN to enforce ridges/valleys/edges. → [Surfaces](civil3d/surfaces/index.md).
+
+## C
+
+- **Combined scale factor** — Grid scale × elevation factor; converts ground distance to grid distance. → [Coordinate systems](field-and-boundary/coordinate-systems/index.md).
+- **Corridor** — The 3D model produced by sweeping an assembly along an alignment+profile. → [Corridors](civil3d/corridors/index.md).
+- **CSF** — See *combined scale factor*.
+
+## D
+
+- **Daylight** — The point where a graded slope meets existing ground. → [Grading](civil3d/grading/index.md).
+- **Data shortcut** — Lightweight cross-drawing reference to a Civil 3D object (alignment, surface, profile, pipe network). → [Data shortcuts](civil3d/data-shortcuts/index.md).
+- **Description key** — Rule that maps a point's raw description to a style, label style, layer, and full description. → [Description keys](civil3d/points/description-keys.md).
+- **DWT** — AutoCAD/Civil 3D drawing template. → [Templates](customization/templates-and-kits/index.md).
+
+## E
+
+- **Easement** — A right to use someone else's land for a specific purpose. → [Easements & ROW](field-and-boundary/easements-and-row/index.md).
+
+## F
+
+- **FBK** — Field book file format used by Civil 3D Survey to import processed survey data. → [Survey](civil3d/survey/index.md).
+- **Feature line** — A 3D line with elevation; backbone of grading. → [Grading](civil3d/grading/index.md).
+- **Figure** — A linework feature defined in the survey database, often used as breakline source.
+
+## G
+
+- **Geoid** — Equipotential surface used as the reference for orthometric heights (current US: Geoid18). → [Coordinate systems](field-and-boundary/coordinate-systems/index.md).
+- **Grading group** — Container for grading objects that produces a surface.
+
+## H
+
+- **HGL** — Hydraulic Grade Line. The energy-elevation profile of pressurized or open-channel flow. → [Hydraulics](engineering/hydraulics/index.md).
+
+## I
+
+- **IDM** — Indiana Design Manual (INDOT). → [Indiana state](jurisdictions/indiana/state/index.md).
+- **Invert** — The inside-bottom elevation of a pipe.
+
+## K
+
+- **K-value** — Vertical curve length per percent of algebraic difference: `K = L / |A|`. → [Vertical curve design](engineering/roadway-design/vertical-curve-design.md).
+
+## L
+
+- **Layout profile** — Designed profile (as opposed to a sampled surface profile).
+- **LandXML** — Open XML schema for civil/survey data exchange.
+
+## M
+
+- **Manning's n** — Channel/pipe roughness coefficient. → [Hydraulics](engineering/hydraulics/index.md).
+- **Match line** — Line on a plan sheet indicating where the next sheet picks up.
+
+## N
+
+- **NCS** — National CAD Standard (NIBS). → [CAD layer standards](standards/cad-layer-standards/index.md).
+- **NGS** — National Geodetic Survey (NOAA agency).
+
+## P
+
+- **Parcel** — A 2D enclosed area on a site (in Civil 3D); a legally defined property tract (in surveying).
+- **Pipe network** — Civil 3D object representing a system of pipes and structures.
+- **PNEZD** — Default point file format: Point, Northing, Easting, Z (elevation), Description.
+- **Point group** — Filter that selects points by criteria; controls visibility, plotting, export.
+- **Profile view** — The "window" that draws profiles in plan production.
+- **PROWAG** — Public Right-of-Way Accessibility Guidelines (US Access Board, 2023). → [ADA](engineering/ada-and-accessibility/index.md).
+
+## R
+
+- **Right-of-way (ROW)** — A specific kind of easement, usually for transit. → [Easements & ROW](field-and-boundary/easements-and-row/index.md).
+
+## S
+
+- **Sight distance** — Distance a driver can see ahead. SSD = stopping; PSD = passing; DSD = decision; ISD = intersection.
+- **Site (Civil 3D)** — Topology container for parcels and feature lines.
+- **State plane** — A US national family of projections for state-by-state high-accuracy mapping. → [Coordinate systems](field-and-boundary/coordinate-systems/index.md).
+- **Subassembly** — A piece of an assembly (lane, curb, sidewalk, daylight).
+- **Surveyor's report** — Indiana statutory report (IC 36-2-12-14) summarizing a survey. → [Monuments & evidence](field-and-boundary/monuments-and-evidence/index.md).
+
+## T
+
+- **Target (corridor)** — Object a subassembly follows (surface, alignment, profile).
+- **TIN** — Triangulated Irregular Network. The default Civil 3D surface representation. → [Surfaces](civil3d/surfaces/index.md).
+- **Time of concentration (Tc)** — Time for runoff to travel from the hydraulically most distant point of a catchment to the design point. → [Stormwater](engineering/stormwater/index.md).
+
+## V
+
+- **Vertical curve** — Parabolic curve connecting two profile tangents; quantified by K-value.
+- **View frame** — Rectangle along an alignment that defines a plan/profile sheet's extent.
+
+## Related
+
+- [Master index](00-index.md)

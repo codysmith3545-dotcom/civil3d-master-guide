@@ -1,0 +1,23 @@
+{
+  "name": "civil3d-master-guide",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Master knowledge base for land surveying and civil engineering in Civil 3D",
+  "license": "CC-BY-SA-4.0 AND MIT",
+  "packageManager": "pnpm@9.12.0",
+  "workspaces": [
+    "web",
+    "mcp-server"
+  ],
+  "scripts": {
+    "build:llms": "node scripts/build-llms-txt.mjs",
+    "seed:commands": "node scripts/seed-civil3d-commands.mjs",
+    "verify:links": "node scripts/verify-jurisdiction-links.mjs",
+    "new-page": "node scripts/new-page.mjs",
+    "embed": "node scripts/embed-content.mjs",
+    "lint:content": "node scripts/lint-content.mjs"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}
