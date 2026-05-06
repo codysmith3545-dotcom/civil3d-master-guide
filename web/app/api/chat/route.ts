@@ -1,12 +1,19 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { retrieve } from "@/lib/rag";
+import { serverEnv } from "@/lib/config";
 
 export const runtime = "nodejs";
 // Stream output token-by-token; do not pre-render in Edge cache.
 export const dynamic = "force-dynamic";
 
-const MODEL = "claude-haiku-4-5";
+// Default model when the user brings their own key.
+const USER_MODEL = "claude-haiku-4-5";
+// Cheaper model used when spending operator funds.
+const OPERATOR_MODEL = "claude-haiku-4-5-20251001";
+
+const MAX_MESSAGE_CHARS = 4000;
+const MAX_CONVERSATION_LENGTH = 20;
 
 const SYSTEM_PROMPT = `You are the assistant for the Civil 3D Master Guide, a working reference for land surveyors and civil engineers using Autodesk Civil 3D, with a U.S. (AASHTO/ALTA/NCS) and Indiana jurisdictional focus.
 
@@ -26,54 +33,133 @@ type ClientMessage = {
   content: string;
 };
 
+// Per-IP daily quota for the operator-funded fallback. Same in-memory caveat
+// as middleware.ts: per-instance only. Acceptable for v1.
+type QuotaEntry = { day: string; count: number };
+const operatorQuota: Map<string, QuotaEntry> = new Map();
+
+function utcDay(now = new Date()): string {
+  return now.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+function clientIp(req: NextRequest): string {
+  const fwd = req.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0]!.trim();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (req as any).ip ?? "unknown";
+}
+
 function sse(eventObj: unknown): string {
   return `data: ${JSON.stringify(eventObj)}\n\n`;
 }
 
-function jsonError(status: number, message: string) {
-  return new Response(JSON.stringify({ message }), {
+function jsonError(
+  status: number,
+  body: Record<string, unknown>,
+  extraHeaders: Record<string, string> = {},
+) {
+  return new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...extraHeaders },
   });
 }
 
+function sanitize(text: string): string {
+  // Strip C0 control characters (incl. null bytes) - some clients leak them
+  // through copy/paste from PDFs. Newlines are preserved for code blocks.
+  // Then collapse runs of horizontal whitespace into a single space.
+  // eslint-disable-next-line no-control-regex
+  const noControl = text.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
+  return noControl.replace(/[ \t]+/g, " ").trim();
+}
+
 export async function POST(req: NextRequest) {
-  let body: { messages?: ClientMessage[] };
+  let body: { messages?: ClientMessage[]; apiKey?: string };
   try {
     body = await req.json();
   } catch {
-    return jsonError(400, "Invalid JSON body.");
+    return jsonError(400, { message: "Invalid JSON body." });
   }
 
-  const messages = (body.messages ?? []).filter(
+  const rawMessages = (body.messages ?? []).filter(
     (m) =>
       m &&
       (m.role === "user" || m.role === "assistant") &&
       typeof m.content === "string",
   );
+
+  if (rawMessages.length > MAX_CONVERSATION_LENGTH) {
+    return jsonError(400, {
+      error: "conversation_too_long",
+      message: `Conversations are capped at ${MAX_CONVERSATION_LENGTH} messages. Start a new conversation to continue.`,
+    });
+  }
+
+  const messages: ClientMessage[] = [];
+  for (const m of rawMessages) {
+    const cleaned = sanitize(m.content);
+    if (cleaned.length > MAX_MESSAGE_CHARS) {
+      return jsonError(400, {
+        error: "message_too_long",
+        message: `Each message is capped at ${MAX_MESSAGE_CHARS} characters.`,
+      });
+    }
+    messages.push({ role: m.role, content: cleaned });
+  }
   if (!messages.length) {
-    return jsonError(400, "At least one message is required.");
+    return jsonError(400, { message: "At least one message is required." });
   }
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
   if (!lastUser) {
-    return jsonError(400, "The last message must come from the user.");
+    return jsonError(400, {
+      message: "The last message must come from the user.",
+    });
   }
 
-  // BYOK: client sends the user's Anthropic key in a header. Operator key is
-  // intentionally NOT used as a fallback; we don't want to spend operator
-  // tokens until a paid pool is set up explicitly.
-  const apiKey = req.headers.get("x-anthropic-api-key");
-  if (!apiKey) {
-    return new Response(
-      JSON.stringify({
-        message:
-          "No Anthropic API key supplied. The operator-funded free pool is not configured yet. Add your own key in the chat panel — it is stored only in your browser.",
-      }),
-      {
-        status: 402,
-        headers: { "content-type": "application/json" },
-      },
-    );
+  // BYOK: header preserves the existing client contract; body.apiKey is the
+  // newer path documented in the v2 task.
+  const headerKey = req.headers.get("x-anthropic-api-key");
+  const userApiKey = (body.apiKey ?? headerKey ?? "").trim();
+  const operatorKey = serverEnv.ANTHROPIC_API_KEY;
+
+  let effectiveKey: string;
+  let model: string;
+  let isOperatorFunded = false;
+  let quotaRemaining: number | null = null;
+
+  if (userApiKey) {
+    effectiveKey = userApiKey;
+    model = USER_MODEL;
+  } else if (operatorKey) {
+    // Anonymous user → spend operator funds, but cap by IP/day.
+    const ip = clientIp(req);
+    const today = utcDay();
+    const limit = serverEnv.OPERATOR_CHAT_DAILY_LIMIT;
+    const entry = operatorQuota.get(ip);
+    const current =
+      entry && entry.day === today ? entry.count : 0;
+    if (current >= limit) {
+      return jsonError(
+        402,
+        {
+          error: "quota_exceeded",
+          message:
+            "Free tier exhausted. Add your own API key in settings.",
+        },
+        { "x-quota-remaining": "0" },
+      );
+    }
+    operatorQuota.set(ip, { day: today, count: current + 1 });
+    quotaRemaining = Math.max(0, limit - (current + 1));
+    effectiveKey = operatorKey;
+    model = OPERATOR_MODEL;
+    isOperatorFunded = true;
+  } else {
+    return jsonError(402, {
+      error: "no_api_key",
+      message:
+        "No Anthropic API key supplied. Add your own key in the chat panel — it is stored only in your browser.",
+    });
   }
 
   const sources = await retrieve(lastUser.content, 5);
@@ -82,37 +168,26 @@ export async function POST(req: NextRequest) {
     sources.length > 0
       ? "Retrieved excerpts from the Civil 3D Master Guide. Cite these by URL when you draw on them:\n\n" +
         sources
-          .map(
-            (s, i) =>
-              `[${i + 1}] ${s.title} (${s.path})\n${s.excerpt}`,
-          )
+          .map((s, i) => `[${i + 1}] ${s.title} (${s.path})\n${s.excerpt}`)
           .join("\n\n")
       : "No relevant excerpts were retrieved. Tell the user the guide does not currently cover the question rather than guessing.";
 
-  const client = new Anthropic({ apiKey });
+  const client = new Anthropic({ apiKey: effectiveKey });
 
   const stream = new ReadableStream({
     async start(controller) {
       const encoder = new TextEncoder();
-      // Emit retrieved sources first so the UI can render the citations
-      // panel before the streamed text begins.
-      controller.enqueue(encoder.encode(sse({ type: "sources", items: sources })));
+      controller.enqueue(
+        encoder.encode(sse({ type: "sources", items: sources })),
+      );
 
       try {
-        // Prompt caching breakpoints on the system prompt: the static rules
-        // block is stable across requests; the per-turn retrieval is not.
         const result = await client.messages.create({
-          model: MODEL,
+          model,
           max_tokens: 1024,
           system: [
-            {
-              type: "text",
-              text: SYSTEM_PROMPT,
-            } as const,
-            {
-              type: "text",
-              text: ragBlock,
-            },
+            { type: "text", text: SYSTEM_PROMPT } as const,
+            { type: "text", text: ragBlock },
           ],
           messages: messages.map((m) => ({
             role: m.role,
@@ -127,9 +202,7 @@ export async function POST(req: NextRequest) {
             event.delta.type === "text_delta"
           ) {
             controller.enqueue(
-              encoder.encode(
-                sse({ type: "text", delta: event.delta.text }),
-              ),
+              encoder.encode(sse({ type: "text", delta: event.delta.text })),
             );
           }
         }
@@ -148,11 +221,14 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return new Response(stream, {
-    headers: {
-      "content-type": "text/event-stream; charset=utf-8",
-      "cache-control": "no-cache, no-transform",
-      "x-accel-buffering": "no",
-    },
-  });
+  const headers: Record<string, string> = {
+    "content-type": "text/event-stream; charset=utf-8",
+    "cache-control": "no-cache, no-transform",
+    "x-accel-buffering": "no",
+  };
+  if (isOperatorFunded && quotaRemaining !== null) {
+    headers["x-quota-remaining"] = String(quotaRemaining);
+  }
+
+  return new Response(stream, { headers });
 }

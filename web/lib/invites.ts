@@ -1,12 +1,13 @@
 import { SignJWT, jwtVerify } from "jose";
+import { serverEnv } from "@/lib/config";
 
 const ALG = "HS256";
 
 function getSecret(): Uint8Array {
-  const raw = process.env.INVITE_SECRET;
+  const raw = serverEnv.INVITE_SECRET;
   if (!raw) {
     throw new Error(
-      "INVITE_SECRET is not set. Generate one and put it in .env.local before issuing invite tokens.",
+      "INVITE_SECRET is not set. Generate one (>=16 chars) and put it in .env.local before issuing invite tokens.",
     );
   }
   return new TextEncoder().encode(raw);
