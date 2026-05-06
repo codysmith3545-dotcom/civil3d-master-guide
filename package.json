@@ -14,7 +14,6 @@
     "seed:commands": "node scripts/seed-civil3d-commands.mjs",
     "verify:links": "node scripts/verify-jurisdiction-links.mjs",
     "new-page": "node scripts/new-page.mjs",
-    "embed": "node scripts/embed-content.mjs",
     "lint:content": "node scripts/lint-content.mjs",
     "build:exports": "node scripts/build-exports.mjs",
     "build:all": "node scripts/build-all.mjs"
