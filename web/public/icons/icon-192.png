@@ -1,0 +1,9 @@
+TODO: replace with a real 192x192 PNG export of icon.svg.
+
+This placeholder text file is committed so the manifest path resolves during
+build. To generate the real PNG, run something like:
+
+  rsvg-convert -w 192 -h 192 web/public/icons/icon.svg \
+    > web/public/icons/icon-192.png
+
+or use any SVG-to-PNG tool of your choice.
