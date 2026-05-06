@@ -5,6 +5,11 @@ order: 100
 visibility: public
 tags: [indiana, hamilton-county, carmel]
 updated: 2026-05-06
+state: indiana
+county: hamilton-county
+municipality: carmel
+# Approximate municipal bbox in [minLng, minLat, maxLng, maxLat] order.
+bounds: [-86.21, 39.92, -86.04, 40.02]
 sources:
   - title: "City of Carmel, Indiana"
     url: "https://www.carmel.in.gov/"

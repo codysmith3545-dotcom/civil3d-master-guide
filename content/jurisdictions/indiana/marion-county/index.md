@@ -5,6 +5,10 @@ order: 10
 visibility: public
 tags: [indiana, marion-county, indianapolis, unigov]
 updated: 2026-05-06
+state: indiana
+county: marion-county
+# Approximate county bbox in [minLng, minLat, maxLng, maxLat] order.
+bounds: [-86.33, 39.63, -85.94, 39.93]
 sources:
   - title: "Indianapolis & Marion County (Unigov) — Government"
     url: "https://www.indy.gov/"

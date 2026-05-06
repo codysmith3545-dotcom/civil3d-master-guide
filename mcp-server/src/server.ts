@@ -22,6 +22,7 @@ import {
   SearchKbInput,
   ListCommandsInput,
   ListJurisdictionsInput,
+  JurisdictionAtInput,
   GetResourceIndexInput,
   RunCalculatorInput,
 } from "./schemas.js";
@@ -236,6 +237,262 @@ async function listJurisdictions(root: string, stateFilter?: string): Promise<Ju
   return out;
 }
 
+interface MunicipalityNode {
+  slug: string;
+  title: string;
+  path: string;
+}
+
+interface CountyNode {
+  slug: string;
+  title: string;
+  path: string;
+  municipalities: MunicipalityNode[];
+}
+
+interface StateNode {
+  slug: string;
+  title: string;
+  path: string;
+  counties: CountyNode[];
+}
+
+interface JurisdictionTree {
+  states: StateNode[];
+  flat: JurisdictionEntry[];
+}
+
+function buildJurisdictionTree(flat: JurisdictionEntry[]): JurisdictionTree {
+  const stateMap = new Map<string, StateNode>();
+  const countyMap = new Map<string, CountyNode>(); // key: state/county
+
+  // First pass: state and county nodes (entries with no municipality).
+  for (const j of flat) {
+    if (j.municipality) continue;
+    if (j.county) {
+      const key = `${j.state}/${j.county}`;
+      if (!countyMap.has(key)) {
+        countyMap.set(key, {
+          slug: j.county,
+          title: j.title,
+          path: j.path,
+          municipalities: [],
+        });
+      } else {
+        const existing = countyMap.get(key)!;
+        existing.title = j.title;
+        existing.path = j.path;
+      }
+    } else {
+      // state-level page (jurisdictions/<state>/index.md or .../state/index.md)
+      if (!stateMap.has(j.state)) {
+        stateMap.set(j.state, {
+          slug: j.state,
+          title: j.title,
+          path: j.path,
+          counties: [],
+        });
+      } else {
+        // Prefer the top-level state index over the nested .../state/index.md.
+        const existing = stateMap.get(j.state)!;
+        const isTopLevel = j.path === `jurisdictions/${j.state}/index.md`;
+        if (isTopLevel) {
+          existing.title = j.title;
+          existing.path = j.path;
+        }
+      }
+    }
+  }
+
+  // Make sure every county has a parent state node, even if the state has no
+  // top-level index.md.
+  for (const j of flat) {
+    if (!stateMap.has(j.state)) {
+      stateMap.set(j.state, {
+        slug: j.state,
+        title: j.state,
+        path: `jurisdictions/${j.state}`,
+        counties: [],
+      });
+    }
+  }
+
+  // Second pass: attach municipalities to county nodes (creating county nodes
+  // on the fly if a municipality appears under an undiscovered county).
+  for (const j of flat) {
+    if (!j.municipality || !j.county) continue;
+    const key = `${j.state}/${j.county}`;
+    if (!countyMap.has(key)) {
+      countyMap.set(key, {
+        slug: j.county,
+        title: j.county,
+        path: `jurisdictions/${j.state}/${j.county}`,
+        municipalities: [],
+      });
+    }
+    countyMap.get(key)!.municipalities.push({
+      slug: j.municipality,
+      title: j.title,
+      path: j.path,
+    });
+  }
+
+  // Attach counties to states.
+  for (const [key, county] of countyMap) {
+    const stateSlug = key.split("/")[0]!;
+    const state = stateMap.get(stateSlug);
+    if (state) state.counties.push(county);
+  }
+
+  // Sort everything for stable output.
+  const states = Array.from(stateMap.values()).sort((a, b) => a.slug.localeCompare(b.slug));
+  for (const s of states) {
+    s.counties.sort((a, b) => a.slug.localeCompare(b.slug));
+    for (const c of s.counties) {
+      c.municipalities.sort((a, b) => a.slug.localeCompare(b.slug));
+    }
+  }
+
+  return { states, flat };
+}
+
+// ---------------------------------------------------------------------------
+// jurisdiction_at — find which jurisdiction(s) contain a GPS point
+// ---------------------------------------------------------------------------
+
+interface BoundedJurisdiction {
+  state: string;
+  county?: string;
+  municipality?: string;
+  title: string;
+  slug: string;
+  path: string;
+  bounds: [number, number, number, number];
+  level: "state" | "county" | "municipality";
+}
+
+function jurisdictionLevel(rel: string): "state" | "county" | "municipality" | null {
+  // jurisdictions/<state>/index.md                    -> state
+  // jurisdictions/<state>/state/index.md              -> state
+  // jurisdictions/<state>/<county>/index.md           -> county
+  // jurisdictions/<state>/<county>/municipalities/<m>/index.md -> municipality
+  if (!rel.startsWith("jurisdictions/")) return null;
+  if (!rel.endsWith("/index.md")) return null;
+  const parts = rel.split("/");
+  // parts[0]="jurisdictions", parts[1]=state
+  if (parts.length === 3) return "state"; // jurisdictions/<state>/index.md
+  if (parts.length === 4 && parts[2] === "state") return "state";
+  if (parts.length === 4) return "county"; // jurisdictions/<state>/<county>/index.md
+  if (parts.length === 6 && parts[3] === "municipalities") return "municipality";
+  return null;
+}
+
+function pointInBounds(
+  lat: number,
+  lng: number,
+  bounds: [number, number, number, number],
+): boolean {
+  const [minLng, minLat, maxLng, maxLat] = bounds;
+  return lng >= minLng && lng <= maxLng && lat >= minLat && lat <= maxLat;
+}
+
+function bboxArea(bounds: [number, number, number, number]): number {
+  const [minLng, minLat, maxLng, maxLat] = bounds;
+  return Math.abs(maxLng - minLng) * Math.abs(maxLat - minLat);
+}
+
+async function findJurisdictionAt(
+  root: string,
+  lat: number,
+  lng: number,
+): Promise<{
+  match: BoundedJurisdiction | null;
+  parents: BoundedJurisdiction[];
+  hint?: string;
+  candidatesEvaluated: number;
+}> {
+  const pages = await loadAllPages(root);
+  const candidates: BoundedJurisdiction[] = [];
+  for (const p of pages) {
+    if (!p.relPath.startsWith("jurisdictions/")) continue;
+    const level = jurisdictionLevel(p.relPath);
+    if (!level) continue;
+    const fm = p.frontmatter;
+    const bounds = fm.bounds;
+    if (!Array.isArray(bounds) || bounds.length !== 4) continue;
+    if (!bounds.every((n) => typeof n === "number" && Number.isFinite(n))) continue;
+    const j = parseJurisdictionFromPath(p.relPath, fm);
+    if (!j) continue;
+    // Re-derive county/municipality from level so the state-level index page
+    // (jurisdictions/<state>/index.md) doesn't get a spurious county.
+    const partsArr = p.relPath.split("/");
+    let county: string | undefined;
+    let municipality: string | undefined;
+    if (level === "county") {
+      county = partsArr[2];
+    } else if (level === "municipality") {
+      county = partsArr[2];
+      municipality = partsArr[4];
+    }
+    candidates.push({
+      state: j.state,
+      county: county ?? (typeof fm.county === "string" ? fm.county : undefined),
+      municipality:
+        municipality ?? (typeof fm.municipality === "string" ? fm.municipality : undefined),
+      title: j.title,
+      slug: p.slug,
+      path: p.relPath,
+      bounds: bounds as [number, number, number, number],
+      level,
+    });
+  }
+
+  if (candidates.length === 0) {
+    return {
+      match: null,
+      parents: [],
+      hint:
+        "No jurisdictions in the knowledge base have `bounds` frontmatter. Add a [minLng, minLat, maxLng, maxLat] bbox to enable GPS lookup.",
+      candidatesEvaluated: 0,
+    };
+  }
+
+  const hits = candidates.filter((c) => pointInBounds(lat, lng, c.bounds));
+  if (hits.length === 0) {
+    return {
+      match: null,
+      parents: [],
+      hint: `No jurisdiction with defined bounds contains the point (${lat}, ${lng}). It may be outside the covered area, or the containing jurisdictions have no bounds defined.`,
+      candidatesEvaluated: candidates.length,
+    };
+  }
+
+  // Most-specific = smallest bbox area. Tie-break by level rank (muni > county > state).
+  const levelRank: Record<BoundedJurisdiction["level"], number> = {
+    municipality: 3,
+    county: 2,
+    state: 1,
+  };
+  hits.sort((a, b) => {
+    const r = levelRank[b.level] - levelRank[a.level];
+    if (r !== 0) return r;
+    return bboxArea(a.bounds) - bboxArea(b.bounds);
+  });
+  const match = hits[0]!;
+  // Build parent chain from remaining hits that share state/county lineage.
+  const parents: BoundedJurisdiction[] = [];
+  for (const h of hits) {
+    if (h === match) continue;
+    if (h.state !== match.state) continue;
+    if (match.county && h.county && h.county !== match.county) continue;
+    parents.push(h);
+  }
+  // Order parents from broadest -> narrowest.
+  parents.sort((a, b) => levelRank[a.level] - levelRank[b.level]);
+
+  return { match, parents, candidatesEvaluated: candidates.length };
+}
+
 // ---------------------------------------------------------------------------
 // Commands
 // ---------------------------------------------------------------------------
@@ -339,13 +596,36 @@ export function buildTools(): ToolDef[] {
     {
       name: "list_jurisdictions",
       description:
-        "List jurisdictional pages (state, county, municipality) under content/jurisdictions/. Optionally filter by state slug.",
+        "List jurisdictional pages (state, county, municipality) under content/jurisdictions/, returned as a state -> county -> municipality tree. Optionally filter by state slug. The legacy flat array is preserved on the `flat` field for backward compatibility.",
       schema: ListJurisdictionsInput,
       handler: async (args) => {
         const parsed = ListJurisdictionsInput.parse(args);
         const root = await resolveKbRoot();
         const items = await listJurisdictions(root, parsed.state);
-        return jsonResult({ count: items.length, items });
+        const tree = buildJurisdictionTree(items);
+        return jsonResult({
+          states: tree.states,
+          flat: tree.flat,
+          count: tree.flat.length,
+        });
+      },
+    },
+    {
+      name: "jurisdiction_at",
+      description:
+        "Look up which jurisdiction(s) contain a GPS point. Inputs: { lat, lng } in decimal degrees. Returns the most-specific match (municipality > county > state) plus its parent chain, based on `bounds: [minLng, minLat, maxLng, maxLat]` frontmatter on jurisdiction index pages. Returns match=null with a hint if nothing matches.",
+      schema: JurisdictionAtInput,
+      handler: async (args) => {
+        const parsed = JurisdictionAtInput.parse(args);
+        const root = await resolveKbRoot();
+        const result = await findJurisdictionAt(root, parsed.lat, parsed.lng);
+        return jsonResult({
+          query: { lat: parsed.lat, lng: parsed.lng },
+          match: result.match,
+          parents: result.parents,
+          hint: result.hint,
+          candidatesEvaluated: result.candidatesEvaluated,
+        });
       },
     },
     {
@@ -408,11 +688,13 @@ export function buildTools(): ToolDef[] {
   ];
 }
 
+export const SERVER_VERSION = "0.1.0";
+
 export function createServer(): Server {
   const server = new Server(
     {
       name: "civil3d-master-guide",
-      version: "0.1.0",
+      version: SERVER_VERSION,
     },
     {
       capabilities: {

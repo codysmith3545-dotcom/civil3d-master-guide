@@ -22,6 +22,11 @@ export interface Frontmatter {
   state?: string;
   county?: string;
   municipality?: string;
+  /**
+   * Bounding box in [minLng, minLat, maxLng, maxLat] order. Used by the
+   * jurisdiction_at tool to find which jurisdictions contain a GPS point.
+   */
+  bounds?: [number, number, number, number];
   [key: string]: unknown;
 }
 
@@ -37,8 +42,30 @@ export interface PageRecord {
 }
 
 let cachedRoot: string | null = null;
-let cachedPages: PageRecord[] | null = null;
-let cacheKey: string | null = null;
+
+interface PageCacheEntry {
+  pages: PageRecord[];
+  loadedAt: number;
+  cdir: string;
+}
+
+let pageCache: PageCacheEntry | null = null;
+
+/**
+ * Time-to-live for the in-memory pages cache, in milliseconds.
+ * 60 seconds outside production, 5 minutes in production.
+ */
+function pageCacheTtlMs(): number {
+  return process.env.NODE_ENV === "production" ? 5 * 60 * 1000 : 60 * 1000;
+}
+
+/**
+ * Force the next loadAllPages() call to re-read from disk. Exposed primarily
+ * for tests and for code paths that mutate the content directory at runtime.
+ */
+export function invalidateCache(): void {
+  pageCache = null;
+}
 
 /**
  * Resolve the knowledge-base root by:
@@ -132,12 +159,18 @@ export function normalizeSlug(input: string): string {
 
 export async function loadAllPages(root: string): Promise<PageRecord[]> {
   const cdir = contentDir(root);
-  if (cachedPages && cacheKey === cdir) return cachedPages;
+  const now = Date.now();
+  if (
+    pageCache &&
+    pageCache.cdir === cdir &&
+    now - pageCache.loadedAt <= pageCacheTtlMs()
+  ) {
+    return pageCache.pages;
+  }
 
   const pages: PageRecord[] = [];
   await walkMd(cdir, cdir, pages);
-  cachedPages = pages;
-  cacheKey = cdir;
+  pageCache = { pages, loadedAt: now, cdir };
   return pages;
 }
 
@@ -206,6 +239,5 @@ export async function getPage(root: string, slugInput: string): Promise<PageReco
 /** Reset internal caches; mainly for tests. */
 export function _resetCache(): void {
   cachedRoot = null;
-  cachedPages = null;
-  cacheKey = null;
+  pageCache = null;
 }
