@@ -10,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@civil3d-master-guide/content": "workspace:*",
+    "@civil3d-master-guide/search": "workspace:*",
     "@anthropic-ai/sdk": "^0.30.1",
     "@tailwindcss/typography": "^0.5.13",
     "autoprefixer": "^10.4.19",

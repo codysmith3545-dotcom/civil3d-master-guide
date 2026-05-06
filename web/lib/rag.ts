@@ -1,5 +1,13 @@
+/**
+ * Server-side retrieval for the /api/chat route.
+ *
+ * Reads the pre-built search-index.json and uses the shared search utilities
+ * from @civil3d-master-guide/search for tokenization and excerpt generation.
+ */
+
 import fs from "node:fs";
 import path from "node:path";
+import { tokenize, buildExcerpt } from "@civil3d-master-guide/search";
 
 export type RetrievedChunk = {
   path: string;
@@ -31,14 +39,6 @@ function loadIndex(): IndexEntry[] {
   return cache;
 }
 
-function tokenize(s: string): string[] {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9\s\-]/g, " ")
-    .split(/\s+/)
-    .filter(Boolean);
-}
-
 function score(entry: IndexEntry, queryTokens: string[]): number {
   if (!queryTokens.length) return 0;
   const titleTokens = tokenize(entry.title);
@@ -52,25 +52,6 @@ function score(entry: IndexEntry, queryTokens: string[]): number {
     }
   }
   return s;
-}
-
-function makeExcerpt(body: string, queryTokens: string[]): string {
-  const lower = body.toLowerCase();
-  let bestIdx = -1;
-  for (const q of queryTokens) {
-    const i = lower.indexOf(q);
-    if (i !== -1) {
-      bestIdx = i;
-      break;
-    }
-  }
-  if (bestIdx === -1) {
-    return body.slice(0, 280).trim() + (body.length > 280 ? "…" : "");
-  }
-  const start = Math.max(0, bestIdx - 80);
-  const end = Math.min(body.length, bestIdx + 240);
-  const slice = body.slice(start, end).trim();
-  return (start > 0 ? "…" : "") + slice + (end < body.length ? "…" : "");
 }
 
 /**
@@ -95,6 +76,6 @@ export async function retrieve(
   return ranked.map(({ d }) => ({
     path: d.href,
     title: d.title,
-    excerpt: makeExcerpt(d.body, tokens),
+    excerpt: buildExcerpt(d.body, tokens),
   }));
 }
