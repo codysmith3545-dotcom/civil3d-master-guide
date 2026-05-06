@@ -36,6 +36,19 @@ export const ListJurisdictionsInput = z.object({
     .describe("Optional state slug to filter by (e.g. 'indiana'). Case-insensitive."),
 });
 
+export const JurisdictionAtInput = z.object({
+  lat: z
+    .number()
+    .min(-90)
+    .max(90)
+    .describe("Latitude in decimal degrees (positive north)."),
+  lng: z
+    .number()
+    .min(-180)
+    .max(180)
+    .describe("Longitude in decimal degrees (negative west)."),
+});
+
 export const GetResourceIndexInput = z.object({}).strict();
 
 // Calculator inputs
