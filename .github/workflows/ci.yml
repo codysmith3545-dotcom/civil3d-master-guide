@@ -58,3 +58,6 @@ jobs:
           else
             echo "mcp-server/package.json not found; skipping mcp-server build."
           fi
+
+      - name: Run vitest test suite
+        run: pnpm test
