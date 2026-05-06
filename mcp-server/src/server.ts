@@ -33,6 +33,16 @@ import {
   statePlaneIndianaCsf,
   traverseClosure,
   metesAndBoundsWriter,
+  inverse,
+  bearingBearingIntersection,
+  bearingDistanceIntersection,
+  distanceDistanceIntersection,
+  levelLoopAdjustment,
+  areaByCoordinates,
+  curveStakeout,
+  trigLeveling,
+  solarObservation,
+  gridToGround,
 } from "./calculators/index.js";
 
 function jsonResult(data: unknown): CallToolResult {
@@ -353,7 +363,7 @@ export function buildTools(): ToolDef[] {
     {
       name: "run_calculator",
       description:
-        "Run a built-in engineering calculator. Available calculators: 'vertical_curve', 'horizontal_curve', 'rational_method', 'mannings_open_channel', 'state_plane_indiana_csf', 'traverse_closure', 'metes_and_bounds'. Provide `name` and the corresponding `inputs` object.",
+        "Run a built-in engineering calculator. Available calculators: 'vertical_curve', 'horizontal_curve', 'rational_method', 'mannings_open_channel', 'state_plane_indiana_csf', 'traverse_closure', 'metes_and_bounds', 'inverse', 'bearing_bearing_intersection', 'bearing_distance_intersection', 'distance_distance_intersection', 'level_loop_adjustment', 'area_by_coordinates', 'curve_stakeout', 'trig_leveling', 'solar_observation', 'grid_to_ground'. Provide `name` and the corresponding `inputs` object.",
       schema: RunCalculatorInput,
       handler: async (args) => {
         const parsed = RunCalculatorInput.parse(args);
@@ -372,6 +382,26 @@ export function buildTools(): ToolDef[] {
             return jsonResult(traverseClosure(parsed.inputs));
           case "metes_and_bounds":
             return jsonResult(metesAndBoundsWriter(parsed.inputs));
+          case "inverse":
+            return jsonResult(inverse(parsed.inputs));
+          case "bearing_bearing_intersection":
+            return jsonResult(bearingBearingIntersection(parsed.inputs));
+          case "bearing_distance_intersection":
+            return jsonResult(bearingDistanceIntersection(parsed.inputs));
+          case "distance_distance_intersection":
+            return jsonResult(distanceDistanceIntersection(parsed.inputs));
+          case "level_loop_adjustment":
+            return jsonResult(levelLoopAdjustment(parsed.inputs));
+          case "area_by_coordinates":
+            return jsonResult(areaByCoordinates(parsed.inputs));
+          case "curve_stakeout":
+            return jsonResult(curveStakeout(parsed.inputs));
+          case "trig_leveling":
+            return jsonResult(trigLeveling(parsed.inputs));
+          case "solar_observation":
+            return jsonResult(solarObservation(parsed.inputs));
+          case "grid_to_ground":
+            return jsonResult(gridToGround(parsed.inputs));
         }
       },
     },

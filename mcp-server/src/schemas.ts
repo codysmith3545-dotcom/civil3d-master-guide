@@ -125,6 +125,101 @@ export const MetesAndBoundsInput = z.object({
     ),
 });
 
+export const InverseInput = z.object({
+  n1: z.number().describe("Northing of point 1 in feet."),
+  e1: z.number().describe("Easting of point 1 in feet."),
+  n2: z.number().describe("Northing of point 2 in feet."),
+  e2: z.number().describe("Easting of point 2 in feet."),
+});
+
+export const BearingBearingIntersectionInput = z.object({
+  n1: z.number().describe("Northing of point 1 in feet."),
+  e1: z.number().describe("Easting of point 1 in feet."),
+  bearing1_deg: z.number().min(0).max(360).describe("Azimuth from point 1 in decimal degrees (0=north, clockwise)."),
+  n2: z.number().describe("Northing of point 2 in feet."),
+  e2: z.number().describe("Easting of point 2 in feet."),
+  bearing2_deg: z.number().min(0).max(360).describe("Azimuth from point 2 in decimal degrees (0=north, clockwise)."),
+});
+
+export const BearingDistanceIntersectionInput = z.object({
+  n1: z.number().describe("Northing of point 1 in feet (line origin)."),
+  e1: z.number().describe("Easting of point 1 in feet (line origin)."),
+  bearing_deg: z.number().min(0).max(360).describe("Azimuth from point 1 in decimal degrees (0=north, clockwise)."),
+  n2: z.number().describe("Northing of point 2 in feet (circle center)."),
+  e2: z.number().describe("Easting of point 2 in feet (circle center)."),
+  distance_ft: z.number().positive().describe("Radius of the circle centered on P2, in feet."),
+});
+
+export const DistanceDistanceIntersectionInput = z.object({
+  n1: z.number().describe("Northing of point 1 in feet."),
+  e1: z.number().describe("Easting of point 1 in feet."),
+  d1_ft: z.number().positive().describe("Distance from point 1 in feet."),
+  n2: z.number().describe("Northing of point 2 in feet."),
+  e2: z.number().describe("Easting of point 2 in feet."),
+  d2_ft: z.number().positive().describe("Distance from point 2 in feet."),
+});
+
+export const BenchmarkSchema = z.object({
+  name: z.string().min(1).describe("Point name."),
+  known_elevation_ft: z.number().optional().describe("Known elevation in feet (required for at least one benchmark)."),
+});
+
+export const LevelObservationSchema = z.object({
+  from: z.string().min(1).describe("Name of the station observed from."),
+  to: z.string().min(1).describe("Name of the station observed to."),
+  delta_h_ft: z.number().describe("Observed elevation difference in feet (positive = up)."),
+  distance_ft: z.number().positive().optional().describe("Distance of the level run in feet (for weighted adjustment)."),
+});
+
+export const LevelLoopAdjustmentInput = z.object({
+  benchmarks: z.array(BenchmarkSchema).min(1).describe("Array of benchmarks; at least one must have a known elevation."),
+  observations: z.array(LevelObservationSchema).min(1).describe("Array of level observations."),
+});
+
+export const AreaCoordinateSchema = z.object({
+  northing: z.number().describe("Northing coordinate in feet."),
+  easting: z.number().describe("Easting coordinate in feet."),
+});
+
+export const AreaByCoordinatesInput = z.object({
+  coordinates: z.array(AreaCoordinateSchema).min(3).describe("Ordered polygon vertices as {northing, easting} in feet. Auto-closed; do not duplicate the first point."),
+});
+
+export const CurveStakeoutInput = z.object({
+  radius_ft: z.number().positive().describe("Radius of the circular curve in feet."),
+  delta_deg: z.number().gt(0).lt(360).describe("Central (deflection) angle in decimal degrees."),
+  pc_station_ft: z.number().describe("Station of the PC (Point of Curvature) in feet."),
+  stake_interval_ft: z.number().positive().default(25).describe("Stakeout interval in feet (default 25)."),
+  method: z.enum(["deflection", "chord_offset"]).default("deflection").describe("Stakeout method: 'deflection' (default) or 'chord_offset'."),
+});
+
+export const TrigLevelingInput = z.object({
+  slope_distance_ft: z.number().positive().describe("Slope distance from instrument to target in feet."),
+  zenith_angle_deg: z.number().min(0).max(180).describe("Zenith angle in decimal degrees (0 = straight up, 90 = horizontal)."),
+  instrument_height_ft: z.number().describe("Height of instrument above the station mark in feet."),
+  target_height_ft: z.number().describe("Height of target/prism above the remote station in feet."),
+  known_elevation_ft: z.number().describe("Known elevation of the instrument station in feet."),
+  apply_curvature_refraction: z.boolean().default(false).describe("Whether to apply curvature-and-refraction correction (default false)."),
+});
+
+export const SolarObservationInput = z.object({
+  date_iso: z.string().min(1).describe("ISO date string, e.g. '2024-06-15'."),
+  time_utc: z.string().min(1).describe("UTC time as HH:MM:SS string."),
+  lat_deg: z.number().min(-90).max(90).describe("Observer latitude in decimal degrees (positive north)."),
+  lon_deg: z.number().min(-180).max(180).describe("Observer longitude in decimal degrees (negative west)."),
+  measured_hz_angle_deg: z.number().describe("Measured horizontal angle from the sun to the mark, in decimal degrees."),
+});
+
+export const GridToGroundInput = z.object({
+  mode: z.enum(["grid_to_ground", "ground_to_grid"]).describe("Conversion direction."),
+  csf: z.number().positive().describe("Combined Scale Factor (CSF). Typically close to 1.0."),
+  distance_ft: z.number().optional().describe("Distance to convert, in feet."),
+  grid_northing: z.number().optional().describe("Grid (or ground) northing to convert."),
+  grid_easting: z.number().optional().describe("Grid (or ground) easting to convert."),
+  origin_northing: z.number().optional().describe("Origin northing for coordinate scaling."),
+  origin_easting: z.number().optional().describe("Origin easting for coordinate scaling."),
+});
+
 export const RunCalculatorInput = z.discriminatedUnion("name", [
   z.object({ name: z.literal("vertical_curve"), inputs: VerticalCurveInput }),
   z.object({ name: z.literal("horizontal_curve"), inputs: HorizontalCurveInput }),
@@ -133,4 +228,14 @@ export const RunCalculatorInput = z.discriminatedUnion("name", [
   z.object({ name: z.literal("state_plane_indiana_csf"), inputs: StatePlaneIndianaCsfInput }),
   z.object({ name: z.literal("traverse_closure"), inputs: TraverseClosureInput }),
   z.object({ name: z.literal("metes_and_bounds"), inputs: MetesAndBoundsInput }),
+  z.object({ name: z.literal("inverse"), inputs: InverseInput }),
+  z.object({ name: z.literal("bearing_bearing_intersection"), inputs: BearingBearingIntersectionInput }),
+  z.object({ name: z.literal("bearing_distance_intersection"), inputs: BearingDistanceIntersectionInput }),
+  z.object({ name: z.literal("distance_distance_intersection"), inputs: DistanceDistanceIntersectionInput }),
+  z.object({ name: z.literal("level_loop_adjustment"), inputs: LevelLoopAdjustmentInput }),
+  z.object({ name: z.literal("area_by_coordinates"), inputs: AreaByCoordinatesInput }),
+  z.object({ name: z.literal("curve_stakeout"), inputs: CurveStakeoutInput }),
+  z.object({ name: z.literal("trig_leveling"), inputs: TrigLevelingInput }),
+  z.object({ name: z.literal("solar_observation"), inputs: SolarObservationInput }),
+  z.object({ name: z.literal("grid_to_ground"), inputs: GridToGroundInput }),
 ]);

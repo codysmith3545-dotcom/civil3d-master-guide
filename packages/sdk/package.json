@@ -1,0 +1,26 @@
+{
+  "name": "@civil3d-master-guide/sdk",
+  "version": "0.1.0",
+  "description": "Pure-function survey and civil-engineering calculators from the Civil 3D Master Guide.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./calculators": {
+      "import": "./dist/calculators/index.js",
+      "types": "./dist/calculators/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "license": "MIT"
+}
