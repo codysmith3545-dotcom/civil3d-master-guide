@@ -50,7 +50,19 @@ export interface CurveStakeoutResult {
   stakeout_table: StakeoutRow[];
   source: string;
   notes: string[];
+  relatedContent: string | null;
 }
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+// TODO: no exact stakeout doc; closest reference is the construction-staking
+// section index. Leaving null until a curve-stakeout specific page exists.
+const CURVE_STAKEOUT_RELATED: string | null = null;
 
 const DEG = Math.PI / 180;
 
@@ -64,8 +76,20 @@ function r4(x: number): number {
 
 export function curveStakeout(input: CurveStakeoutInput): CurveStakeoutResult {
   const notes: string[] = [];
-  const R = input.radius_ft;
-  const delta = input.delta_deg * DEG;
+  const R = requireFinite(input?.radius_ft, "radius_ft");
+  const deltaDeg = requireFinite(input?.delta_deg, "delta_deg");
+  const pcStationInput = requireFinite(input?.pc_station_ft, "pc_station_ft");
+  if (R <= 0) throw new Error("radius_ft must be greater than 0");
+  if (deltaDeg <= 0 || deltaDeg >= 360) {
+    throw new Error("delta_deg must be greater than 0 and less than 360");
+  }
+  if (input?.stake_interval_ft !== undefined) {
+    const interval = requireFinite(input.stake_interval_ft, "stake_interval_ft");
+    if (interval <= 0) throw new Error("stake_interval_ft must be greater than 0");
+  }
+
+  void pcStationInput;
+  const delta = deltaDeg * DEG;
   const halfDelta = delta / 2;
   const interval = input.stake_interval_ft ?? 25;
   const method = input.method ?? "deflection";
@@ -153,7 +177,7 @@ export function curveStakeout(input: CurveStakeoutInput): CurveStakeoutResult {
     notes.push("Curve subtends more than 180°; verify field procedure for long curves.");
   }
 
-  return {
+  const result: CurveStakeoutResult = {
     curve_length_ft: r6(curveLength),
     tangent_ft: r6(tangent),
     external_ft: r6(external),
@@ -164,5 +188,32 @@ export function curveStakeout(input: CurveStakeoutInput): CurveStakeoutResult {
       "Deflection-angle / chord-offset curve stakeout. " +
       "Reference: Wolf & Ghilani, Elementary Surveying, Ch. 24.",
     notes,
+    relatedContent: CURVE_STAKEOUT_RELATED,
   };
+
+  for (const key of [
+    "curve_length_ft",
+    "tangent_ft",
+    "external_ft",
+    "mid_ordinate_ft",
+    "long_chord_ft",
+  ] as const) {
+    if (!Number.isFinite(result[key])) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+  for (const row of rows) {
+    if (
+      !Number.isFinite(row.station) ||
+      !Number.isFinite(row.deflection_deg) ||
+      !Number.isFinite(row.total_deflection_deg) ||
+      !Number.isFinite(row.chord_from_pc_ft)
+    ) {
+      throw new Error(
+        "Calculation produced non-finite result for stakeout_table: check inputs",
+      );
+    }
+  }
+
+  return result;
 }
