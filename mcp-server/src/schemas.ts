@@ -95,10 +95,42 @@ export const StatePlaneIndianaCsfInput = z.object({
   elev_ft: z.number().describe("Orthometric elevation in feet (NAVD88)."),
 });
 
+export const TraverseLegSchema = z.object({
+  bearing_deg: z
+    .number()
+    .min(0)
+    .max(360)
+    .describe("Azimuth bearing in decimal degrees (0 = north, clockwise)."),
+  distance_ft: z.number().positive().describe("Distance of the leg in feet."),
+});
+
+export const TraverseClosureInput = z.object({
+  legs: z
+    .array(TraverseLegSchema)
+    .min(2)
+    .describe("Array of traverse legs, each with bearing (azimuth degrees) and distance (ft)."),
+});
+
+export const CoordinateSchema = z.object({
+  northing: z.number().describe("Northing coordinate in feet."),
+  easting: z.number().describe("Easting coordinate in feet."),
+});
+
+export const MetesAndBoundsInput = z.object({
+  coordinates: z
+    .array(CoordinateSchema)
+    .min(3)
+    .describe(
+      "Ordered polygon vertices as {northing, easting} in feet. The polygon is auto-closed; do not duplicate the first point.",
+    ),
+});
+
 export const RunCalculatorInput = z.discriminatedUnion("name", [
   z.object({ name: z.literal("vertical_curve"), inputs: VerticalCurveInput }),
   z.object({ name: z.literal("horizontal_curve"), inputs: HorizontalCurveInput }),
   z.object({ name: z.literal("rational_method"), inputs: RationalMethodInput }),
   z.object({ name: z.literal("mannings_open_channel"), inputs: ManningsOpenChannelInput }),
   z.object({ name: z.literal("state_plane_indiana_csf"), inputs: StatePlaneIndianaCsfInput }),
+  z.object({ name: z.literal("traverse_closure"), inputs: TraverseClosureInput }),
+  z.object({ name: z.literal("metes_and_bounds"), inputs: MetesAndBoundsInput }),
 ]);

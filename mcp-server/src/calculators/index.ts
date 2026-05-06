@@ -15,3 +15,17 @@ export type {
   StatePlaneIndianaCsfInput,
   StatePlaneIndianaCsfResult,
 } from "./state-plane-indiana.js";
+
+export { traverseClosure } from "./traverse-closure.js";
+export type {
+  TraverseClosureInput,
+  TraverseClosureResult,
+  TraverseLeg,
+} from "./traverse-closure.js";
+
+export { metesAndBoundsWriter } from "./metes-and-bounds-writer.js";
+export type {
+  MetesAndBoundsInput,
+  MetesAndBoundsResult,
+  Coordinate,
+} from "./metes-and-bounds-writer.js";
