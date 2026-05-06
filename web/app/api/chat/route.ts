@@ -108,8 +108,7 @@ export async function POST(req: NextRequest) {
             {
               type: "text",
               text: SYSTEM_PROMPT,
-              cache_control: { type: "ephemeral" },
-            },
+            } as const,
             {
               type: "text",
               text: ragBlock,

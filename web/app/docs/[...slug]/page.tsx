@@ -115,7 +115,7 @@ export default async function DocPage({ params }: RouteProps) {
                       {s.title}
                     </a>
                     {s.verified ? (
-                      <span className="text-ink-500"> (verified {s.verified})</span>
+                      <span className="text-ink-500"> (verified {String(s.verified)})</span>
                     ) : null}
                   </li>
                 ),

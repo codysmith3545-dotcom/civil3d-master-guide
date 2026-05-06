@@ -59,7 +59,7 @@ export async function search(query: string, limit = 10): Promise<SearchHit[]> {
   const q = query.trim();
   if (!q) return [];
   const { index, docs } = await loadIndex();
-  const result = index.search(q, { limit, enrich: true }) as Array<{
+  const result = index.search(q, { limit, enrich: true }) as unknown as Array<{
     field: string;
     result: Array<{ id: number; doc: SearchDoc }>;
   }>;
