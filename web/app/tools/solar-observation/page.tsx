@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -39,6 +40,9 @@ const fields: FieldDef[] = [
 ];
 
 export default function SolarObservationPage() {
+  useEffect(() => {
+    trackCalculator("solar-observation");
+  }, []);
   const [values, setValues] = useState<Record<string, string>>({
     date: "2024-06-15",
     time: "17:30:00",

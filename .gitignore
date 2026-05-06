@@ -43,6 +43,10 @@ yarn-debug.log*
 # Private companion content (Bucket 2)
 private/
 
+# Local analytics NDJSON store
+.analytics/
+web/.analytics/
+
 # Local Supabase
 supabase/.branches
 supabase/.temp

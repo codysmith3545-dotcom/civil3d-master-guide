@@ -58,3 +58,11 @@ jobs:
           else
             echo "mcp-server/package.json not found; skipping mcp-server build."
           fi
+
+      - name: Run tests
+        run: |
+          if pnpm run | grep -qE '^\s*test\b'; then
+            pnpm test
+          else
+            echo "No top-level 'test' script found; skipping. (Agent 2 wires this.)"
+          fi

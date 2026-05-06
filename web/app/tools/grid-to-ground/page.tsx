@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -42,6 +43,9 @@ const fields: FieldDef[] = [
 ];
 
 export default function GridToGroundPage() {
+  useEffect(() => {
+    trackCalculator("grid-to-ground");
+  }, []);
   const [values, setValues] = useState<Record<string, string>>({
     mode: "grid-to-ground",
     csf: "0.99996",

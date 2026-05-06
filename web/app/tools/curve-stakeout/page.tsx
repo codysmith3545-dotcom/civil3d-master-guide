@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -50,6 +51,9 @@ const fields: FieldDef[] = [
 ];
 
 export default function CurveStakeoutPage() {
+  useEffect(() => {
+    trackCalculator("curve-stakeout");
+  }, []);
   const [values, setValues] = useState<Record<string, string>>({
     radius: "500",
     delta: "30",

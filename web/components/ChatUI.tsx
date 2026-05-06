@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { trackChatMessage } from "@/lib/analytics";
 
 type Source = { path: string; title: string; excerpt: string };
 type Message =
@@ -40,6 +41,7 @@ export default function ChatUI() {
     setMessages(next);
     setInput("");
     setStreaming(true);
+    trackChatMessage(text.length, Boolean(apiKey));
 
     try {
       const res = await fetch("/api/chat", {

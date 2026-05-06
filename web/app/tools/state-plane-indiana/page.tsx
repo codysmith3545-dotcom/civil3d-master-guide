@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -37,6 +38,9 @@ const fields: FieldDef[] = [
 ];
 
 export default function StatePlaneIndianaPage() {
+  useEffect(() => {
+    trackCalculator("state-plane-indiana");
+  }, []);
   const [values, setValues] = useState<Record<string, string>>({
     lat: "39.7684",
     lon: "-86.1581",

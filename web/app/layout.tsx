@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 import SearchBox from "@/components/SearchBox";
+import { Analytics } from "@/components/Analytics";
 
 export const metadata: Metadata = {
   title: {
@@ -42,6 +43,7 @@ export default function RootLayout({
           </div>
         </header>
         <main>{children}</main>
+        <Analytics />
         <footer className="border-t border-ink-100 py-6 text-center text-xs text-ink-500">
           Civil 3D Master Guide. Original content licensed CC BY-SA 4.0.
         </footer>
