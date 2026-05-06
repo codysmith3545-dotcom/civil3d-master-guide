@@ -1,0 +1,88 @@
+name: Verify jurisdiction links (weekly)
+
+on:
+  schedule:
+    # Mondays 10:00 UTC
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Verify jurisdiction links
+        run: node scripts/verify-jurisdiction-links.mjs
+
+      - name: Upload link-check.csv
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-check
+          path: link-check.csv
+          if-no-files-found: warn
+
+      - name: Open issue if any links failed
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = 'link-check.csv';
+            if (!fs.existsSync(path)) {
+              core.info('link-check.csv not found; nothing to report.');
+              return;
+            }
+            const csv = fs.readFileSync(path, 'utf8');
+            const lines = csv.split(/\r?\n/).filter(Boolean);
+            // header + rows
+            const rows = lines.slice(1);
+            const fails = rows.filter((line) => {
+              // naive split: result is the 3rd column. Quoted commas are uncommon in our urls/files.
+              const cols = line.split(',');
+              return cols[2] === 'FAIL';
+            });
+            if (fails.length === 0) {
+              core.info('No FAIL rows; not opening an issue.');
+              return;
+            }
+            const date = new Date().toISOString().slice(0, 10);
+            const title = `Jurisdiction link check: ${fails.length} failing link(s) (${date})`;
+            const body = [
+              `Weekly link check found ${fails.length} failing link(s).`,
+              '',
+              'Failing rows (file, url, detail):',
+              '',
+              '```',
+              ...fails.slice(0, 100),
+              '```',
+              '',
+              `Full CSV is attached as the workflow artifact 'link-check' on run ${context.runId}.`,
+            ].join('\n');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['link-check'],
+            });

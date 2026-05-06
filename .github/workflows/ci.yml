@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Lint content
+        run: node scripts/lint-content.mjs
+
+      - name: Build llms.txt and llms-full.txt
+        run: node scripts/build-llms-txt.mjs
+
+      - name: Upload llms.txt artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: llms-txt
+          path: |
+            llms.txt
+            llms-full.txt
+          if-no-files-found: error
+
+      - name: Regenerate Civil 3D commands index
+        run: node scripts/seed-civil3d-commands.mjs
+
+      - name: Build web app (if present)
+        run: |
+          if [ -f web/package.json ]; then
+            pnpm -F web build
+          else
+            echo "web/package.json not found; skipping web build."
+          fi
+
+      - name: Build MCP server (if present)
+        run: |
+          if [ -f mcp-server/package.json ]; then
+            pnpm -F mcp-server build
+          else
+            echo "mcp-server/package.json not found; skipping mcp-server build."
+          fi
