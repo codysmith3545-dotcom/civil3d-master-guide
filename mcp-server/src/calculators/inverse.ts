@@ -32,7 +32,18 @@ export interface InverseResult {
   delta_easting: number;
   source: string;
   notes: string[];
+  relatedContent: string | null;
 }
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+// TODO: no dedicated doc page; inverse is a generic COGO operation.
+const INVERSE_RELATED: string | null = null;
 
 const DEG = Math.PI / 180;
 
@@ -98,8 +109,13 @@ function azimuthToQuadrantBearing(azDeg: number): string {
 export function inverse(input: InverseInput): InverseResult {
   const notes: string[] = [];
 
-  const dN = input.n2 - input.n1;
-  const dE = input.e2 - input.e1;
+  const n1 = requireFinite(input?.n1, "n1");
+  const e1 = requireFinite(input?.e1, "e1");
+  const n2 = requireFinite(input?.n2, "n2");
+  const e2 = requireFinite(input?.e2, "e2");
+
+  const dN = n2 - n1;
+  const dE = e2 - e1;
   const dist = Math.sqrt(dN ** 2 + dE ** 2);
 
   if (dist < 1e-9) {
@@ -112,6 +128,7 @@ export function inverse(input: InverseInput): InverseResult {
       delta_easting: 0,
       source: "Inverse (COGO) computation. Reference: Wolf & Ghilani, Elementary Surveying, Ch. 10.",
       notes,
+      relatedContent: INVERSE_RELATED,
     };
   }
 
@@ -123,7 +140,7 @@ export function inverse(input: InverseInput): InverseResult {
 
   const bearing = azimuthToQuadrantBearing(azDeg);
 
-  return {
+  const result: InverseResult = {
     azimuth_deg: r6(azDeg),
     bearing_quadrant: bearing,
     distance_ft: r6(dist),
@@ -131,5 +148,14 @@ export function inverse(input: InverseInput): InverseResult {
     delta_easting: r6(dE),
     source: "Inverse (COGO) computation. Reference: Wolf & Ghilani, Elementary Surveying, Ch. 10.",
     notes,
+    relatedContent: INVERSE_RELATED,
   };
+
+  for (const key of ["azimuth_deg", "distance_ft", "delta_northing", "delta_easting"] as const) {
+    if (!Number.isFinite(result[key])) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+
+  return result;
 }
