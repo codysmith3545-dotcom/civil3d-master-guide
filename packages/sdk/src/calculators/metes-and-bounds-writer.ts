@@ -34,6 +34,14 @@ export interface MetesAndBoundsResult {
   perimeter_ft: number;
   source: string;
   notes: string[];
+  relatedContent: string | null;
+}
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
 }
 
 /**
@@ -113,7 +121,14 @@ export function metesAndBoundsWriter(
   input: MetesAndBoundsInput,
 ): MetesAndBoundsResult {
   const notes: string[] = [];
+  if (!input || !Array.isArray(input.coordinates)) {
+    throw new Error("Invalid input: coordinates must be an array");
+  }
   const coords = input.coordinates;
+  for (let i = 0; i < coords.length; i++) {
+    requireFinite(coords[i]?.northing, `coordinates[${i}].northing`);
+    requireFinite(coords[i]?.easting, `coordinates[${i}].easting`);
+  }
 
   if (coords.length < 3) {
     return {
@@ -123,6 +138,7 @@ export function metesAndBoundsWriter(
       perimeter_ft: 0,
       source: "",
       notes: ["At least three coordinates are required to form a closed polygon."],
+      relatedContent: "field-and-boundary/legal-descriptions/writing-metes-and-bounds",
     };
   }
 
@@ -171,7 +187,7 @@ export function metesAndBoundsWriter(
     "Area computed by the coordinate (shoelace) method. Verify against CAD or plat computations.",
   );
 
-  return {
+  const result: MetesAndBoundsResult = {
     description,
     area_sqft: r2(areaSqft),
     area_acres: r4(areaAcres),
@@ -180,5 +196,14 @@ export function metesAndBoundsWriter(
       "Standard metes-and-bounds format; area by coordinate method. " +
       "Reference: BLM Manual of Surveying Instructions (2009).",
     notes,
+    relatedContent: "field-and-boundary/legal-descriptions/writing-metes-and-bounds",
   };
+
+  for (const key of ["area_sqft", "area_acres", "perimeter_ft"] as const) {
+    if (!Number.isFinite(result[key])) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+
+  return result;
 }

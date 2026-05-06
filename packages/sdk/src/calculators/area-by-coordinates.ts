@@ -29,7 +29,17 @@ export interface AreaByCoordinatesResult {
   is_clockwise: boolean;
   source: string;
   notes: string[];
+  relatedContent: string | null;
 }
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+const AREA_RELATED = "civil3d/parcels/parcel-sizing";
 
 function r6(x: number): number {
   return Math.round(x * 1e6) / 1e6;
@@ -43,7 +53,14 @@ export function areaByCoordinates(
   input: AreaByCoordinatesInput,
 ): AreaByCoordinatesResult {
   const notes: string[] = [];
+  if (!input || !Array.isArray(input.coordinates)) {
+    throw new Error("Invalid input: coordinates must be an array");
+  }
   const coords = input.coordinates;
+  for (let i = 0; i < coords.length; i++) {
+    requireFinite(coords[i]?.northing, `coordinates[${i}].northing`);
+    requireFinite(coords[i]?.easting, `coordinates[${i}].easting`);
+  }
 
   if (coords.length < 3) {
     notes.push("At least three coordinates are required to form a closed polygon.");
@@ -54,6 +71,7 @@ export function areaByCoordinates(
       is_clockwise: false,
       source: "",
       notes,
+      relatedContent: AREA_RELATED,
     };
   }
 
@@ -87,7 +105,7 @@ export function areaByCoordinates(
     notes.push("Triangle (3 vertices). Area is exact for planar coordinates.");
   }
 
-  return {
+  const result: AreaByCoordinatesResult = {
     area_sqft: r6(area),
     area_acres: r4(acres),
     perimeter_ft: r6(perimeter),
@@ -95,5 +113,14 @@ export function areaByCoordinates(
     source:
       "Shoelace (Gauss's area) formula. Reference: Wolf & Ghilani, Elementary Surveying, Ch. 12.",
     notes,
+    relatedContent: AREA_RELATED,
   };
+
+  for (const key of ["area_sqft", "area_acres", "perimeter_ft"] as const) {
+    if (!Number.isFinite(result[key])) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+
+  return result;
 }
