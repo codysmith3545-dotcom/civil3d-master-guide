@@ -17,9 +17,14 @@
     "embed": "node scripts/embed-content.mjs",
     "lint:content": "node scripts/lint-content.mjs",
     "build:exports": "node scripts/build-exports.mjs",
-    "build:all": "node scripts/build-all.mjs"
+    "build:all": "node scripts/build-all.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "gray-matter": "^4.0.3"
+    "@vitest/coverage-v8": "^2.1.9",
+    "gray-matter": "^4.0.3",
+    "vitest": "^2.1.9"
   }
 }
