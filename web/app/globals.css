@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #ffffff;
+  --fg: #16181d;
+  --muted: #5e6168;
+  --border: #e5e7eb;
+  --accent: #0f3d6b;
+  --accent-soft: #e7eef6;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+
+/* Site-wide utility classes used by inline components. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  background: #fff;
+  color: var(--fg);
+  transition: background 120ms ease;
+}
+.btn:hover {
+  background: #f4f4f5;
+}
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+.btn-primary:hover {
+  background: #0c2f54;
+}
+
+/* Ensure rehype-pretty-code blocks read well in our prose container. */
+pre[data-language] {
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.prose pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.prose code::before,
+.prose code::after {
+  content: "" !important;
+}
+
+/* In-page anchor highlight when navigated by hash. */
+.prose :target {
+  scroll-margin-top: 5rem;
+}
