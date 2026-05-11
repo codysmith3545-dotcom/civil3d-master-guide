@@ -15,6 +15,7 @@ build/
 !.env.example
 
 # Generated artifacts
+web/.cache/
 llms.txt
 llms-full.txt
 content/civil3d/commands/_index.generated.md

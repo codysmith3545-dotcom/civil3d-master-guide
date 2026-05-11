@@ -12,7 +12,8 @@ import { z } from "zod";
 
 const serverSchema = z.object({
   // Operator-funded fallback Anthropic key. When set, anonymous users get a
-  // small per-IP daily quota on /api/chat backed by this key.
+  // small per-IP daily quota on /api/chat backed by this key. Also used by
+  // /api/deed-decode for the AI-vision OCR pathway under a separate budget.
   ANTHROPIC_API_KEY: z.string().min(1).optional(),
 
   // HMAC secret for signing invite-link JWTs. Required when invite auth is
@@ -20,9 +21,14 @@ const serverSchema = z.object({
   // without invites configured.
   INVITE_SECRET: z.string().min(16).optional(),
 
-  // Per-IP daily cap for the operator-funded chat fallback. Counts only
-  // requests where the user did NOT bring their own key.
+  // Per-IP daily cap for the operator-funded chat fallback.
   OPERATOR_CHAT_DAILY_LIMIT: z.coerce.number().int().positive().default(10),
+
+  // Daily spend cap for the deed-decode vision route, in cents.
+  DEED_VISION_DAILY_LIMIT_CENTS: z.coerce.number().int().nonnegative().default(200),
+
+  // Per-IP hourly rate limit for the deed-decode vision route.
+  DEED_VISION_RATE_LIMIT_PER_HOUR: z.coerce.number().int().positive().default(5),
 
   // Override for where markdown content lives. Useful in tests.
   CIVIL3D_CONTENT_ROOT: z.string().optional(),
@@ -98,3 +104,18 @@ export function getPublicEnv() {
 // `serverEnv` references server-only vars; that is intentional.
 export const serverEnv = getServerEnv();
 export const publicEnv = getPublicEnv();
+
+// Convenience helpers used by the deed-decode route. These read from the
+// validated serverEnv but are exposed as functions so callers can swap them
+// in tests without rebuilding the cache.
+export function getOperatorAnthropicKey(): string | undefined {
+  return serverEnv.ANTHROPIC_API_KEY;
+}
+
+export function getDeedVisionDailyLimitCents(): number {
+  return serverEnv.DEED_VISION_DAILY_LIMIT_CENTS;
+}
+
+export function getDeedVisionRateLimitPerHour(): number {
+  return serverEnv.DEED_VISION_RATE_LIMIT_PER_HOUR;
+}

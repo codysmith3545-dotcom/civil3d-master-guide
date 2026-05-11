@@ -36,6 +36,14 @@ const engineering = [
   },
 ];
 
+const boundary = [
+  {
+    href: "/tools/deed-decoder",
+    title: "Deed decoder",
+    body: "Parse a metes-and-bounds legal description (paste, image, or PDF) into bearings, distances, and curve calls, plot the traverse, and report closure.",
+  },
+];
+
 const survey = [
   {
     href: "/tools/inverse",
@@ -149,6 +157,7 @@ export default function ToolsIndex() {
       <div className="space-y-10">
         <ToolSection title="Customization" tools={customization} />
         <ToolSection title="Engineering" tools={engineering} />
+        <ToolSection title="Boundary" tools={boundary} />
         <ToolSection title="Survey" tools={survey} />
       </div>
     </div>
