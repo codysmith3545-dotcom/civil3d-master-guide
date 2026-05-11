@@ -17,6 +17,8 @@
     "lint:content": "node scripts/lint-content.mjs",
     "lint:all": "pnpm -r --if-present run lint",
     "typecheck": "pnpm -r --if-present run build",
+    "audit:frontmatter": "node scripts/audit-frontmatter.mjs",
+    "test:scripts": "node --test scripts/__tests__/",
     "build:exports": "node scripts/build-exports.mjs",
     "build:all": "node scripts/build-all.mjs",
     "test": "vitest run",
