@@ -1,0 +1,229 @@
+{
+  "routines": [
+    {
+      "name": "lotarea",
+      "command": "LOTAREA",
+      "category": "parcel",
+      "summary": "Compute area of a selected closed LWPOLYLINE and label centroid with sq ft and acres.",
+      "lspFile": "parcel/lotarea.lsp",
+      "docFile": "parcel/lotarea.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "parcellabel",
+      "command": "PARCELLABEL",
+      "category": "parcel",
+      "summary": "Full parcel label: centroid lot number + area block, plus bearing+distance text on every perimeter segment.",
+      "lspFile": "parcel/parcellabel.lsp",
+      "docFile": "parcel/parcellabel.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "lotnum-auto",
+      "command": "LOTNUM-AUTO",
+      "category": "parcel",
+      "summary": "Auto-number selected lot polylines in order along a user-picked frontage line.",
+      "lspFile": "parcel/lotnum-auto.lsp",
+      "docFile": "parcel/lotnum-auto.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "bndcheck",
+      "command": "BNDCHECK",
+      "category": "parcel",
+      "summary": "Audit boundary polyline: closure, segment count, curve count, zero-length segments.",
+      "lspFile": "parcel/bndcheck.lsp",
+      "docFile": "parcel/bndcheck.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "bndtxt",
+      "command": "BNDTXT",
+      "category": "parcel",
+      "summary": "Write a plain-text metes-and-bounds description of a closed polyline to a user-named .txt.",
+      "lspFile": "parcel/bndtxt.lsp",
+      "docFile": "parcel/bndtxt.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "beardist-label",
+      "command": "BEARDIST-LABEL",
+      "category": "annotation",
+      "summary": "Bearing+distance label drawn parallel to a picked LINE entity.",
+      "lspFile": "annotation/beardist-label.lsp",
+      "docFile": "annotation/beardist-label.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "sta-offset-label",
+      "command": "STA-OFFSET-LABEL",
+      "category": "annotation",
+      "summary": "Station+offset labels relative to a reference polyline, multi-pick loop.",
+      "lspFile": "annotation/sta-offset-label.lsp",
+      "docFile": "annotation/sta-offset-label.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "mark-monument",
+      "command": "MARK-MONUMENT",
+      "category": "annotation",
+      "summary": "Insert monument block at picked points; auto-fills NORTHING/EASTING/ELEV/TYPE/DATE attributes.",
+      "lspFile": "annotation/mark-monument.lsp",
+      "docFile": "annotation/mark-monument.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "text-rotate-northup",
+      "command": "TEXT-ROTATE-NORTHUP",
+      "category": "annotation",
+      "summary": "Flip selected TEXT/MTEXT rotation 180 deg when upside-down so labels read from north-up plan view.",
+      "lspFile": "annotation/text-rotate-northup.lsp",
+      "docFile": "annotation/text-rotate-northup.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "text-mask-toggle",
+      "command": "TEXT-MASK-TOGGLE",
+      "category": "annotation",
+      "summary": "Toggle background mask on selected MTEXT entities.",
+      "lspFile": "annotation/text-mask-toggle.lsp",
+      "docFile": "annotation/text-mask-toggle.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "bubble-callout",
+      "command": "BUBBLE-CALLOUT",
+      "category": "annotation",
+      "summary": "Insert numbered callout bubble (CIRCLE + TEXT) at picked points, with xdata link to a schedule.",
+      "lspFile": "annotation/bubble-callout.lsp",
+      "docFile": "annotation/bubble-callout.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "surveycheck",
+      "command": "SURVEYCHECK",
+      "category": "qa",
+      "summary": "Drawing audit: required layers, text styles, xrefs, frozen layers that still hold entities.",
+      "lspFile": "qa/surveycheck.lsp",
+      "docFile": "qa/surveycheck.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "xrefcheck",
+      "command": "XREFCHECK",
+      "category": "qa",
+      "summary": "Xref status report (ATT/OVR, nested, path, resolved on disk).",
+      "lspFile": "qa/xrefcheck.lsp",
+      "docFile": "qa/xrefcheck.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "linetype-audit",
+      "command": "LINETYPE-AUDIT",
+      "category": "qa",
+      "summary": "List entities whose linetype, color, or lineweight is overridden (not ByLayer/ByBlock).",
+      "lspFile": "qa/linetype-audit.lsp",
+      "docFile": "qa/linetype-audit.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "entity-count-by-layer",
+      "command": "ENTITY-COUNT-BY-LAYER",
+      "category": "qa",
+      "summary": "CSV census of model-space entities grouped by layer and entity type.",
+      "lspFile": "qa/entity-count-by-layer.lsp",
+      "docFile": "qa/entity-count-by-layer.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "purge-safe",
+      "command": "PURGE-SAFE",
+      "category": "qa",
+      "summary": "Purge unused named objects but skip an office-defined protected list of layers/blocks/styles.",
+      "lspFile": "qa/purge-safe.lsp",
+      "docFile": "qa/purge-safe.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "block-explode-attribs",
+      "command": "BLOCK-EXPLODE-ATTRIBS",
+      "category": "qa",
+      "summary": "Explode block references but preserve each attribute value as MText at its original position.",
+      "lspFile": "qa/block-explode-attribs.lsp",
+      "docFile": "qa/block-explode-attribs.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "match-elev",
+      "command": "MATCH-ELEV",
+      "category": "drafting",
+      "summary": "Copy Z (elevation) from one picked entity to many target entities.",
+      "lspFile": "drafting/match-elev.lsp",
+      "docFile": "drafting/match-elev.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "pl-elev-set",
+      "command": "PL-ELEV-SET",
+      "category": "drafting",
+      "summary": "Set Z on every vertex of a picked LWPOLYLINE or heavy POLYLINE.",
+      "lspFile": "drafting/pl-elev-set.lsp",
+      "docFile": "drafting/pl-elev-set.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "pl-2d",
+      "command": "PL-2D",
+      "category": "drafting",
+      "summary": "Flatten selected polylines and other entities to Z=0.",
+      "lspFile": "drafting/pl-2d.lsp",
+      "docFile": "drafting/pl-2d.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "break-pl-at-vertex",
+      "command": "BREAK-PL-AT-VERTEX",
+      "category": "drafting",
+      "summary": "Break an LWPOLYLINE into two at the nearest vertex to a screen pick.",
+      "lspFile": "drafting/break-pl-at-vertex.lsp",
+      "docFile": "drafting/break-pl-at-vertex.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "units-imperial-set",
+      "command": "UNITS-IMPERIAL-SET",
+      "category": "utilities",
+      "summary": "Set drawing units / unit-mode system variables to U.S. survey imperial defaults.",
+      "lspFile": "utilities/units-imperial-set.lsp",
+      "docFile": "utilities/units-imperial-set.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "c3d-stylecheck",
+      "command": "C3D-STYLECHECK",
+      "category": "utilities",
+      "summary": "Audit Civil 3D style collections (point, point-label, surface, alignment) via the AeccApplication COM API.",
+      "lspFile": "utilities/c3d-stylecheck.lsp",
+      "docFile": "utilities/c3d-stylecheck.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "batch-save",
+      "command": "BATCH-SAVE",
+      "category": "utilities",
+      "summary": "Save every open drawing without closing; skip drawings that have never been saved.",
+      "lspFile": "utilities/batch-save.lsp",
+      "docFile": "utilities/batch-save.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    },
+    {
+      "name": "zoom-extents-all-tabs",
+      "command": "ZOOM-EXTENTS-ALL-TABS",
+      "category": "utilities",
+      "summary": "Zoom Extents on every layout (and model) tab; restore the originally-active tab when done.",
+      "lspFile": "utilities/zoom-extents-all-tabs.lsp",
+      "docFile": "utilities/zoom-extents-all-tabs.md",
+      "appliesTo": ["civil3d-2022", "civil3d-2024", "civil3d-2025", "civil3d-2026"]
+    }
+  ]
+}
