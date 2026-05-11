@@ -1,0 +1,90 @@
+# Dimension styles for the survey template.
+# Variable names match Civil 3D / AutoCAD DIMSTYLE system variables so a
+# builder can paste these into the Modify Dimension Style dialog or set
+# them via SETVAR in a script.
+
+dimension_styles:
+
+  - name: SURVEY-FT
+    description: "Primary survey dimension — decimal feet, annotative."
+    parent: Standard
+    annotative: true
+    variables:
+      DIMSCALE: 0          # annotative (uses annotation scale)
+      DIMTXSTY: SURVEY-DIM
+      DIMTXT: 0.10
+      DIMTXTDIRECTION: 0
+      DIMTAD: 1            # text above dim line
+      DIMGAP: 0.045
+      DIMASZ: 0.10         # arrowhead size
+      DIMBLK: _ARCHTICK
+      DIMBLK1: _ARCHTICK
+      DIMBLK2: _ARCHTICK
+      DIMTIH: 0
+      DIMTOH: 0
+      DIMSOXD: 0
+      DIMSE1: 0
+      DIMSE2: 0
+      DIMEXE: 0.10
+      DIMEXO: 0.0625
+      DIMUNIT: 2           # decimal
+      DIMLUNIT: 2
+      DIMDEC: 2
+      DIMTDEC: 2
+      DIMZIN: 8            # suppress trailing zeros
+      DIMRND: 0
+      DIMAUNIT: 1          # deg/min/sec
+      DIMADEC: 4           # seconds precision (DD-MM-SS.SSSS)
+      DIMAZIN: 0
+      DIMCLRD: 7
+      DIMCLRE: 7
+      DIMCLRT: 7
+      DIMDLE: 0
+      DIMDLI: 0.38
+      DIMTOL: 0
+      DIMLIM: 0
+
+  - name: SURVEY-FT-CHAIN
+    description: "Continued / baseline dimensions for boundary traverses."
+    parent: SURVEY-FT
+    annotative: true
+    overrides:
+      DIMDLI: 0.50         # larger offset for stacked dimensions
+      DIMTAD: 0            # text centered on line for chained dims
+
+  - name: SURVEY-BEARING
+    description: "Bearing/distance leader-style dimensions on plat sheets."
+    parent: SURVEY-FT
+    annotative: true
+    overrides:
+      DIMTXSTY: SURVEY-BEAR
+      DIMASZ: 0.08
+      DIMBLK: _NONE
+      DIMBLK1: _NONE
+      DIMBLK2: _NONE
+      DIMTAD: 1
+      DIMGAP: 0.045
+
+  - name: SURVEY-ALIGNED
+    description: "Aligned dimension used for offsets along R/W and easements."
+    parent: SURVEY-FT
+    annotative: true
+    overrides:
+      DIMTAD: 1
+      DIMTIH: 0
+      DIMTOH: 0
+
+  - name: SURVEY-RADIAL
+    description: "Radius / diameter dimensions for curve callouts."
+    parent: SURVEY-FT
+    annotative: true
+    overrides:
+      DIMCEN: 0.0          # no centermark drawn (curve table handles it)
+      DIMTIH: 1
+      DIMTOH: 1
+
+notes:
+  - "DIMTXSTY refers to the AutoCAD text style names defined in text-styles.csv."
+  - "DIMZIN=8 hides trailing zeros — surveyors expect '125.50' not '125.5000'."
+  - "DIMADEC=4 keeps angular precision at four seconds places; bump down to 2 for plan sheets if labels get crowded."
+  - "All styles are annotative; do not set DIMSCALE > 0."

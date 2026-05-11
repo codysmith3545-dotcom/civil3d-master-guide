@@ -1,0 +1,68 @@
+# Multileader styles for survey call-outs.
+# Field names follow the AutoCAD MLEADERSTYLE dialog tabs:
+# Leader Format, Leader Structure, Content.
+
+multileader_styles:
+
+  - name: SURVEY-STD
+    description: "Default survey call-out — straight leader, text content."
+    annotative: true
+    leader_format:
+      type: straight
+      color: ByBlock
+      linetype: ByBlock
+      lineweight: ByBlock
+      arrowhead: closed-filled
+      arrow_size: 0.10
+      break_size: 0.125
+    leader_structure:
+      max_leader_points: 2
+      landing: true
+      landing_gap: 0.09
+      first_segment_angle_constraint: none
+      second_segment_angle_constraint: none
+      scale: annotative
+    content:
+      type: mtext
+      text_style: SURVEY-100
+      text_height: 0.10
+      text_color: ByLayer
+      text_frame: false
+      text_angle: keep-horizontal
+      left_attachment: middle-of-top-line
+      right_attachment: middle-of-top-line
+      landing_gap: 0.09
+
+  - name: SURVEY-FOUND-MON
+    description: "Call-out for a found monument — block content."
+    parent: SURVEY-STD
+    content:
+      type: block
+      block_name: SURVEY-MON-FND-CALLOUT
+      attribute_default: "FND IPF"
+      scale: annotative
+
+  - name: SURVEY-BEAR-DIST
+    description: "Inline bearing/distance ribbon — no leader line."
+    parent: SURVEY-STD
+    leader_format:
+      type: none
+    leader_structure:
+      landing: false
+    content:
+      type: mtext
+      text_style: SURVEY-BEAR
+      text_height: 0.10
+      text_color: 3
+
+  - name: SURVEY-UTILITY
+    description: "Utility call-out — splined leader, smaller arrow."
+    parent: SURVEY-STD
+    leader_format:
+      type: spline
+      arrowhead: dot-small
+      arrow_size: 0.08
+
+notes:
+  - "Annotative leaders must have scale set to 'annotative', not a fixed number."
+  - "Block-based call-outs (SURVEY-FOUND-MON) require the referenced block to exist in the template; see build-notes for the block-creation step."

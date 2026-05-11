@@ -1,0 +1,206 @@
+# Civil 3D Point Style and Point Label Style definitions.
+# Each entry has both:
+#   marker_style: the symbol shown at the COGO point's location.
+#   label_style:  the labels around it (point#, raw desc, full desc, elev).
+# Reference these names from the description-key sets in
+# customization/description-keys/.
+
+point_styles:
+
+  - name: FOUND-MONUMENT
+    marker:
+      type: custom-marker
+      symbol: x-with-circle
+      size: 0.10
+      size_in: plotted-units
+      color: 2          # yellow
+      layer: V-MON-FND
+    threed:
+      orientation: face-camera
+    display:
+      plan: true
+      profile: true
+      section: true
+      model: true
+    label_style: FOUND-MONUMENT-LABEL
+
+  - name: SET-MONUMENT
+    marker:
+      type: custom-marker
+      symbol: circle-filled
+      size: 0.10
+      size_in: plotted-units
+      color: 4          # cyan
+      layer: V-MON-SET
+    label_style: SET-MONUMENT-LABEL
+
+  - name: SHOT
+    marker:
+      type: custom-marker
+      symbol: tick
+      size: 0.05
+      size_in: plotted-units
+      color: ByLayer
+      layer: V-NODE
+    label_style: SHOT-LABEL
+
+  - name: SPOT-ELEVATION
+    marker:
+      type: custom-marker
+      symbol: x
+      size: 0.05
+      size_in: plotted-units
+      color: 7
+      layer: C-TOPO-SPOT
+    label_style: ELEV-ONLY-LABEL
+
+  - name: CONTROL-POINT
+    marker:
+      type: custom-marker
+      symbol: triangle-with-cross
+      size: 0.15
+      size_in: plotted-units
+      color: 1
+      layer: V-NODE-CTRL
+    label_style: CONTROL-POINT-LABEL
+
+  - name: TREE
+    marker:
+      type: block
+      block_name: TREE-SYMBOL
+      size: 1.0
+      size_in: drawing-units
+      color: ByLayer
+      layer: V-VEGE-TREE
+    label_style: TREE-LABEL
+
+  - name: UTILITY-STRUCTURE
+    marker:
+      type: block
+      block_name: UTIL-STRUCT
+      size: 0.10
+      size_in: plotted-units
+      color: ByLayer
+      layer: V-MISC
+    label_style: UTILITY-LABEL
+
+  - name: UTILITY-APPURTENANCE
+    marker:
+      type: block
+      block_name: UTIL-APPUR
+      size: 0.08
+      size_in: plotted-units
+      color: ByLayer
+      layer: V-MISC
+    label_style: UTILITY-LABEL
+
+  - name: SAN-MANHOLE
+    marker:
+      type: block
+      block_name: SAN-MH
+      size: 0.10
+      size_in: plotted-units
+      color: 30
+      layer: V-SSWR-MH
+    label_style: UTILITY-LABEL
+
+  - name: STM-MANHOLE
+    marker:
+      type: block
+      block_name: STM-MH
+      size: 0.10
+      size_in: plotted-units
+      color: 3
+      layer: V-STRM-MH
+    label_style: UTILITY-LABEL
+
+  - name: STM-INLET
+    marker:
+      type: block
+      block_name: STM-CB
+      size: 0.10
+      size_in: plotted-units
+      color: 3
+      layer: V-STRM-CB
+    label_style: UTILITY-LABEL
+
+  - name: WATER-VALVE
+    marker:
+      type: block
+      block_name: WV-SYMBOL
+      size: 0.08
+      size_in: plotted-units
+      color: 5
+      layer: V-WATR-VALV
+    label_style: UTILITY-LABEL
+
+  - name: HYDRANT
+    marker:
+      type: block
+      block_name: FH-SYMBOL
+      size: 0.10
+      size_in: plotted-units
+      color: 1
+      layer: V-WATR-VALV
+    label_style: UTILITY-LABEL
+
+# ---------------------------------------------------------------------------
+# Point Label Styles. The composition layer is implicit; each label class
+# below lists what fields appear and where they sit relative to the point.
+# ---------------------------------------------------------------------------
+
+label_styles:
+
+  - name: FOUND-MONUMENT-LABEL
+    components:
+      - { name: "Number",    content: "<[Point Number(Sn)]>",      anchor: top-right,    offset: { dx: 0.06, dy: 0.06 } }
+      - { name: "FullDesc",  content: "<[Full Description]>",      anchor: bottom-right, offset: { dx: 0.06, dy: -0.06 } }
+    text_style: SURVEY-100
+    layer: V-NODE-TEXT
+    annotative: true
+
+  - name: SET-MONUMENT-LABEL
+    parent: FOUND-MONUMENT-LABEL
+    components_override:
+      FullDesc: "SET <[Full Description]>"
+
+  - name: SHOT-LABEL
+    components:
+      - { name: "Number",    content: "<[Point Number(Sn)]>",      anchor: top-right,    offset: { dx: 0.04, dy: 0.04 } }
+      - { name: "RawDesc",   content: "<[Raw Description]>",       anchor: bottom-right, offset: { dx: 0.04, dy: -0.04 } }
+    text_style: SURVEY-080
+    layer: V-NODE-TEXT
+
+  - name: ELEV-ONLY-LABEL
+    components:
+      - { name: "Elev",      content: "<[Point Elevation(Uft|P3|RN|AP|Sn|OF)]>", anchor: bottom-right, offset: { dx: 0.04, dy: -0.04 } }
+    text_style: SURVEY-080
+    layer: C-TOPO-SPOT
+
+  - name: CONTROL-POINT-LABEL
+    components:
+      - { name: "Number",    content: "<[Point Number(Sn)]>",                              anchor: top-right,    offset: { dx: 0.08, dy: 0.08 } }
+      - { name: "Northing",  content: "N <[Northing(Uft|P4|RN|AP|Sn|OF)]>",                anchor: middle-right, offset: { dx: 0.08, dy: 0.00 } }
+      - { name: "Easting",   content: "E <[Easting(Uft|P4|RN|AP|Sn|OF)]>",                 anchor: middle-right, offset: { dx: 0.08, dy: -0.10 } }
+      - { name: "Elev",      content: "Z <[Point Elevation(Uft|P2|RN|AP|Sn|OF)]>",         anchor: middle-right, offset: { dx: 0.08, dy: -0.20 } }
+      - { name: "Desc",      content: "<[Full Description]>",                              anchor: bottom-right, offset: { dx: 0.08, dy: -0.30 } }
+    text_style: SURVEY-100
+    layer: V-NODE-CTRL
+
+  - name: TREE-LABEL
+    components:
+      - { name: "Type",      content: "<[Full Description]>",     anchor: top-right,    offset: { dx: 0.10, dy: 0.10 } }
+    text_style: SURVEY-080
+    layer: V-VEGE-TREE
+
+  - name: UTILITY-LABEL
+    components:
+      - { name: "Desc",      content: "<[Full Description]>",     anchor: bottom-right, offset: { dx: 0.06, dy: -0.06 } }
+      - { name: "Rim",       content: "RIM <[Point Elevation(Uft|P2|RN|AP|Sn|OF)]>", anchor: top-right, offset: { dx: 0.06, dy: 0.06 } }
+    text_style: SURVEY-080
+    layer: V-NODE-TEXT
+
+notes:
+  - "Marker sizes are in plotted units (inches) so symbols stay legible at the active annotation scale."
+  - "When importing into the survey database, set 'Update Points from Survey' so style changes propagate."
+  - "The block references (TREE-SYMBOL, SAN-MH, etc.) are defined as part of the template build — see build-notes step 9."
