@@ -1,0 +1,15 @@
+{
+  "name": "@civil3d-master-guide/e2e",
+  "version": "0.0.0",
+  "private": true,
+  "description": "End-to-end smoke harness exercising web API, MCP server, calculators, and content rendering. Standalone; uses only node built-ins.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "node run-e2e.mjs",
+    "test:dry": "node run-e2e.mjs --dry-run"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
