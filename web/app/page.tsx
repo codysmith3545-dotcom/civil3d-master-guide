@@ -54,6 +54,11 @@ export default function HomePage() {
           href="/docs/standards"
           body="AASHTO Green Book, ALTA/NSPS 2021, INDOT Design Manual, NCS layer naming, and Ten States Standards — summarized with source links."
         />
+        <FeatureCard
+          title="CEU Modules"
+          href="/ceu"
+          body="Self-study CEU framework for Indiana licensed surveyors. 7 modules, 7 PDH documented, with a local tracker and printable completion report (pending Board approval)."
+        />
       </section>
 
       <section className="mt-16">
