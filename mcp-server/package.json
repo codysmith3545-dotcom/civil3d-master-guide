@@ -19,24 +19,18 @@
     "build": "tsc -b",
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
-    "clean": "rm -rf dist dist-tests",
-    "test": "vitest run",
-    "test:node": "tsc -p tsconfig.test.json && node --test \"dist-tests/tests/**/*.test.js\"",
+    "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
-    "@civil3d-master-guide/content": "workspace:*",
-    "@civil3d-master-guide/landxml-validator": "workspace:*",
-    "@civil3d-master-guide/search": "workspace:*",
+    "@civil3d-master-guide/datacollector-import": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.0.4",
     "gray-matter": "^4.0.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
-    "@vitest/coverage-v8": "^1.6.0",
-    "typescript": "^5.5.0",
-    "vitest": "^1.6.0"
+    "typescript": "^5.5.0"
   },
   "keywords": [
     "civil3d",

@@ -110,6 +110,11 @@ const survey = [
     title: "State Plane Indiana CSF",
     body: "Approximate Combined Scale Factor for Indiana SPC East/West zones from lat, lon, and elevation.",
   },
+  {
+    href: "/tools/datacollector-import",
+    title: "Data-collector import",
+    body: "Parse PNEZD, NEZD, PXYZ, Trimble CSV, Topcon CSV, and Carlson RW5 files; export to PNEZD CSV, custom CSV, or LandXML.",
+  },
 ];
 
 const interop = [

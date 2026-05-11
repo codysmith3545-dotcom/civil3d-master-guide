@@ -279,6 +279,34 @@ export const GridToGroundInput = z.object({
   origin_easting: z.number().optional().describe("Origin easting for coordinate scaling."),
 });
 
+export const ImportDataCollectorInput = z.object({
+  text: z
+    .string()
+    .min(1)
+    .describe(
+      "Raw text contents of a data-collector ASCII export (PNEZD/NEZD/PXYZ CSV, Trimble CSV, Topcon CSV, or Carlson RW5).",
+    ),
+  format: z
+    .enum([
+      "generic-pnezd",
+      "generic-nezd",
+      "generic-pxyz",
+      "trimble-csv",
+      "topcon-csv",
+      "carlson-rw5",
+    ])
+    .optional()
+    .describe(
+      "Optional explicit format. If omitted, the parser auto-detects from the text and (if given) `filename`.",
+    ),
+  filename: z
+    .string()
+    .optional()
+    .describe(
+      "Optional filename hint (extension informs detection, e.g. '.rw5').",
+    ),
+});
+
 export const RunCalculatorInput = z.discriminatedUnion("name", [
   z.object({ name: z.literal("vertical_curve"), inputs: VerticalCurveInput }),
   z.object({ name: z.literal("horizontal_curve"), inputs: HorizontalCurveInput }),

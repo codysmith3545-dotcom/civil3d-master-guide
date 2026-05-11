@@ -1,4 +1,5 @@
 packages:
   - 'web'
   - 'mcp-server'
-  - 'packages/*'
+  - 'packages/sdk'
+  - 'packages/datacollector-import'
