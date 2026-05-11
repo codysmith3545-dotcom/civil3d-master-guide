@@ -1,26 +1,37 @@
 import "./globals.css";
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import SearchBox from "@/components/SearchBox";
-import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
-import OutdoorModeToggle from "@/components/OutdoorModeToggle";
-import { Analytics } from "@/components/Analytics";
+import Footer from "@/components/Footer";
+import { getSiteConfig } from "@/lib/site-config";
+
+const config = getSiteConfig();
 
 export const metadata: Metadata = {
   title: {
-    default: "Civil 3D Master Guide",
-    template: "%s — Civil 3D Master Guide",
+    default: config.brand.name,
+    template: `%s — ${config.brand.name}`,
   },
-  description:
-    "A working reference for land surveyors and civil engineers using Autodesk Civil 3D, with Indiana jurisdictional content, calculators, and an AI assistant.",
-  manifest: "/manifest.json",
-};
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
-  themeColor: "#0d1f3c",
+  description: config.knowledge.scope,
+  openGraph: {
+    title: config.brand.name,
+    description: config.knowledge.scope,
+    type: "website",
+    images: [
+      {
+        url: "/og-default.svg",
+        width: 1200,
+        height: 630,
+        alt: config.brand.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: config.brand.name,
+    description: config.knowledge.scope,
+    images: ["/og-default.svg"],
+  },
 };
 
 export default function RootLayout({
@@ -43,9 +54,6 @@ export default function RootLayout({
               <Link href="/tools" className="hover:text-ink-900">
                 Calculators
               </Link>
-              <Link href="/projects" className="hover:text-ink-900">
-                Projects
-              </Link>
               <Link href="/chat" className="hover:text-ink-900">
                 Chat
               </Link>
@@ -53,15 +61,10 @@ export default function RootLayout({
             <div className="ml-auto w-full max-w-sm">
               <SearchBox />
             </div>
-            <OutdoorModeToggle />
           </div>
         </header>
-        <ServiceWorkerRegistrar />
         <main>{children}</main>
-        <Analytics />
-        <footer className="border-t border-ink-100 py-6 text-center text-xs text-ink-500">
-          Civil 3D Master Guide. Original content licensed CC BY-SA 4.0.
-        </footer>
+        <Footer />
       </body>
     </html>
   );

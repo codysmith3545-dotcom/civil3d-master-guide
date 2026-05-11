@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f3d6b"/>
+      <stop offset="100%" stop-color="#0c2f54"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7fb3ff"/>
+      <stop offset="100%" stop-color="#cfe2ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g opacity="0.18" stroke="#ffffff" stroke-width="1" fill="none">
+    <path d="M0 520 L1200 320"/>
+    <path d="M0 480 L1200 280"/>
+    <path d="M0 440 L1200 240"/>
+    <path d="M0 400 L1200 200"/>
+    <circle cx="980" cy="170" r="60"/>
+    <circle cx="980" cy="170" r="90"/>
+  </g>
+  <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+    <text x="80" y="180" font-size="36" fill="url(#accent)" font-weight="500" letter-spacing="6">CIVIL 3D MASTER GUIDE</text>
+    <text x="80" y="300" font-size="76" fill="#ffffff" font-weight="600">A working reference for</text>
+    <text x="80" y="392" font-size="76" fill="#ffffff" font-weight="600">land surveyors and civil</text>
+    <text x="80" y="484" font-size="76" fill="#ffffff" font-weight="600">engineers using Civil 3D.</text>
+    <text x="80" y="568" font-size="28" fill="#cfe2ff">Calculators &middot; jurisdictions &middot; standards &middot; AI assistant</text>
+  </g>
+</svg>
