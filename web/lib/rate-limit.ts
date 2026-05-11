@@ -1,68 +1,83 @@
-// Tiny in-memory sliding-window rate limiter, keyed by an arbitrary string
-// (typically a client IP). Sufficient for a single-replica deployment.
-//
-// If/when the app needs to run multi-replica, swap this for a Redis-backed
-// implementation — the call sites use only the public `consume` function.
+/**
+ * Sliding-window, in-memory IP rate limiter. Adequate for a single-instance
+ * deployment. For multi-instance setups this should be replaced with a
+ * Redis-backed limiter, but the call sites here stay the same.
+ *
+ * NOTE: this module is intentionally framework-agnostic. The Next.js
+ * middleware in `web/middleware.ts` wraps `check()` for HTTP requests.
+ */
 
-interface Bucket {
-  // Timestamps (ms) of recent requests, oldest first.
-  hits: number[];
+export interface RateLimitOptions {
+  /** Max requests permitted within `windowMs`. */
+  limit: number;
+  /** Sliding-window size in milliseconds. */
+  windowMs: number;
 }
-
-const BUCKETS: Map<string, Bucket> = new Map();
 
 export interface RateLimitResult {
   ok: boolean;
+  /** Requests remaining in the current window for this key. */
   remaining: number;
-  limit: number;
-  retryAfterSeconds: number;
+  /** Epoch-millis at which the oldest tracked request will fall out. */
+  resetAt: number;
+}
+
+// One bucket map per `bucketKey` (e.g. "chat", "vision"). Each bucket holds a
+// per-IP sliding window of request timestamps.
+const buckets = new Map<string, Map<string, number[]>>();
+
+function getBucket(name: string): Map<string, number[]> {
+  let b = buckets.get(name);
+  if (!b) {
+    b = new Map();
+    buckets.set(name, b);
+  }
+  return b;
+}
+
+/** Reset all rate-limit state. Intended for tests. */
+export function _resetRateLimit(): void {
+  buckets.clear();
 }
 
 /**
- * Consume one request slot for the given key.
- *
- * @param key      Stable identifier (e.g. IP + route).
- * @param limit    Max requests in the window.
- * @param windowMs Window size in milliseconds.
+ * Check whether `key` (typically a client IP) may make another request under
+ * the supplied limit. Records the attempt when `ok` is true. Returns a
+ * `RateLimitResult` either way.
  */
-export function consume(
+export function check(
+  bucketKey: string,
   key: string,
-  limit: number,
-  windowMs: number,
+  opts: RateLimitOptions,
 ): RateLimitResult {
   const now = Date.now();
-  const cutoff = now - windowMs;
-  let bucket = BUCKETS.get(key);
-  if (!bucket) {
-    bucket = { hits: [] };
-    BUCKETS.set(key, bucket);
+  const cutoff = now - opts.windowMs;
+  const bucket = getBucket(bucketKey);
+  let timestamps = bucket.get(key);
+  if (!timestamps) {
+    timestamps = [];
+    bucket.set(key, timestamps);
   }
-  // Drop expired hits.
-  while (bucket.hits.length > 0 && bucket.hits[0] < cutoff) {
-    bucket.hits.shift();
+  // Drop expired entries from the head of the array.
+  while (timestamps.length > 0 && timestamps[0] <= cutoff) {
+    timestamps.shift();
   }
-  if (bucket.hits.length >= limit) {
-    const oldest = bucket.hits[0];
-    const retry = Math.max(1, Math.ceil((oldest + windowMs - now) / 1000));
-    return {
-      ok: false,
-      remaining: 0,
-      limit,
-      retryAfterSeconds: retry,
-    };
+
+  if (timestamps.length >= opts.limit) {
+    const resetAt = (timestamps[0] ?? now) + opts.windowMs;
+    return { ok: false, remaining: 0, resetAt };
   }
-  bucket.hits.push(now);
+  timestamps.push(now);
   return {
     ok: true,
-    remaining: limit - bucket.hits.length,
-    limit,
-    retryAfterSeconds: 0,
+    remaining: Math.max(0, opts.limit - timestamps.length),
+    resetAt: now + opts.windowMs,
   };
 }
 
 /**
- * Best-effort client IP from common proxy headers, falling back to a
- * stable but coarse "unknown" key.
+ * Extract a best-effort client IP from a Next.js `Request`. Prefers
+ * `x-forwarded-for` (first hop) and falls back to `x-real-ip`, then `req.ip`.
  */
 export function clientIp(req: Request): string {
   const xff = req.headers.get("x-forwarded-for");
@@ -70,7 +85,11 @@ export function clientIp(req: Request): string {
     const first = xff.split(",")[0]?.trim();
     if (first) return first;
   }
-  const real = req.headers.get("x-real-ip");
-  if (real) return real;
+  const xrip = req.headers.get("x-real-ip");
+  if (xrip) return xrip;
+  // `NextRequest` exposes `.ip` but the value is not part of the standard
+  // Request type. Try to read it defensively.
+  const maybeIp = (req as unknown as { ip?: string }).ip;
+  if (maybeIp) return maybeIp;
   return "unknown";
 }

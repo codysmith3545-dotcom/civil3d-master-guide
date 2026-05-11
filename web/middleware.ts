@@ -1,107 +1,87 @@
 import { NextRequest, NextResponse } from "next/server";
+import { check, clientIp } from "@/lib/rate-limit";
 
-// In-memory sliding-window rate limiter.
-//
-// Caveat: on Vercel (and any horizontally scaled deployment) each instance
-// holds its own Map, so an attacker hitting many edges can exceed the limit
-// proportionally to the instance count. This is acceptable for v1 of a small
-// reference site; swap in Upstash / Redis when traffic warrants it.
+/**
+ * Edge middleware that applies IP-keyed sliding-window rate limiting to the
+ * write-heavy / cost-heavy API surface. Limits land before any handler runs,
+ * which also means before any LLM token is spent.
+ *
+ * Buckets:
+ *   - `chat`   30 req/min — `/api/chat`
+ *   - `vision` 10 req/min — `/api/deed-decode` (AI vision)
+ *   - `raw`    60 req/min — `/api/raw/*` (cheap but worth limiting)
+ *   - `projects` 60 req/min — `/api/projects/*` (writes to storage)
+ */
+type Rule = { bucket: string; limit: number; windowMs: number };
 
-type Bucket = {
-  /** UNIX-ms timestamps of recent requests. */
-  hits: number[];
-};
-
-const WINDOW_MS = 60_000;
-const CHAT_LIMIT = 10; // /api/chat: external Anthropic call, expensive
-const DEFAULT_LIMIT = 30; // other /api/* routes
-
-// Single shared store keyed by `${route}:${ip}`.
-const store: Map<string, Bucket> = new Map();
-
-// Best-effort sweep so the Map does not grow unboundedly. Runs at most once
-// per request and only does meaningful work when the store is large.
-function sweep(now: number) {
-  if (store.size < 1024) return;
-  for (const [key, bucket] of store) {
-    const fresh = bucket.hits.filter((t) => now - t < WINDOW_MS);
-    if (fresh.length === 0) {
-      store.delete(key);
-    } else {
-      bucket.hits = fresh;
-    }
+function ruleFor(pathname: string): Rule | null {
+  if (pathname === "/api/chat" || pathname.startsWith("/api/chat/")) {
+    return { bucket: "chat", limit: 30, windowMs: 60_000 };
   }
-}
-
-function clientIp(req: NextRequest): string {
-  const fwd = req.headers.get("x-forwarded-for");
-  if (fwd) {
-    // x-forwarded-for can be a comma-separated chain; the left-most entry is
-    // the original client.
-    return fwd.split(",")[0]!.trim();
+  if (
+    pathname === "/api/deed-decode" ||
+    pathname.startsWith("/api/deed-decode/")
+  ) {
+    return { bucket: "vision", limit: 10, windowMs: 60_000 };
   }
-  // NextRequest.ip is populated on Vercel; fall back to a sentinel locally.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const maybeIp = (req as any).ip as string | undefined;
-  return maybeIp ?? "unknown";
-}
-
-function limitFor(pathname: string): number {
-  if (pathname.startsWith("/api/chat")) return CHAT_LIMIT;
-  return DEFAULT_LIMIT;
+  if (pathname.startsWith("/api/raw/")) {
+    return { bucket: "raw", limit: 60, windowMs: 60_000 };
+  }
+  if (pathname.startsWith("/api/projects")) {
+    return { bucket: "projects", limit: 60, windowMs: 60_000 };
+  }
+  return null;
 }
 
 export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  // Only enforce on /api/*; the matcher already constrains, but be defensive.
-  if (!pathname.startsWith("/api/")) return NextResponse.next();
+  const rule = ruleFor(req.nextUrl.pathname);
+  if (!rule) return NextResponse.next();
 
-  const limit = limitFor(pathname);
   const ip = clientIp(req);
-  const key = `${pathname.startsWith("/api/chat") ? "chat" : "default"}:${ip}`;
-  const now = Date.now();
+  const result = check(rule.bucket, ip, {
+    limit: rule.limit,
+    windowMs: rule.windowMs,
+  });
 
-  sweep(now);
-
-  const bucket = store.get(key) ?? { hits: [] };
-  // Drop entries outside the sliding window.
-  bucket.hits = bucket.hits.filter((t) => now - t < WINDOW_MS);
-
-  if (bucket.hits.length >= limit) {
-    const oldest = bucket.hits[0]!;
-    const resetMs = oldest + WINDOW_MS - now;
-    const retryAfter = Math.max(1, Math.ceil(resetMs / 1000));
+  if (!result.ok) {
+    const retryAfter = Math.max(
+      1,
+      Math.ceil((result.resetAt - Date.now()) / 1000),
+    );
     return new NextResponse(
-      JSON.stringify({ error: "rate_limited", retryAfter }),
+      JSON.stringify({
+        message:
+          "Rate limit exceeded. Please slow down and retry shortly.",
+        retryAfter,
+      }),
       {
         status: 429,
         headers: {
           "content-type": "application/json",
           "retry-after": String(retryAfter),
-          "x-ratelimit-limit": String(limit),
+          "x-ratelimit-limit": String(rule.limit),
           "x-ratelimit-remaining": "0",
-          "x-ratelimit-reset": String(Math.ceil((now + resetMs) / 1000)),
+          "x-ratelimit-reset": String(Math.ceil(result.resetAt / 1000)),
         },
       },
     );
   }
 
-  bucket.hits.push(now);
-  store.set(key, bucket);
-
-  const remaining = Math.max(0, limit - bucket.hits.length);
-  const resetMs =
-    (bucket.hits[0] ?? now) + WINDOW_MS - now;
   const res = NextResponse.next();
-  res.headers.set("x-ratelimit-limit", String(limit));
-  res.headers.set("x-ratelimit-remaining", String(remaining));
-  res.headers.set(
-    "x-ratelimit-reset",
-    String(Math.ceil((now + resetMs) / 1000)),
-  );
+  res.headers.set("x-ratelimit-limit", String(rule.limit));
+  res.headers.set("x-ratelimit-remaining", String(result.remaining));
+  res.headers.set("x-ratelimit-reset", String(Math.ceil(result.resetAt / 1000)));
   return res;
 }
 
 export const config = {
-  matcher: ["/api/:path*"],
+  matcher: [
+    "/api/chat/:path*",
+    "/api/chat",
+    "/api/deed-decode/:path*",
+    "/api/deed-decode",
+    "/api/raw/:path*",
+    "/api/projects/:path*",
+    "/api/projects",
+  ],
 };
