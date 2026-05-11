@@ -1,0 +1,22 @@
+{
+  "name": "{{packageName}}",
+  "version": "0.1.0",
+  "private": true,
+  "description": "{{knowledge.scope}}",
+  "license": "{{license}}",
+  "packageManager": "pnpm@9.12.0",
+  "workspaces": [
+    "web",
+    "mcp-server",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "node scripts/build-all.mjs",
+    "lint:content": "node scripts/lint-content.mjs",
+    "new-page": "node scripts/new-page.mjs"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}
