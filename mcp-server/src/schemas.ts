@@ -72,6 +72,31 @@ export const DecodeDeedInput = z.object({
     ),
 });
 
+export const GetJurisdictionRulesInput = z
+  .object({
+    lat: z
+      .number()
+      .min(-90)
+      .max(90)
+      .optional()
+      .describe("Latitude in decimal degrees (positive north). Provide together with `lng`."),
+    lng: z
+      .number()
+      .min(-180)
+      .max(180)
+      .optional()
+      .describe("Longitude in decimal degrees (negative west). Provide together with `lat`."),
+    slug: z
+      .string()
+      .optional()
+      .describe(
+        "Jurisdiction page path relative to content/, e.g. 'jurisdictions/indiana/hamilton-county/municipalities/carmel'. Alternative to lat/lng.",
+      ),
+  })
+  .refine((d) => (d.lat !== undefined && d.lng !== undefined) || !!d.slug, {
+    message: "must provide either (lat, lng) or slug",
+  });
+
 // Calculator inputs
 export const VerticalCurveInput = z.object({
   g1: z.number().describe("Incoming grade in percent (e.g. -2 for -2.0%)."),

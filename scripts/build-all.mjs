@@ -37,6 +37,11 @@ const steps = [
     optional: false,
   },
   {
+    label: 'jurisdiction-changes-rss',
+    cmd: 'node scripts/jurisdiction-changes-rss.mjs',
+    optional: true,
+  },
+  {
     label: 'mcp-server build',
     cmd: 'pnpm --filter @civil3d-master-guide/mcp run build',
     optional: true,
