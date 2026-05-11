@@ -34,7 +34,18 @@ export interface DistanceDistanceIntersectionResult {
   solutions: DistanceDistanceSolution[];
   source: string;
   notes: string[];
+  relatedContent: string | null;
 }
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+// TODO: no dedicated doc page yet for distance-distance intersection.
+const DD_RELATED: string | null = null;
 
 function r6(x: number): number {
   return Math.round(x * 1e6) / 1e6;
@@ -45,11 +56,20 @@ export function distanceDistanceIntersection(
 ): DistanceDistanceIntersectionResult {
   const notes: string[] = [];
 
-  const dN = input.n2 - input.n1;
-  const dE = input.e2 - input.e1;
+  const n1 = requireFinite(input?.n1, "n1");
+  const e1 = requireFinite(input?.e1, "e1");
+  const d1 = requireFinite(input?.d1_ft, "d1_ft");
+  const n2 = requireFinite(input?.n2, "n2");
+  const e2 = requireFinite(input?.e2, "e2");
+  const d2 = requireFinite(input?.d2_ft, "d2_ft");
+  if (d1 < 0) throw new Error("d1_ft must be >= 0");
+  if (d2 < 0) throw new Error("d2_ft must be >= 0");
+
+  const dN = n2 - n1;
+  const dE = e2 - e1;
   const d = Math.sqrt(dN ** 2 + dE ** 2);
-  const r1 = input.d1_ft;
-  const r2 = input.d2_ft;
+  const r1 = d1;
+  const r2 = d2;
 
   if (d < 1e-9) {
     if (Math.abs(r1 - r2) < 1e-9) {
@@ -67,6 +87,7 @@ export function distanceDistanceIntersection(
         "Distance–distance intersection (two-circle). " +
         "Reference: Wolf & Ghilani, Elementary Surveying, Ch. 10.",
       notes,
+      relatedContent: DD_RELATED,
     };
   }
 
@@ -81,6 +102,7 @@ export function distanceDistanceIntersection(
         "Distance–distance intersection (two-circle). " +
         "Reference: Wolf & Ghilani, Elementary Surveying, Ch. 10.",
       notes,
+      relatedContent: DD_RELATED,
     };
   }
   if (d < Math.abs(r1 - r2) - 1e-9) {
@@ -93,6 +115,7 @@ export function distanceDistanceIntersection(
         "Distance–distance intersection (two-circle). " +
         "Reference: Wolf & Ghilani, Elementary Surveying, Ch. 10.",
       notes,
+      relatedContent: DD_RELATED,
     };
   }
 
@@ -108,8 +131,8 @@ export function distanceDistanceIntersection(
   const uE = dE / d;
 
   // Midpoint on the P1-P2 line at distance a from P1
-  const midN = input.n1 + a * uN;
-  const midE = input.e1 + a * uE;
+  const midN = n1 + a * uN;
+  const midE = e1 + a * uE;
 
   const solutions: DistanceDistanceSolution[] = [];
 
@@ -137,11 +160,20 @@ export function distanceDistanceIntersection(
     });
   }
 
+  for (const sol of solutions) {
+    if (!Number.isFinite(sol.northing) || !Number.isFinite(sol.easting)) {
+      throw new Error(
+        "Calculation produced non-finite result for solutions: check inputs",
+      );
+    }
+  }
+
   return {
     solutions,
     source:
       "Distance–distance intersection (two-circle). " +
       "Reference: Wolf & Ghilani, Elementary Surveying, Ch. 10.",
     notes,
+    relatedContent: DD_RELATED,
   };
 }

@@ -1,0 +1,15 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Part of the Northeast Quarter of Section 18, Township 18 North, Range 4 East,
+Hamilton County, Indiana, described as:
+
+Beginning at a point that is North 89 degrees 12 minutes 33 seconds East,
+1320.00 feet from the Northwest corner of said Quarter Section;
+
+thence North 89 degrees 12 minutes 33 seconds East, 500.00 feet;
+thence South 02 degrees 41 minutes 50 seconds East, 400.00 feet;
+thence South 87 degrees 30 minutes 00 seconds West, 220.00 feet;
+thence South 24 degrees 18 minutes 12 seconds West, 150.00 feet;
+thence North 89 degrees 12 minutes 33 seconds West, 215.00 feet;
+thence North 02 degrees 41 minutes 50 seconds West, 530.96 feet to the Point
+of Beginning.

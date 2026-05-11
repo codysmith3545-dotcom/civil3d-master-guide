@@ -1,0 +1,12 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+This fixture uses curly/smart quotes and the prime/double-prime symbols.
+
+Part of the Southeast Quarter of Section 16, Township 16 North, Range 3 East,
+Marion County, Indiana, described as:
+
+Beginning at the Point of Beginning;
+
+thence N 45°15’22” E, 200.00’;
+thence S 44°44’38” E, 200.00’;
+thence S 45°15’22” W, 200.00’;
+thence N 44°44’38” W, 200.00’ to the Point of Beginning, more or less.

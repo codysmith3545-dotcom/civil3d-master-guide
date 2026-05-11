@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { search, type SearchHit } from "@/lib/search-index";
+import { trackSearch } from "@/lib/analytics";
 
 interface SearchBoxProps {
   size?: "default" | "large";
@@ -36,12 +37,28 @@ export default function SearchBox({
       return;
     }
     setBusy(true);
+    const start =
+      typeof performance !== "undefined" ? performance.now() : Date.now();
     search(q, 10)
       .then((r) => {
-        if (!cancelled) setHits(r);
+        if (!cancelled) {
+          setHits(r);
+          const end =
+            typeof performance !== "undefined"
+              ? performance.now()
+              : Date.now();
+          trackSearch(q, r.length, end - start);
+        }
       })
       .catch(() => {
-        if (!cancelled) setHits([]);
+        if (!cancelled) {
+          setHits([]);
+          const end =
+            typeof performance !== "undefined"
+              ? performance.now()
+              : Date.now();
+          trackSearch(q, 0, end - start);
+        }
       })
       .finally(() => {
         if (!cancelled) setBusy(false);

@@ -1,0 +1,17 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+This fixture includes commentary lines between courses, a parenthetical, and
+a unit-mismatch course that should be reported as unparsed.
+
+Part of the Southeast Quarter of Section 4, Township 17 North, Range 4 East,
+Hamilton County, Indiana, described as:
+
+Beginning at the Point of Beginning;
+
+thence North 20 degrees 00 minutes 00 seconds East, 300.00 feet (along an
+old fence);
+thence approximately due south along a meandering creek for several rods to a
+witness post (this course is intentionally unparsable);
+thence South 70 degrees 00 minutes 00 seconds East, 200.00 feet;
+thence South 20 degrees 00 minutes 00 seconds West, 300.00 feet;
+thence North 70 degrees 00 minutes 00 seconds West, 200.00 feet to the Point
+of Beginning.

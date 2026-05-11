@@ -1,0 +1,14 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+A part of the Northwest Quarter of Section 5, Township 17 North, Range 3 East,
+Hamilton County, Indiana, described as follows:
+
+Beginning at the Point of Beginning;
+
+thence North 10 degrees 00 minutes 00 seconds East, 200.00 feet;
+thence Northeasterly along a curve to the right having a radius of 350.00
+feet, an arc length of 162.41 feet, and a chord bearing North 23 degrees 17
+minutes 30 seconds East, 161.02 feet;
+thence South 56 degrees 35 minutes 00 seconds East, 175.00 feet;
+thence South 33 degrees 25 minutes 00 seconds West, 400.00 feet to the Point
+of Beginning.

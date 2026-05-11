@@ -36,7 +36,66 @@ export const ListJurisdictionsInput = z.object({
     .describe("Optional state slug to filter by (e.g. 'indiana'). Case-insensitive."),
 });
 
+export const JurisdictionAtInput = z.object({
+  lat: z
+    .number()
+    .min(-90)
+    .max(90)
+    .describe("Latitude in decimal degrees (positive north)."),
+  lng: z
+    .number()
+    .min(-180)
+    .max(180)
+    .describe("Longitude in decimal degrees (negative west)."),
+});
+
 export const GetResourceIndexInput = z.object({}).strict();
+
+export const ListLispRoutinesInput = z.object({}).strict();
+
+export const GetLispInput = z.object({
+  name: z
+    .string()
+    .min(1)
+    .describe(
+      "The routine `name` (slug) from the LISP library, e.g. 'lfrz-pattern'. Must match an entry in customization/lisp/library/index.json.",
+    ),
+});
+export type GetLispInputT = z.infer<typeof GetLispInput>;
+
+export const DecodeDeedInput = z.object({
+  text: z
+    .string()
+    .min(1)
+    .describe(
+      "Raw text of a metes-and-bounds deed description. May include commencement, point of beginning, and the sequence of 'thence' courses. Distances must be in feet.",
+    ),
+});
+
+export const GetJurisdictionRulesInput = z
+  .object({
+    lat: z
+      .number()
+      .min(-90)
+      .max(90)
+      .optional()
+      .describe("Latitude in decimal degrees (positive north). Provide together with `lng`."),
+    lng: z
+      .number()
+      .min(-180)
+      .max(180)
+      .optional()
+      .describe("Longitude in decimal degrees (negative west). Provide together with `lat`."),
+    slug: z
+      .string()
+      .optional()
+      .describe(
+        "Jurisdiction page path relative to content/, e.g. 'jurisdictions/indiana/hamilton-county/municipalities/carmel'. Alternative to lat/lng.",
+      ),
+  })
+  .refine((d) => (d.lat !== undefined && d.lng !== undefined) || !!d.slug, {
+    message: "must provide either (lat, lng) or slug",
+  });
 
 // Calculator inputs
 export const VerticalCurveInput = z.object({

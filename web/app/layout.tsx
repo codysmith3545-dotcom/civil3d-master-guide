@@ -1,7 +1,10 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import SearchBox from "@/components/SearchBox";
+import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
+import OutdoorModeToggle from "@/components/OutdoorModeToggle";
+import { Analytics } from "@/components/Analytics";
 
 export const metadata: Metadata = {
   title: {
@@ -10,6 +13,14 @@ export const metadata: Metadata = {
   },
   description:
     "A working reference for land surveyors and civil engineers using Autodesk Civil 3D, with Indiana jurisdictional content, calculators, and an AI assistant.",
+  manifest: "/manifest.json",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0d1f3c",
 };
 
 export default function RootLayout({
@@ -39,9 +50,12 @@ export default function RootLayout({
             <div className="ml-auto w-full max-w-sm">
               <SearchBox />
             </div>
+            <OutdoorModeToggle />
           </div>
         </header>
+        <ServiceWorkerRegistrar />
         <main>{children}</main>
+        <Analytics />
         <footer className="border-t border-ink-100 py-6 text-center text-xs text-ink-500">
           Civil 3D Master Guide. Original content licensed CC BY-SA 4.0.
         </footer>

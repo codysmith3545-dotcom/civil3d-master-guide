@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Civil 3D Master Guide">
+  <rect width="512" height="512" rx="96" fill="#0d1f3c"/>
+  <g fill="none" stroke="#ffffff" stroke-width="20" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64 384 L256 128 L448 384"/>
+    <path d="M64 384 L448 384"/>
+    <circle cx="256" cy="128" r="14" fill="#ffffff" stroke="none"/>
+    <circle cx="64" cy="384" r="14" fill="#ffffff" stroke="none"/>
+    <circle cx="448" cy="384" r="14" fill="#ffffff" stroke="none"/>
+  </g>
+  <text x="256" y="460" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="48" font-weight="700" fill="#ffffff">C3D</text>
+</svg>

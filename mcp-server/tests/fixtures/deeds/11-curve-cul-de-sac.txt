@@ -1,0 +1,16 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Lot 7 in The Reserve at Springmill, Section Two, Hamilton County, Indiana,
+described as follows:
+
+Beginning at a point on the Easterly right of way of Springmill Court;
+
+thence North 12 degrees 30 minutes 00 seconds East, 95.00 feet;
+thence South 77 degrees 30 minutes 00 seconds East, 120.00 feet;
+thence South 12 degrees 30 minutes 00 seconds West, 95.00 feet;
+thence along a curve to the right having a radius of 50.00 feet, an arc
+length of 78.54 feet, a central angle of 90 degrees 00 minutes 00 seconds,
+and a chord bearing North 57 degrees 30 minutes 00 seconds West, a chord
+of 70.71 feet;
+thence North 77 degrees 30 minutes 00 seconds West, 50.00 feet to the Point
+of Beginning.

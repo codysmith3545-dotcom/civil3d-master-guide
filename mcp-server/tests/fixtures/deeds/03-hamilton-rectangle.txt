@@ -1,0 +1,12 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Part of the Southwest Quarter of Section 6, Township 17 North, Range 4 East,
+Hamilton County, Indiana, described as follows:
+
+Beginning at the Southwest Corner of said Quarter Section;
+
+thence North 01 degrees 02 minutes 11 seconds East, 660.00 feet;
+thence South 88 degrees 57 minutes 49 seconds East, 330.00 feet;
+thence South 01 degrees 02 minutes 11 seconds West, 660.00 feet;
+thence North 88 degrees 57 minutes 49 seconds West, 330.00 feet to the Point
+of Beginning, containing 5.000 acres.

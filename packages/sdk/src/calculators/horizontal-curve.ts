@@ -34,13 +34,29 @@ export interface HorizontalCurveResult {
   pc_station: number;
   pt_station: number;
   source: string;
+  relatedContent: string | null;
 }
 
 const r2 = (x: number): number => Math.round(x * 1e4) / 1e4;
 
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
 export function horizontalCurve(input: HorizontalCurveInput): HorizontalCurveResult {
-  const R = input.r_ft;
-  const delta = (input.delta_deg * Math.PI) / 180;
+  const R = requireFinite(input?.r_ft, "r_ft");
+  const deltaDeg = requireFinite(input?.delta_deg, "delta_deg");
+  const piStation = requireFinite(input?.pi_station_ft, "pi_station_ft");
+
+  if (R <= 0) throw new Error("r_ft (radius) must be greater than 0");
+  if (deltaDeg <= 0 || deltaDeg >= 360) {
+    throw new Error("delta_deg must be greater than 0 and less than 360");
+  }
+
+  const delta = (deltaDeg * Math.PI) / 180;
   const half = delta / 2;
 
   const t = R * Math.tan(half);
@@ -49,10 +65,10 @@ export function horizontalCurve(input: HorizontalCurveInput): HorizontalCurveRes
   const e = R * (1 / Math.cos(half) - 1);
   const lc = 2 * R * Math.sin(half);
 
-  const pc = input.pi_station_ft - t;
+  const pc = piStation - t;
   const pt = pc + l;
 
-  return {
+  const result: HorizontalCurveResult = {
     t: r2(t),
     l: r2(l),
     m: r2(m),
@@ -61,5 +77,14 @@ export function horizontalCurve(input: HorizontalCurveInput): HorizontalCurveRes
     pc_station: r2(pc),
     pt_station: r2(pt),
     source: "Standard horizontal-curve formulas (Wolf & Ghilani, Elementary Surveying).",
+    relatedContent: "engineering/roadway-design/horizontal-curve-design",
   };
+
+  for (const key of ["t", "l", "m", "e", "lc", "pc_station", "pt_station"] as const) {
+    if (!Number.isFinite(result[key])) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+
+  return result;
 }

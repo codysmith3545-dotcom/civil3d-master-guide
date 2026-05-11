@@ -1,0 +1,21 @@
+SYNTHETIC SAMPLE — NOT A REAL RECORDED DEED.
+For testing the Deed Decoder only. Indiana-style metes-and-bounds.
+
+A part of the Northeast Quarter of Section 14, Township 16 North, Range 3 East
+of the Second Principal Meridian, Marion County, Indiana, more particularly
+described as follows:
+
+Beginning at the northeast corner of said Northeast Quarter; thence
+South 00 degrees 12 minutes 30 seconds West, along the east line of said
+Quarter Section, a distance of 660.00 feet; thence North 89 degrees 47
+minutes 12 seconds West, parallel with the north line of said Quarter
+Section, a distance of 528.50 feet to a point on a curve concave to the
+northwest; thence southwesterly along said curve to the right, having a
+radius of 250.00 feet, an arc length of 196.35 feet, and a chord bearing
+South 67 degrees 30 minutes 00 seconds West, 191.45 feet to the point of
+tangency; thence North 00 degrees 12 minutes 30 seconds East, a distance
+of 735.00 feet to the north line of said Quarter Section; thence
+South 89 degrees 47 minutes 12 seconds East, along said north line, a
+distance of 700.00 feet to the Point of Beginning.
+
+Containing 10.50 acres, more or less.

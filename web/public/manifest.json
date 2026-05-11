@@ -1,0 +1,32 @@
+{
+  "name": "Civil 3D Master Guide",
+  "short_name": "Civil3D Guide",
+  "description": "Reference knowledge base for land surveying and civil engineering work in Autodesk Civil 3D, with U.S. standards (AASHTO, ALTA/NSPS, NCS) and an Indiana jurisdictional layer.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0d1f3c",
+  "background_color": "#ffffff",
+  "categories": ["productivity", "utilities", "education"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

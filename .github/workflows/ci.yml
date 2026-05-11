@@ -28,6 +28,12 @@ jobs:
       - name: Lint content
         run: node scripts/lint-content.mjs
 
+      - name: Lint AutoLISP routines
+        run: node scripts/lint-lisp.mjs
+
+      - name: Test AutoLISP linter
+        run: node --test scripts/__tests__/lint-lisp.test.mjs
+
       - name: Build llms.txt and llms-full.txt
         run: node scripts/build-llms-txt.mjs
 
@@ -58,3 +64,6 @@ jobs:
           else
             echo "mcp-server/package.json not found; skipping mcp-server build."
           fi
+
+      - name: Run vitest test suite
+        run: pnpm test

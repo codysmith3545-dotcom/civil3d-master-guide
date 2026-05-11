@@ -11,6 +11,7 @@ import { canView } from "@/lib/access";
 import Sidebar from "@/components/Sidebar";
 import OnThisPage from "@/components/OnThisPage";
 import CopyForAI from "@/components/CopyForAI";
+import ReportIssue from "@/components/ReportIssue";
 
 type RouteProps = { params: { slug: string[] } };
 
@@ -132,6 +133,10 @@ export default async function DocPage({ params }: RouteProps) {
             View raw markdown
           </Link>
         </div>
+        <ReportIssue
+          slug={page.slug}
+          title={(fm.title as string) ?? params.slug.join("/")}
+        />
       </article>
       <aside className="hidden lg:block">
         <OnThisPage headings={headings} />

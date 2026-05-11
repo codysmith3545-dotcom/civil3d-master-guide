@@ -29,6 +29,14 @@ export interface StatePlaneIndianaCsfResult {
   csf: number;
   source: string;
   notes: string[];
+  relatedContent: string | null;
+}
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
 }
 
 const R_FT = 20_906_000;
@@ -40,15 +48,25 @@ const ZONE_BOUNDARY_LON = -86.25;
 const r6 = (x: number): number => Math.round(x * 1e9) / 1e9;
 
 export function statePlaneIndianaCsf(input: StatePlaneIndianaCsfInput): StatePlaneIndianaCsfResult {
-  const isEast = input.lon >= ZONE_BOUNDARY_LON;
+  const lat = requireFinite(input?.lat, "lat");
+  const lon = requireFinite(input?.lon, "lon");
+  const elev = requireFinite(input?.elev_ft, "elev_ft");
+  if (lat < -90 || lat > 90) throw new Error("lat must be between -90 and 90");
+  if (lon < -180 || lon > 180) throw new Error("lon must be between -180 and 180");
+
+  const isEast = lon >= ZONE_BOUNDARY_LON;
   const cm = isEast ? CM_EAST : CM_WEST;
-  const dLam = (input.lon - cm) * (Math.PI / 180);
-  const phi = input.lat * (Math.PI / 180);
+  const dLam = (lon - cm) * (Math.PI / 180);
+  const phi = lat * (Math.PI / 180);
   const dq = dLam * Math.cos(phi);
 
   const k = K0 * (1 + (dq * dq) / 2);
-  const elevFactor = R_FT / (R_FT + input.elev_ft);
+  const elevFactor = R_FT / (R_FT + elev);
   const csf = k * elevFactor;
+
+  if (!Number.isFinite(k) || !Number.isFinite(elevFactor) || !Number.isFinite(csf)) {
+    throw new Error("Calculation produced non-finite result for csf: check inputs");
+  }
 
   return {
     zone: isEast ? "Indiana East (1301)" : "Indiana West (1302)",
@@ -63,5 +81,6 @@ export function statePlaneIndianaCsf(input: StatePlaneIndianaCsfInput): StatePla
       "Treats orthometric height as ellipsoid height; geoid separation in Indiana is roughly -33 to -36 m and not corrected here.",
       `Earth radius used: R = ${R_FT.toLocaleString()} ft.`,
     ],
+    relatedContent: "field-and-boundary/coordinate-systems/state-plane-indiana-quick-reference",
   };
 }

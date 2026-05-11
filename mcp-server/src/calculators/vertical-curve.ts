@@ -26,6 +26,25 @@ export interface VerticalCurveResult {
   sight_distance_passes: boolean;
   source: string;
   notes: string[];
+  relatedContent: string | null;
+}
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+const VERTICAL_CURVE_RELATED = "engineering/roadway-design/vertical-curve-design";
+
+function guardVerticalCurveResult(result: VerticalCurveResult): VerticalCurveResult {
+  for (const key of ["k_required", "l_required_ft", "algebraic_difference_percent"] as const) {
+    if (!Number.isFinite(result[key])) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+  return result;
 }
 
 // Crest, SSD-controlled: AASHTO GBOG 7e, Table 3-34 (design values).
@@ -93,18 +112,34 @@ function lookupK(table: Record<number, number>, v: number): { k: number; usedSpe
 }
 
 export function verticalCurve(input: VerticalCurveInput): VerticalCurveResult {
-  const A = Math.abs(input.g2 - input.g1);
+  const g1 = requireFinite(input?.g1, "g1");
+  const g2 = requireFinite(input?.g2, "g2");
+  const v = requireFinite(input?.design_speed_mph, "design_speed_mph");
+  if (v <= 0) throw new Error("design_speed_mph must be greater than 0");
+  if (input?.type !== "sag" && input?.type !== "crest") {
+    throw new Error("type must be either 'sag' or 'crest'");
+  }
+  if (
+    input?.criterion !== "ssd" &&
+    input?.criterion !== "psd" &&
+    input?.criterion !== "comfort"
+  ) {
+    throw new Error("criterion must be one of 'ssd', 'psd', or 'comfort'");
+  }
+
+  const A = Math.abs(g2 - g1);
   const notes: string[] = [];
 
   if (A < 1e-9) {
-    return {
+    return guardVerticalCurveResult({
       k_required: 0,
       l_required_ft: 0,
       algebraic_difference_percent: 0,
       sight_distance_passes: true,
       source: "AASHTO GBOG 7e (no curve required when g1 == g2)",
       notes: ["g1 equals g2; no vertical curve is required."],
-    };
+      relatedContent: VERTICAL_CURVE_RELATED,
+    });
   }
 
   let table: Record<number, number>;
@@ -124,10 +159,9 @@ export function verticalCurve(input: VerticalCurveInput): VerticalCurveResult {
   } else {
     if (input.criterion === "comfort") {
       // Comfort: K = V^2 / 46.5 (V in mph), GBOG eq.
-      const v = input.design_speed_mph;
       const k = (v * v) / 46.5;
       const L = k * A;
-      return {
+      return guardVerticalCurveResult({
         k_required: Math.round(k * 100) / 100,
         l_required_ft: Math.round(L * 100) / 100,
         algebraic_difference_percent: Math.round(A * 100) / 100,
@@ -136,7 +170,8 @@ export function verticalCurve(input: VerticalCurveInput): VerticalCurveResult {
         notes: [
           "Comfort criterion is generally less restrictive than headlight; check headlight too.",
         ],
-      };
+        relatedContent: VERTICAL_CURVE_RELATED,
+      });
     } else if (input.criterion === "psd") {
       table = K_SAG_HEADLIGHT;
       tableLabel = "AASHTO GBOG 7e, Table 3-37 (sag, headlight); PSD not defined for sag";
@@ -147,20 +182,21 @@ export function verticalCurve(input: VerticalCurveInput): VerticalCurveResult {
     }
   }
 
-  const { k, usedSpeed } = lookupK(table, input.design_speed_mph);
-  if (usedSpeed !== input.design_speed_mph) {
+  const { k, usedSpeed } = lookupK(table, v);
+  if (usedSpeed !== v) {
     notes.push(
-      `Design speed ${input.design_speed_mph} mph rounded up to nearest tabulated value ${usedSpeed} mph.`,
+      `Design speed ${v} mph rounded up to nearest tabulated value ${usedSpeed} mph.`,
     );
   }
   const L = k * A;
 
-  return {
+  return guardVerticalCurveResult({
     k_required: k,
     l_required_ft: Math.round(L * 100) / 100,
     algebraic_difference_percent: Math.round(A * 100) / 100,
     sight_distance_passes: true,
     source: tableLabel,
     notes,
-  };
+    relatedContent: VERTICAL_CURVE_RELATED,
+  });
 }

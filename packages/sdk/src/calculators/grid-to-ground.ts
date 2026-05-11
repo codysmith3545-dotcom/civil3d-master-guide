@@ -43,7 +43,17 @@ export interface GridToGroundResult {
   csf_used: number;
   source: string;
   notes: string[];
+  relatedContent: string | null;
 }
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+const GTG_RELATED = "field-and-boundary/coordinate-systems/combined-scale-factor";
 
 function r6(x: number): number {
   return Math.round(x * 1e6) / 1e6;
@@ -51,18 +61,27 @@ function r6(x: number): number {
 
 export function gridToGround(input: GridToGroundInput): GridToGroundResult {
   const notes: string[] = [];
-  const csf = input.csf;
 
-  if (csf <= 0) {
-    notes.push("CSF must be a positive number.");
-    return {
-      converted_distance_ft: null,
-      converted_northing: null,
-      converted_easting: null,
-      csf_used: csf,
-      source: "",
-      notes,
-    };
+  if (input?.mode !== "grid_to_ground" && input?.mode !== "ground_to_grid") {
+    throw new Error("mode must be 'grid_to_ground' or 'ground_to_grid'");
+  }
+  const csf = requireFinite(input?.csf, "csf");
+  if (csf <= 0) throw new Error("csf must be greater than 0");
+
+  if (input.distance_ft !== undefined) {
+    requireFinite(input.distance_ft, "distance_ft");
+  }
+  if (input.grid_northing !== undefined) {
+    requireFinite(input.grid_northing, "grid_northing");
+  }
+  if (input.grid_easting !== undefined) {
+    requireFinite(input.grid_easting, "grid_easting");
+  }
+  if (input.origin_northing !== undefined) {
+    requireFinite(input.origin_northing, "origin_northing");
+  }
+  if (input.origin_easting !== undefined) {
+    requireFinite(input.origin_easting, "origin_easting");
   }
 
   if (Math.abs(csf - 1.0) > 0.01) {
@@ -125,6 +144,16 @@ export function gridToGround(input: GridToGroundInput): GridToGroundResult {
     );
   }
 
+  for (const [key, val] of [
+    ["converted_distance_ft", convertedDistance],
+    ["converted_northing", convertedNorthing],
+    ["converted_easting", convertedEasting],
+  ] as const) {
+    if (val !== null && !Number.isFinite(val)) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+
   return {
     converted_distance_ft: convertedDistance,
     converted_northing: convertedNorthing,
@@ -134,5 +163,6 @@ export function gridToGround(input: GridToGroundInput): GridToGroundResult {
       "Grid/ground conversion using Combined Scale Factor. " +
       "Reference: Wolf & Ghilani, Elementary Surveying, Ch. 20; NGS SPC documentation.",
     notes,
+    relatedContent: GTG_RELATED,
   };
 }

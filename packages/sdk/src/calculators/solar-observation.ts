@@ -41,7 +41,18 @@ export interface SolarObservationResult {
   lha_deg: number;
   source: string;
   notes: string[];
+  relatedContent: string | null;
 }
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+// TODO: no dedicated solar-observation page; closest is basis-of-bearings.
+const SOLAR_RELATED = "field-and-boundary/legal-descriptions/basis-of-bearings";
 
 const DEG = Math.PI / 180;
 const RAD = 180 / Math.PI;
@@ -100,6 +111,18 @@ export function solarObservation(
 ): SolarObservationResult {
   const notes: string[] = [];
 
+  if (typeof input?.date_iso !== "string" || input.date_iso.length === 0) {
+    throw new Error("date_iso must be a non-empty string");
+  }
+  if (typeof input?.time_utc !== "string" || input.time_utc.length === 0) {
+    throw new Error("time_utc must be a non-empty string");
+  }
+  const lat = requireFinite(input?.lat_deg, "lat_deg");
+  const lon = requireFinite(input?.lon_deg, "lon_deg");
+  const measuredHz = requireFinite(input?.measured_hz_angle_deg, "measured_hz_angle_deg");
+  if (lat < -90 || lat > 90) throw new Error("lat_deg must be between -90 and 90");
+  if (lon < -180 || lon > 180) throw new Error("lon_deg must be between -180 and 180");
+
   notes.push(
     "APPROXIMATION ONLY: Uses Spencer (1971) simplified equations. " +
       "For precise geodetic work, use the NGS/NOAA Solar Position Calculator or Astronomical Almanac.",
@@ -107,6 +130,9 @@ export function solarObservation(
 
   const doy = dayOfYear(input.date_iso);
   const utcHours = parseTimeToHours(input.time_utc);
+  if (!Number.isFinite(doy) || !Number.isFinite(utcHours)) {
+    throw new Error("Invalid date_iso or time_utc: could not parse to a valid value");
+  }
 
   const { declination_rad, eot_minutes } = spencerSolar(doy);
   const declDeg = declination_rad * RAD;
@@ -122,7 +148,7 @@ export function solarObservation(
   gha = ((gha % 360) + 360) % 360;
 
   // Local Hour Angle: LHA = GHA + longitude (west negative convention)
-  let lha = gha + input.lon_deg;
+  let lha = gha + lon;
   lha = ((lha % 360) + 360) % 360;
 
   // Solar azimuth from the astronomic triangle:
@@ -131,7 +157,7 @@ export function solarObservation(
   // tan(Az) = -sin(LHA) / (cos(lat)*tan(dec) - sin(lat)*cos(LHA))
   //
   // Using the four-quadrant formula:
-  const latRad = input.lat_deg * DEG;
+  const latRad = lat * DEG;
   const lhaRad = lha * DEG;
   const decRad = declination_rad;
 
@@ -162,7 +188,7 @@ export function solarObservation(
 
   // Mark azimuth = sun azimuth - measured horizontal angle (or + depending on convention)
   // Convention: if the horizontal angle is measured clockwise from the sun to the mark
-  let markAz = sunAz - input.measured_hz_angle_deg;
+  let markAz = sunAz - measuredHz;
   markAz = ((markAz % 360) + 360) % 360;
 
   notes.push(
@@ -170,7 +196,7 @@ export function solarObservation(
       "If your field procedure differs, adjust accordingly.",
   );
 
-  return {
+  const result: SolarObservationResult = {
     sun_azimuth_deg: r6(sunAz),
     mark_azimuth_deg: r6(markAz),
     solar_declination_deg: r6(declDeg),
@@ -181,5 +207,21 @@ export function solarObservation(
       "Solar azimuth via Spencer (1971) declination & EoT. " +
       "Reference: Spencer, Search 2(5):172 (1971); Wolf & Ghilani, Elementary Surveying, Ch. 9.",
     notes,
+    relatedContent: SOLAR_RELATED,
   };
+
+  for (const key of [
+    "sun_azimuth_deg",
+    "mark_azimuth_deg",
+    "solar_declination_deg",
+    "equation_of_time_min",
+    "gha_deg",
+    "lha_deg",
+  ] as const) {
+    if (!Number.isFinite(result[key])) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+
+  return result;
 }

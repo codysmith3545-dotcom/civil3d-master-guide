@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -51,6 +52,9 @@ const fields: FieldDef[] = [
 ];
 
 export default function HorizontalCurvePage() {
+  useEffect(() => {
+    trackCalculator("horizontal-curve");
+  }, []);
   const [values, setValues] = useState<Record<string, string>>({
     radius: "1000",
     deltaDeg: "30",

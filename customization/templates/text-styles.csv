@@ -1,0 +1,13 @@
+name,font,height,width_factor,obliquing,notes
+Standard,Arial,0.00,1.00,0,AutoCAD default — leave as-is for legacy compatibility
+SURVEY-100,RomanS.shx,0.10,1.00,0,Primary survey annotation; annotative scale on
+SURVEY-080,RomanS.shx,0.08,1.00,0,Small survey notes; line/curve table cells
+SURVEY-060,RomanS.shx,0.06,1.00,0,Point labels at 1in=20ft scale
+SURVEY-120,RomanS.shx,0.12,1.00,0,Sheet titles and major call-outs
+SURVEY-150,RomanS.shx,0.15,1.00,0,Plat sheet titles
+SURVEY-200,RomanS.shx,0.20,1.00,0,Cover-sheet headings
+SURVEY-DIM,RomanS.shx,0.10,1.00,0,Used inside dimension styles (height controlled by DIMTXT)
+SURVEY-BEAR,RomanS.shx,0.10,0.85,0,Compressed style for crowded bearing/distance labels
+SURVEY-LEGAL,Arial,0.10,1.00,0,TrueType — used in legal-description tables (clean for PDF)
+SURVEY-TITLEBLOCK,Arial,0.00,1.00,0,Height controlled by title-block attributes
+SURVEY-MONO,RomansMono.shx,0.10,1.00,0,Monospaced — useful for coordinate listings
