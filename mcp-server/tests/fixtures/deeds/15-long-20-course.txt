@@ -1,0 +1,28 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Part of the Northeast Quarter of Section 28, Township 15 North, Range 1 East,
+Hendricks County, Indiana, described as follows:
+
+Beginning at the Point of Beginning;
+
+thence North 88 degrees 30 minutes 00 seconds East, 150.00 feet;
+thence North 75 degrees 00 minutes 00 seconds East, 120.00 feet;
+thence North 60 degrees 00 minutes 00 seconds East, 110.00 feet;
+thence North 45 degrees 00 minutes 00 seconds East, 100.00 feet;
+thence North 30 degrees 00 minutes 00 seconds East, 90.00 feet;
+thence North 15 degrees 00 minutes 00 seconds East, 80.00 feet;
+thence North 01 degrees 30 minutes 00 seconds East, 100.00 feet;
+thence South 88 degrees 30 minutes 00 seconds East, 200.00 feet;
+thence South 02 degrees 00 minutes 00 seconds East, 180.00 feet;
+thence South 18 degrees 00 minutes 00 seconds East, 150.00 feet;
+thence South 30 degrees 00 minutes 00 seconds East, 130.00 feet;
+thence South 45 degrees 00 minutes 00 seconds East, 110.00 feet;
+thence South 65 degrees 00 minutes 00 seconds West, 200.00 feet;
+thence South 80 degrees 00 minutes 00 seconds West, 175.00 feet;
+thence North 89 degrees 00 minutes 00 seconds West, 150.00 feet;
+thence North 75 degrees 00 minutes 00 seconds West, 130.00 feet;
+thence North 60 degrees 00 minutes 00 seconds West, 110.00 feet;
+thence North 45 degrees 00 minutes 00 seconds West, 100.00 feet;
+thence North 30 degrees 00 minutes 00 seconds West, 200.00 feet;
+thence North 02 degrees 00 minutes 00 seconds West, 250.00 feet to the Point
+of Beginning.

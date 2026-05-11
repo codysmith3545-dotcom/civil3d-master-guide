@@ -63,6 +63,15 @@ export const GetLispInput = z.object({
 });
 export type GetLispInputT = z.infer<typeof GetLispInput>;
 
+export const DecodeDeedInput = z.object({
+  text: z
+    .string()
+    .min(1)
+    .describe(
+      "Raw text of a metes-and-bounds deed description. May include commencement, point of beginning, and the sequence of 'thence' courses. Distances must be in feet.",
+    ),
+});
+
 // Calculator inputs
 export const VerticalCurveInput = z.object({
   g1: z.number().describe("Incoming grade in percent (e.g. -2 for -2.0%)."),

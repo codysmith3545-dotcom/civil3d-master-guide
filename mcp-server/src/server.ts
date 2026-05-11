@@ -27,8 +27,10 @@ import {
   RunCalculatorInput,
   ListLispRoutinesInput,
   GetLispInput,
+  DecodeDeedInput,
 } from "./schemas.js";
 import { listLispRoutines, getLisp } from "./lisp.js";
+import { decodeDeed } from "./decode-deed.js";
 import {
   verticalCurve,
   horizontalCurve,
@@ -709,6 +711,17 @@ export function buildTools(): ToolDef[] {
           case "grid_to_ground":
             return jsonResult(gridToGround(parsed.inputs));
         }
+      },
+    },
+    {
+      name: "decode_deed",
+      description:
+        "Parse a metes-and-bounds deed description into structured courses, optionally plotted.",
+      schema: DecodeDeedInput,
+      handler: async (args) => {
+        const parsed = DecodeDeedInput.parse(args);
+        const result = await decodeDeed({ text: parsed.text });
+        return jsonResult(result);
       },
     },
   ];

@@ -1,0 +1,12 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+This fixture exercises the cardinal-bearing edge at azimuth 0 (due north).
+
+Part of the Northwest Quarter of Section 21, Township 16 North, Range 3 East,
+Marion County, Indiana, described as:
+
+Beginning at the Point of Beginning;
+
+thence due North, 300.00 feet;
+thence due East, 200.00 feet;
+thence due South, 300.00 feet;
+thence due West, 200.00 feet to the Point of Beginning.
