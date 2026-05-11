@@ -1,28 +1,28 @@
 ---
-title: "Mooresville"
-section: "jurisdictions/indiana/morgan-county/municipalities/mooresville"
+title: "Alexandria"
+section: "jurisdictions/indiana/madison-county/municipalities/alexandria"
 order: 100
 visibility: public
-tags: [indiana, morgan-county, mooresville]
+tags: [indiana, madison-county, alexandria]
 updated: 2026-05-11
 sources:
-  - title: "Town of Mooresville"
-    url: "https://www.mooresville.in.gov/"
-    verified: 2026-05-06
+  - title: "City of Alexandria"
+    url: "https://alexandriain.org/"
+    verified: 2026-05-11
 # verification-needed: setbacks, stormwater_thresholds, recording_requirements, plat_requirements
-# Mooresville straddles Hendricks/Morgan; verify which county recorder accepts a
-# given plat. All numeric values null pending verification.
+# All numeric values below remain null pending verification against the current
+# Alexandria zoning, subdivision, and stormwater ordinances.
 submittal_checklist:
   - id: site-plan
-    label: "Site / development plan to Mooresville Plan Commission"
+    label: "Site / development plan to Alexandria Plan Commission"
     category: submittal
-    citation: "Town of Mooresville zoning + subdivision ordinances (verify)"
+    citation: "City of Alexandria zoning + subdivision ordinances (verify)"
   - id: drainage-plan
     label: "Drainage plan signed and sealed by Indiana-licensed PE"
     category: submittal
-    citation: "Town of Mooresville stormwater ordinance (verify)"
+    citation: "City of Alexandria stormwater ordinance (verify)"
   - id: county-plat-recording
-    label: "Record approved plat with the appropriate county Recorder (Morgan or Hendricks)"
+    label: "Record approved plat with Madison County Recorder"
     category: recording
     citation: "IC 36-2-11"
 setbacks:
@@ -30,13 +30,13 @@ setbacks:
   commercial: { front_ft: null, side_ft: null, rear_ft: null }
   agricultural: { front_ft: null, side_ft: null, rear_ft: null }
   citations:
-    - "Town of Mooresville Zoning Ordinance (verify)"
+    - "City of Alexandria Zoning Ordinance (verify)"
 stormwater_thresholds:
   detention_trigger_sqft: null
   water_quality_trigger_sqft: null
   bmp_required_above_sqft: null
   citations:
-    - "Town of Mooresville Stormwater Ordinance (verify)"
+    - "City of Alexandria Stormwater Ordinance (verify)"
     - "327 IAC 15-5 (Indiana Rule 5)"
 recording_requirements:
   paper_size: null
@@ -48,7 +48,7 @@ recording_requirements:
   fee_each_additional_usd: null
   citations:
     - "IC 36-2-11"
-    - "County Recorder fee schedule (verify)"
+    - "Madison County Recorder fee schedule (verify)"
 plat_requirements:
   - item: "north arrow"
     required: true
@@ -60,14 +60,14 @@ plat_requirements:
 ---
 
 > **TL;DR**
-> 1. Straddles Hendricks/Morgan; largest town in Morgan County.
-> 2. Visit the official site for current ordinances, design standards, and submittal requirements: https://www.mooresville.in.gov/
+> 1. Small city in northwest Madison County.
+> 2. Detailed content forthcoming; see county-level page for current rules.
 > 3. Page is a stub; expand with engineering contact, adopted standards manual, plan-review checklist.
 
 ## Authorities
 
-- **Official site** — https://www.mooresville.in.gov/
-- Morgan County government — see [county page](../../index.md).
+- **Official site** — https://alexandriain.org/
+- Madison County government — see [county page](../../index.md).
 
 ## Codes & standards
 
@@ -76,5 +76,5 @@ plat_requirements:
 
 ## Related
 
-- [Morgan County](../../index.md)
+- [Madison County](../../index.md)
 - [State of Indiana](../../../state/index.md)
