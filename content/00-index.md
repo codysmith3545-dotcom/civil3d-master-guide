@@ -31,6 +31,8 @@ updated: 2026-05-06
 | Understand surveyor regulations | [field-and-boundary/professional-practice](field-and-boundary/professional-practice/index.md) |
 | Handle a tricky boundary | [field-and-boundary/advanced-boundary](field-and-boundary/advanced-boundary/index.md) |
 | Look up a term | [glossary](glossary.md) |
+| Prep for the Indiana PS exam | [exam-prep/ps-indiana](exam-prep/ps-indiana/_index.md) (study UI: `/study`) |
+| Look up CEU mapping | [ceu](ceu/_index.md) |
 
 ## Sections
 
@@ -105,6 +107,12 @@ updated: 2026-05-06
 - [Podcasts](resources/podcasts.md)
 - [Training & certifications](resources/training-and-certs.md)
 - [Tools & companion software](resources/tools-and-software.md)
+
+### Exam prep
+- [Indiana PS exam prep](exam-prep/ps-indiana/_index.md) — fundamentals, legal principles, practice, and a 50-question bank with a spaced-repetition study UI at `/study`.
+
+### Continuing education
+- [CEU mapping](ceu/_index.md) — placeholder; maps existing pages to potential CE topics.
 
 ### Reference
 - [Glossary](glossary.md)

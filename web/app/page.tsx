@@ -30,6 +30,9 @@ export default function HomePage() {
           <Link href="/chat" className="btn">
             Ask the assistant
           </Link>
+          <Link href="/study" className="btn">
+            Exam prep (Indiana PS)
+          </Link>
         </div>
       </section>
 
@@ -53,6 +56,11 @@ export default function HomePage() {
           title="Standards"
           href="/docs/standards"
           body="AASHTO Green Book, ALTA/NSPS 2021, INDOT Design Manual, NCS layer naming, and Ten States Standards — summarized with source links."
+        />
+        <FeatureCard
+          title="Indiana PS Exam Prep"
+          href="/study"
+          body="Fifty-question practice bank with spaced-repetition flashcards. Covers bearings, traverse math, boundary law, riparian rights, 865 IAC, and PLSS restoration."
         />
       </section>
 
