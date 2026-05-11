@@ -23,6 +23,7 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
+    "@civil3d-master-guide/landxml-validator": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.0.4",
     "gray-matter": "^4.0.3",
     "zod": "^3.23.8"

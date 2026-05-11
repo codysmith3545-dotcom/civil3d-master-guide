@@ -24,7 +24,9 @@ import {
   ListJurisdictionsInput,
   GetResourceIndexInput,
   RunCalculatorInput,
+  ValidateLandXmlInput,
 } from "./schemas.js";
+import { validateLandXml } from "./landxml-validator.js";
 import {
   verticalCurve,
   horizontalCurve,
@@ -403,6 +405,17 @@ export function buildTools(): ToolDef[] {
           case "grid_to_ground":
             return jsonResult(gridToGround(parsed.inputs));
         }
+      },
+    },
+    {
+      name: "validate_landxml",
+      description:
+        "Parse and validate a LandXML document. Returns a structured summary of surfaces, alignments, parcels, surveys, and CgPoints, plus errors and warnings (missing version, mixed units, empty surfaces, alignments without geometry, unclosed parcels, NaN coordinates, suspiciously large coordinates, etc.). Pass the full XML text in `xml`.",
+      schema: ValidateLandXmlInput,
+      handler: async (args) => {
+        const parsed = ValidateLandXmlInput.parse(args);
+        const summary = await validateLandXml({ xml: parsed.xml });
+        return jsonResult(summary);
       },
     },
   ];

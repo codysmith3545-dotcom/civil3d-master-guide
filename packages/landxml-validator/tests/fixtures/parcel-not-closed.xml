@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LandXML version="1.2">
+  <Units>
+    <Imperial linearUnit="USSurveyFoot"/>
+  </Units>
+  <Parcels>
+    <Parcel name="OPEN-LOT" area="9876.0">
+      <PntList2D>0.0 0.0 100.0 0.0 100.0 100.0 0.0 100.5</PntList2D>
+    </Parcel>
+    <Parcel name="NEG-AREA" area="-1234.5">
+      <PntList2D>0.0 0.0 10.0 0.0 10.0 10.0 0.0 10.0 0.0 0.0</PntList2D>
+    </Parcel>
+  </Parcels>
+</LandXML>

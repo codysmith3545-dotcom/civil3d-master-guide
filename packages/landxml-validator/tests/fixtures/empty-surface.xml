@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LandXML version="1.2">
+  <Units>
+    <Imperial linearUnit="USSurveyFoot" areaUnit="squareFoot"/>
+  </Units>
+  <Surfaces>
+    <Surface name="EG-Empty">
+      <Definition surfType="TIN">
+        <Pnts/>
+        <Faces/>
+      </Definition>
+    </Surface>
+  </Surfaces>
+</LandXML>

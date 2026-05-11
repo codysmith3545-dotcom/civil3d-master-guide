@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LandXML version="1.2">
+  <Units>
+    <Imperial linearUnit="USSurveyFoot" areaUnit="squareFoot"/>
+    <Metric linearUnit="meter" areaUnit="squareMeter"/>
+  </Units>
+</LandXML>
