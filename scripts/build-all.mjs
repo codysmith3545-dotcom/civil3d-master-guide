@@ -22,6 +22,11 @@ const steps = [
     optional: true,
   },
   {
+    label: 'check-mirror-status',
+    cmd: 'node scripts/check-mirror-status.mjs',
+    optional: true,
+  },
+  {
     label: 'build-search-index',
     cmd: 'node web/scripts/build-search-index.mjs',
     optional: false,
