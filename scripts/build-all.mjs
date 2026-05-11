@@ -27,6 +27,11 @@ const steps = [
     optional: true,
   },
   {
+    label: 'validate-question-bank',
+    cmd: 'node scripts/validate-question-bank.mjs',
+    optional: false,
+  },
+  {
     label: 'build-search-index',
     cmd: 'node web/scripts/build-search-index.mjs',
     optional: false,

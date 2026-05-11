@@ -14,8 +14,8 @@ updated: 2026-05-11
 
 ## A
 
-- **Acquiescence** — Doctrine by which a boundary line is established by long-standing mutual recognition, typically evidenced by a fence or physical marker. → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md).
-- **Adverse possession** — Legal doctrine allowing a person to claim ownership of land after meeting statutory requirements (in Indiana: open, notorious, hostile, continuous, exclusive for 10 years under IC 32-21-7). → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md).
+- **Acquiescence** — Doctrine by which a boundary line is established by long-standing mutual recognition, typically evidenced by a fence or physical marker. → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md). [Exam: PS-IN-050](/study?question=ps-in-050).
+- **Adverse possession** — Legal doctrine allowing a person to claim ownership of land after meeting statutory requirements (in Indiana: open, notorious, hostile, continuous, exclusive for 10 years under IC 32-21-7). → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md). [Exam: PS-IN-034](/study?question=ps-in-034).
 - **Alignment** — A horizontal centerline made of lines, curves, and (optionally) spirals, carrying stationing. → [Alignments](civil3d/alignments/index.md).
 - **ALTA/NSPS** — National survey standard for title-insurance-grade boundary surveys (current: 2021). → [Boundary & ALTA](field-and-boundary/boundary-and-alta/index.md).
 - **As-built** — Survey of what was actually constructed, including deviations from plan. → [As-builts](field-and-boundary/as-builts/index.md).
@@ -24,13 +24,13 @@ updated: 2026-05-11
 
 ## B
 
-- **Basis of bearings** — The reference frame for the directions in a survey or description (grid, geodetic, magnetic, assumed). → [Legal descriptions](field-and-boundary/legal-descriptions/index.md).
+- **Basis of bearings** — The reference frame for the directions in a survey or description (grid, geodetic, magnetic, assumed). → [Legal descriptions](field-and-boundary/legal-descriptions/index.md). [Exam: PS-IN-004](/study?question=ps-in-004).
 - **Breakline** — A 3D linear feature added to a TIN to enforce ridges/valleys/edges. → [Surfaces](civil3d/surfaces/index.md).
 
 ## C
 
 - **Collimation** — The alignment of a survey instrument's optical/electronic axis. Checked and adjusted regularly to maintain measurement accuracy. → [Survey Equipment & Technology](field-and-boundary/survey-equipment/index.md).
-- **Combined scale factor** — Grid scale × elevation factor; converts ground distance to grid distance. → [Coordinate systems](field-and-boundary/coordinate-systems/index.md).
+- **Combined scale factor** — Grid scale × elevation factor; converts ground distance to grid distance. → [Coordinate systems](field-and-boundary/coordinate-systems/index.md). [Exam: PS-IN-007](/study?question=ps-in-007), [PS-IN-015](/study?question=ps-in-015).
 - **CORS** — Continuously Operating Reference Station. A permanent GNSS receiver that provides correction data for RTK and post-processing. Indiana's network is InCORS. → [Control Networks & Adjustment](field-and-boundary/control-networks/index.md).
 - **Corridor** — The 3D model produced by sweeping an assembly along an alignment+profile. → [Corridors](civil3d/corridors/index.md).
 - **CSF** — See *combined scale factor*.
@@ -58,7 +58,7 @@ updated: 2026-05-11
 
 ## G
 
-- **Geoid** — Equipotential surface used as the reference for orthometric heights (current US: Geoid18). → [Geoid models](field-and-boundary/datums/geoid-models-12b-18-and-2022.md).
+- **Geoid** — Equipotential surface used as the reference for orthometric heights (current US: Geoid18). → [Geoid models](field-and-boundary/datums/geoid-models-12b-18-and-2022.md). [Exam: PS-IN-013](/study?question=ps-in-013).
 - **Geopotential height** — A height computed from a geopotential number; the broader category that includes orthometric, dynamic, and normal heights. NAPGD2022 is defined in geopotential numbers. → [Vertical datums](field-and-boundary/datums/vertical-datums-navd88-vs-napgd2022.md).
 - **Geopotential number (C)** — Difference in gravity potential between the geoid and a point, in m^2/s^2. The primary quantity in the NAPGD2022 vertical datum. → [Vertical datums](field-and-boundary/datums/vertical-datums-navd88-vs-napgd2022.md).
 - **Grading group** — Container for grading objects that produces a surface.
@@ -114,13 +114,13 @@ updated: 2026-05-11
 - **PNEZD** — Default point file format: Point, Northing, Easting, Z (elevation), Description.
 - **Point group** — Filter that selects points by criteria; controls visibility, plotting, export.
 - **Profile view** — The "window" that draws profiles in plan production.
-- **Proportioning** — The BLM method for restoring lost PLSS corners by proportional measurement between existing corners. Single proportioning uses one line; double proportioning uses two. → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md).
+- **Proportioning** — The BLM method for restoring lost PLSS corners by proportional measurement between existing corners. Single proportioning uses one line; double proportioning uses two. → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md). [Exam: PS-IN-036](/study?question=ps-in-036), [PS-IN-037](/study?question=ps-in-037).
 - **PROWAG** — Public Right-of-Way Accessibility Guidelines (US Access Board, 2023). → [ADA](engineering/ada-and-accessibility/index.md).
 
 ## R
 
 - **Right-of-way (ROW)** — A specific kind of easement, usually for transit. → [Easements & ROW](field-and-boundary/easements-and-row/index.md).
-- **Riparian** — Relating to the bank of a river or stream. Riparian rights and boundaries follow the water's ordinary high water mark. → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md).
+- **Riparian** — Relating to the bank of a river or stream. Riparian rights and boundaries follow the water's ordinary high water mark. → [Advanced Boundary Topics](field-and-boundary/advanced-boundary/index.md). [Exam: PS-IN-031](/study?question=ps-in-031), [PS-IN-032](/study?question=ps-in-032), [PS-IN-033](/study?question=ps-in-033).
 - **RTK** — Real-Time Kinematic. A GNSS technique providing centimeter-level positioning in real time using carrier-phase corrections from a base station or VRS network. → [Survey Equipment & Technology](field-and-boundary/survey-equipment/index.md).
 
 ## S
@@ -128,7 +128,7 @@ updated: 2026-05-11
 - **Sight distance** — Distance a driver can see ahead. SSD = stopping; PSD = passing; DSD = decision; ISD = intersection.
 - **Site (Civil 3D)** — Topology container for parcels and feature lines.
 - **SPCS2022** — State Plane Coordinate System of 2022. Forthcoming State Plane redefinition on NATRF2022, allowing low-distortion projection (LDP) zones and standardizing on the international foot. → [State Plane 2022](field-and-boundary/datums/state-plane-2022.md).
-- **State plane** — A US national family of projections for state-by-state high-accuracy mapping. → [Coordinate systems](field-and-boundary/coordinate-systems/index.md).
+- **State plane** — A US national family of projections for state-by-state high-accuracy mapping. → [Coordinate systems](field-and-boundary/coordinate-systems/index.md). [Exam: PS-IN-011](/study?question=ps-in-011), [PS-IN-014](/study?question=ps-in-014).
 - **Subassembly** — A piece of an assembly (lane, curb, sidewalk, daylight).
 - **Surveyor's report** — Indiana statutory report (IC 36-2-12-14) summarizing a survey. → [Monuments & evidence](field-and-boundary/monuments-and-evidence/index.md).
 
