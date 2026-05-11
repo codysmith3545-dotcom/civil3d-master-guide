@@ -22,16 +22,6 @@ const steps = [
     optional: true,
   },
   {
-    label: 'check-mirror-status',
-    cmd: 'node scripts/check-mirror-status.mjs',
-    optional: true,
-  },
-  {
-    label: 'validate-question-bank',
-    cmd: 'node scripts/validate-question-bank.mjs',
-    optional: false,
-  },
-  {
     label: 'build-search-index',
     cmd: 'node web/scripts/build-search-index.mjs',
     optional: false,
@@ -47,9 +37,9 @@ const steps = [
     optional: false,
   },
   {
-    label: 'jurisdiction-changes-rss',
-    cmd: 'node scripts/jurisdiction-changes-rss.mjs',
-    optional: true,
+    label: 'build-offline-data',
+    cmd: 'node scripts/build-offline-data.mjs',
+    optional: false,
   },
   {
     label: 'mcp-server build',

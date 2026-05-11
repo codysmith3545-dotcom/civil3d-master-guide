@@ -2,36 +2,17 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 import SearchBox from "@/components/SearchBox";
-import Footer from "@/components/Footer";
-import { getSiteConfig } from "@/lib/site-config";
-
-const config = getSiteConfig();
+import OfflineIndicator from "@/components/OfflineIndicator";
+import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 
 export const metadata: Metadata = {
   title: {
-    default: config.brand.name,
-    template: `%s — ${config.brand.name}`,
+    default: "Civil 3D Master Guide",
+    template: "%s — Civil 3D Master Guide",
   },
-  description: config.knowledge.scope,
-  openGraph: {
-    title: config.brand.name,
-    description: config.knowledge.scope,
-    type: "website",
-    images: [
-      {
-        url: "/og-default.svg",
-        width: 1200,
-        height: 630,
-        alt: config.brand.name,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: config.brand.name,
-    description: config.knowledge.scope,
-    images: ["/og-default.svg"],
-  },
+  description:
+    "A working reference for land surveyors and civil engineers using Autodesk Civil 3D, with Indiana jurisdictional content, calculators, and an AI assistant.",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -61,10 +42,14 @@ export default function RootLayout({
             <div className="ml-auto w-full max-w-sm">
               <SearchBox />
             </div>
+            <OfflineIndicator />
           </div>
         </header>
+        <ServiceWorkerRegistrar />
         <main>{children}</main>
-        <Footer />
+        <footer className="border-t border-ink-100 py-6 text-center text-xs text-ink-500">
+          Civil 3D Master Guide. Original content licensed CC BY-SA 4.0.
+        </footer>
       </body>
     </html>
   );

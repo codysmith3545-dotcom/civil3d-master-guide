@@ -1,16 +1,28 @@
 /* Civil 3D Master Guide service worker.
+ *
  * Strategies:
- *  - /api/*          : network-only (no caching of personalized/rate-limited data)
- *  - /docs/*         : cache-first with background revalidation
- *  - everything else : stale-while-revalidate
- * Skip caching responses larger than 5 MB.
+ *  - /api/*                    : network-only (no caching of personalized/rate-limited data)
+ *  - /tools, /tools/*          : cache-first with revalidation (calculators offline)
+ *  - /embed/calc/*             : cache-first (embeddable calculator widgets)
+ *  - /customization/lisp*      : network-first, fall back to cache (LISP library)
+ *  - /jurisdictions/at/*       : cache-first (GPS lookup, served from cache when offline)
+ *  - /offline-data/*           : cache-first (pre-cached at install)
+ *  - /field, /field/*          : cache-first (field-day landing page + cheat sheet)
+ *  - /docs/*                   : cache-first with background revalidation
+ *  - /_next/static/*, common asset extensions : stale-while-revalidate
+ *  - everything else           : stale-while-revalidate
+ *
+ * Skip caching responses larger than 5 MB. No external dependencies.
  */
 
 const CACHE_VERSION = "c3d-cache-v1";
 const PRECACHE_URLS = [
   "/",
+  "/field",
+  "/tools",
   "/manifest.json",
   "/search-index.json",
+  "/offline-data/jurisdictions.json",
 ];
 const MAX_CACHE_BYTES = 5 * 1024 * 1024;
 
@@ -46,8 +58,23 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+  const data = event.data;
+  if (!data) return;
+  if (data.type === "SKIP_WAITING") {
     self.skipWaiting();
+    return;
+  }
+  // Allow the OfflineIndicator UI to ask "is this URL cached?"
+  if (data.type === "IS_CACHED" && typeof data.url === "string") {
+    const port = event.ports && event.ports[0];
+    caches
+      .match(data.url)
+      .then((res) => {
+        if (port) port.postMessage({ cached: !!res });
+      })
+      .catch(() => {
+        if (port) port.postMessage({ cached: false });
+      });
   }
 });
 
@@ -104,22 +131,72 @@ async function cacheFirst(request) {
   }
 }
 
+async function networkFirst(request) {
+  const cache = await caches.open(CACHE_VERSION);
+  try {
+    const resp = await fetch(request);
+    await safePut(cache, request, resp.clone());
+    return resp;
+  } catch {
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    return Response.error();
+  }
+}
+
+// Route classifier — pure function so it can be unit-tested in isolation.
+function routeStrategy(url) {
+  if (url.origin !== self.location.origin) return null;
+  const p = url.pathname;
+  if (p.startsWith("/api/")) return "network-only";
+  if (p === "/tools" || p.startsWith("/tools/")) return "cache-first";
+  if (p.startsWith("/embed/calc/")) return "cache-first";
+  if (p.startsWith("/customization/lisp")) return "network-first";
+  if (p.startsWith("/jurisdictions/at/")) return "cache-first";
+  if (p.startsWith("/offline-data/")) return "cache-first";
+  if (p === "/field" || p.startsWith("/field/")) return "cache-first";
+  if (p.startsWith("/docs/")) return "cache-first";
+  if (p.startsWith("/_next/static/") || p.startsWith("/_next/image")) return "stale-while-revalidate";
+  if (/\.(js|mjs|css|woff2?|png|jpg|jpeg|svg|ico|webp|gif)$/.test(p)) return "stale-while-revalidate";
+  return "stale-while-revalidate";
+}
+
 self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return;
+  const strategy = routeStrategy(url);
+  if (!strategy) return;
 
-  if (url.pathname.startsWith("/api/")) {
-    event.respondWith(networkOnly(request));
-    return;
+  switch (strategy) {
+    case "network-only":
+      event.respondWith(networkOnly(request));
+      return;
+    case "cache-first":
+      event.respondWith(cacheFirst(request));
+      return;
+    case "network-first":
+      event.respondWith(networkFirst(request));
+      return;
+    case "stale-while-revalidate":
+    default:
+      event.respondWith(staleWhileRevalidate(request));
+      return;
   }
-
-  if (url.pathname.startsWith("/docs/")) {
-    event.respondWith(cacheFirst(request));
-    return;
-  }
-
-  event.respondWith(staleWhileRevalidate(request));
 });
+
+// Test hook — when this file is imported by the unit-test harness (which sets
+// globalThis.__SW_TEST_HOOK__ before evaluating sw.js), publish the strategy
+// primitives so they can be exercised against a fake CacheStorage and fetch.
+if (typeof globalThis !== "undefined" && globalThis.__SW_TEST_HOOK__) {
+  globalThis.__SW_TEST_HOOK__({
+    cacheFirst,
+    networkFirst,
+    staleWhileRevalidate,
+    networkOnly,
+    routeStrategy,
+    safePut,
+    CACHE_VERSION,
+  });
+}
