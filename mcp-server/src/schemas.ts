@@ -36,66 +36,46 @@ export const ListJurisdictionsInput = z.object({
     .describe("Optional state slug to filter by (e.g. 'indiana'). Case-insensitive."),
 });
 
-export const JurisdictionAtInput = z.object({
-  lat: z
-    .number()
-    .min(-90)
-    .max(90)
-    .describe("Latitude in decimal degrees (positive north)."),
-  lng: z
-    .number()
-    .min(-180)
-    .max(180)
-    .describe("Longitude in decimal degrees (negative west)."),
-});
-
 export const GetResourceIndexInput = z.object({}).strict();
 
-export const ListLispRoutinesInput = z.object({}).strict();
-
-export const GetLispInput = z.object({
-  name: z
+export const GetProjectContextInput = z.object({
+  projectId: z
+    .string()
+    .min(1)
+    .describe("Project id (uuid or slug) the AI client wants context for."),
+  userId: z
     .string()
     .min(1)
     .describe(
-      "The routine `name` (slug) from the LISP library, e.g. 'lfrz-pattern'. Must match an entry in customization/lisp/library/index.json.",
+      "User id of the requester. Used by the project store to enforce access control; opaque to the MCP server itself.",
     ),
-});
-export type GetLispInputT = z.infer<typeof GetLispInput>;
-
-export const DecodeDeedInput = z.object({
-  text: z
+  query: z
     .string()
-    .min(1)
+    .optional()
     .describe(
-      "Raw text of a metes-and-bounds deed description. May include commencement, point of beginning, and the sequence of 'thence' courses. Distances must be in feet.",
+      "Optional free-text query. When supplied, public KB chunks and project-document chunks are ranked against it. When omitted, KB retrieval is skipped.",
+    ),
+  kbK: z
+    .number()
+    .int()
+    .positive()
+    .max(20)
+    .optional()
+    .describe("Max number of public-KB chunks to return. Default 5."),
+  projectK: z
+    .number()
+    .int()
+    .positive()
+    .max(20)
+    .optional()
+    .describe("Max number of project-document chunks to return. Default 5."),
+  jurisdictionLookup: z
+    .boolean()
+    .optional()
+    .describe(
+      "Whether to derive a jurisdiction summary from the project's bounds (when set). Default true.",
     ),
 });
-
-export const GetJurisdictionRulesInput = z
-  .object({
-    lat: z
-      .number()
-      .min(-90)
-      .max(90)
-      .optional()
-      .describe("Latitude in decimal degrees (positive north). Provide together with `lng`."),
-    lng: z
-      .number()
-      .min(-180)
-      .max(180)
-      .optional()
-      .describe("Longitude in decimal degrees (negative west). Provide together with `lat`."),
-    slug: z
-      .string()
-      .optional()
-      .describe(
-        "Jurisdiction page path relative to content/, e.g. 'jurisdictions/indiana/hamilton-county/municipalities/carmel'. Alternative to lat/lng.",
-      ),
-  })
-  .refine((d) => (d.lat !== undefined && d.lng !== undefined) || !!d.slug, {
-    message: "must provide either (lat, lng) or slug",
-  });
 
 // Calculator inputs
 export const VerticalCurveInput = z.object({
@@ -279,34 +259,6 @@ export const GridToGroundInput = z.object({
   origin_easting: z.number().optional().describe("Origin easting for coordinate scaling."),
 });
 
-export const ImportDataCollectorInput = z.object({
-  text: z
-    .string()
-    .min(1)
-    .describe(
-      "Raw text contents of a data-collector ASCII export (PNEZD/NEZD/PXYZ CSV, Trimble CSV, Topcon CSV, or Carlson RW5).",
-    ),
-  format: z
-    .enum([
-      "generic-pnezd",
-      "generic-nezd",
-      "generic-pxyz",
-      "trimble-csv",
-      "topcon-csv",
-      "carlson-rw5",
-    ])
-    .optional()
-    .describe(
-      "Optional explicit format. If omitted, the parser auto-detects from the text and (if given) `filename`.",
-    ),
-  filename: z
-    .string()
-    .optional()
-    .describe(
-      "Optional filename hint (extension informs detection, e.g. '.rw5').",
-    ),
-});
-
 export const RunCalculatorInput = z.discriminatedUnion("name", [
   z.object({ name: z.literal("vertical_curve"), inputs: VerticalCurveInput }),
   z.object({ name: z.literal("horizontal_curve"), inputs: HorizontalCurveInput }),
@@ -326,16 +278,3 @@ export const RunCalculatorInput = z.discriminatedUnion("name", [
   z.object({ name: z.literal("solar_observation"), inputs: SolarObservationInput }),
   z.object({ name: z.literal("grid_to_ground"), inputs: GridToGroundInput }),
 ]);
-
-// ---------------------------------------------------------------------------
-// validate_landxml tool input
-// ---------------------------------------------------------------------------
-
-export const ValidateLandXmlInput = z.object({
-  xml: z
-    .string()
-    .min(1)
-    .describe(
-      "Full LandXML document text. Must be a well-formed XML string starting with the <LandXML> root element (an XML prolog and comments are tolerated).",
-    ),
-});

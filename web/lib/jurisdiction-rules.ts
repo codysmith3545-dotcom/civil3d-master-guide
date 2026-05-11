@@ -1,12 +1,15 @@
 /**
- * Jurisdiction-rules helper for the MCP server side.
+ * Lightweight jurisdiction lookup used by the project-RAG layer.
  *
- * Replicated (intentionally, to avoid a cross-package import) from
- * `web/lib/jurisdiction-rules.ts`. If you change one, change the other.
+ * Given a lat/lng (typically the centroid of a project's bounds), return a
+ * coarse jurisdiction summary. This intentionally avoids GIS libraries; it
+ * is a simple county-centroid + bounding-box test for the 8 Indiana counties
+ * the guide covers. If 5A-MCP later ships a real `getJurisdictionRules` in
+ * `mcp-server/src/jurisdiction-rules.ts`, this can re-export from there.
  *
- * Agent 5A-MCP may later add `get_jurisdiction_rules` as a top-level MCP
- * tool that wraps this same function. The project-context tool only needs
- * `getJurisdictionRules` here.
+ * NOTE: This is a "best-effort" classifier — final jurisdictional review
+ * still belongs to the engineer of record. The structured summary is fed
+ * to the LLM as context, not used to make permitting decisions.
  */
 
 export interface JurisdictionRulesResult {
@@ -14,7 +17,7 @@ export interface JurisdictionRulesResult {
   county?: string;
   municipality?: string;
   summary: string;
-  contentRefs: string[];
+  contentRefs: string[]; // slugs under content/jurisdictions/...
   notes?: string[];
 }
 
@@ -27,7 +30,10 @@ interface CountyBox {
   maxLng: number;
 }
 
+// Bounding boxes are coarse (county-scale). These are not survey-grade; they
+// are good enough to route a project to the right county content page.
 const INDIANA_COUNTIES: CountyBox[] = [
+  // Approximate envelopes — Indianapolis metro + surrounding 7 counties.
   { slug: "marion-county",    name: "Marion County",    minLat: 39.63, maxLat: 39.93, minLng: -86.33, maxLng: -85.94 },
   { slug: "hamilton-county",  name: "Hamilton County",  minLat: 39.93, maxLat: 40.20, minLng: -86.27, maxLng: -85.81 },
   { slug: "hendricks-county", name: "Hendricks County", minLat: 39.62, maxLat: 39.95, minLng: -86.72, maxLng: -86.33 },
@@ -38,7 +44,13 @@ const INDIANA_COUNTIES: CountyBox[] = [
   { slug: "morgan-county",    name: "Morgan County",    minLat: 39.34, maxLat: 39.67, minLng: -86.62, maxLng: -86.22 },
 ];
 
-const INDIANA_BOX = { minLat: 37.77, maxLat: 41.76, minLng: -88.10, maxLng: -84.78 };
+// Indiana state envelope (very coarse; just used to determine "is this Indiana?").
+const INDIANA_BOX = {
+  minLat: 37.77,
+  maxLat: 41.76,
+  minLng: -88.10,
+  maxLng: -84.78,
+};
 
 function inBox(lat: number, lng: number, b: { minLat: number; maxLat: number; minLng: number; maxLng: number }): boolean {
   return lat >= b.minLat && lat <= b.maxLat && lng >= b.minLng && lng <= b.maxLng;
@@ -75,19 +87,27 @@ export function getJurisdictionRules(input: { lat: number; lng: number }): Juris
     county: county.slug,
     summary:
       `Project centroid falls within ${county.name}, Indiana. ` +
-      `Refer to the county page for stormwater, drainage, and survey-coordination requirements.`,
+      `Refer to the county page for stormwater, drainage, and survey-coordination requirements, ` +
+      `then drill down to the specific municipality if the project is inside an incorporated area.`,
     contentRefs: [
       `jurisdictions/indiana/${county.slug}/index`,
       "jurisdictions/indiana/index",
       "jurisdictions/indiana/state/state-plane-indiana",
     ],
-    notes: ["Bounding-box match is coarse — verify the actual municipality before submitting plans."],
+    notes: [
+      "Bounding-box match is coarse — verify the actual municipality before submitting plans.",
+    ],
   };
 }
 
+/**
+ * Compute a rough centroid of a GeoJSON Polygon / MultiPolygon / Feature /
+ * FeatureCollection. We do an arithmetic mean of vertex coordinates, which is
+ * imperfect for non-convex polygons but is fine for routing a project to a
+ * county-scale page.
+ */
 export function centroidOfGeoJSON(geo: unknown): { lat: number; lng: number } | null {
-  const coords: Array<[number, number]> = [];
-  walk(geo, coords);
+  const coords = collectCoords(geo);
   if (coords.length === 0) return null;
   let sx = 0;
   let sy = 0;
@@ -95,13 +115,25 @@ export function centroidOfGeoJSON(geo: unknown): { lat: number; lng: number } | 
     sx += x;
     sy += y;
   }
+  // GeoJSON uses [lng, lat] order.
   return { lng: sx / coords.length, lat: sy / coords.length };
+}
+
+function collectCoords(node: unknown): Array<[number, number]> {
+  const out: Array<[number, number]> = [];
+  walk(node, out);
+  return out;
 }
 
 function walk(node: unknown, out: Array<[number, number]>): void {
   if (node == null) return;
   if (Array.isArray(node)) {
-    if (node.length >= 2 && typeof node[0] === "number" && typeof node[1] === "number") {
+    // Leaf coordinate pair: [lng, lat] or [lng, lat, elev]
+    if (
+      node.length >= 2 &&
+      typeof node[0] === "number" &&
+      typeof node[1] === "number"
+    ) {
       out.push([node[0], node[1]]);
       return;
     }

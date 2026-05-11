@@ -2,4 +2,4 @@ packages:
   - 'web'
   - 'mcp-server'
   - 'packages/sdk'
-  - 'packages/datacollector-import'
+  - 'packages/search'

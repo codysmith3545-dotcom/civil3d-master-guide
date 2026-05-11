@@ -24,9 +24,9 @@ import {
   ListJurisdictionsInput,
   GetResourceIndexInput,
   RunCalculatorInput,
-  ImportDataCollectorInput,
+  GetProjectContextInput,
 } from "./schemas.js";
-import { importDataCollectorText } from "./datacollector-import.js";
+import { getProjectContext } from "./project-context.js";
 import {
   verticalCurve,
   horizontalCurve,
@@ -408,17 +408,21 @@ export function buildTools(): ToolDef[] {
       },
     },
     {
-      name: "import_datacollector",
+      name: "get_project_context",
       description:
-        "Parse a surveying data-collector ASCII file (PNEZD/NEZD/PXYZ CSV, Trimble CSV, Topcon CSV, Carlson RW5) and return the points plus warnings. Auto-detects the format unless `format` is specified. Binary formats (.crd, .crdb, .job, .dc) are not supported — export to CSV from the collector first.",
-      schema: ImportDataCollectorInput,
+        "Fetch the project-scoped RAG context for a given project: top public KB chunks for the query, top project-document chunks (when a project loader is registered), and a jurisdiction summary derived from the project's bounds. Designed for AI clients (Claude Desktop, Cursor) connecting via MCP that want a single call to assemble grounding context before answering a project question.",
+      schema: GetProjectContextInput,
       handler: async (args) => {
-        const parsed = ImportDataCollectorInput.parse(args);
-        const result = await importDataCollectorText(parsed.text, {
-          format: parsed.format,
-          filename: parsed.filename,
+        const parsed = GetProjectContextInput.parse(args);
+        const ctx = await getProjectContext({
+          projectId: parsed.projectId,
+          userId: parsed.userId,
+          query: parsed.query,
+          kbK: parsed.kbK,
+          projectK: parsed.projectK,
+          jurisdictionLookup: parsed.jurisdictionLookup,
         });
-        return jsonResult(result);
+        return jsonResult(ctx);
       },
     },
   ];
