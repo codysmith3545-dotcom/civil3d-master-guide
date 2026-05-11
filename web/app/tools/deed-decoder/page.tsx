@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import DeedPlot from "@/components/DeedPlot";
 import {
-  loadParser,
-  loadPlotter,
+  parseDeedText,
+  plotTraverse,
   type ParsedTraverse,
   type PlottedTraverse,
   type Course,
@@ -127,10 +127,6 @@ function coursesToCSV(courses: Course[]): string {
 
 export default function DeedDecoderPage() {
   const [tab, setTab] = useState<Tab>("paste");
-  const [packageStatus, setPackageStatus] = useState<{
-    parser: boolean;
-    plotter: boolean;
-  } | null>(null);
 
   // Paste tab
   const [pasteText, setPasteText] = useState("");
@@ -152,50 +148,23 @@ export default function DeedDecoderPage() {
   const [highlighted, setHighlighted] = useState<number | null>(null);
   const [parseError, setParseError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const parser = await loadParser();
-      const plotter = await loadPlotter();
-      if (!cancelled) {
-        setPackageStatus({ parser: !!parser, plotter: !!plotter });
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const parserMissing = packageStatus !== null && !packageStatus.parser;
-  const plotterMissing = packageStatus !== null && !packageStatus.plotter;
-
-  async function runParseAndPlot(text: string) {
+  function runParseAndPlot(text: string) {
     setParseError(null);
-    const parser = await loadParser();
-    if (!parser) {
-      setParseError("Parser package not yet integrated — paste mode disabled.");
-      setParsed(null);
-      setPlotted(null);
-      return;
-    }
     let p: ParsedTraverse;
     try {
-      p = parser.parseDeedText(text);
+      p = parseDeedText(text);
     } catch (err) {
       setParseError(
         err instanceof Error ? err.message : "Failed to parse deed text.",
       );
+      setParsed(null);
+      setPlotted(null);
       return;
     }
     setParsed(p);
 
-    const plotter = await loadPlotter();
-    if (!plotter) {
-      setPlotted(null);
-      return;
-    }
     try {
-      setPlotted(plotter.plotTraverse(p));
+      setPlotted(plotTraverse(p));
     } catch (err) {
       setParseError(
         err instanceof Error ? err.message : "Failed to plot traverse.",
@@ -204,16 +173,8 @@ export default function DeedDecoderPage() {
     }
   }
 
-  async function plotFromManual() {
+  function plotFromManual() {
     setParseError(null);
-    const plotter = await loadPlotter();
-    if (!plotter) {
-      setParseError(
-        "Plotter package not yet integrated — manual plotting disabled.",
-      );
-      setPlotted(null);
-      return;
-    }
     const courses: Course[] = [];
     let idx = 0;
     for (const row of manualRows) {
@@ -257,7 +218,7 @@ export default function DeedDecoderPage() {
     };
     setParsed(parsedShape);
     try {
-      setPlotted(plotter.plotTraverse(parsedShape));
+      setPlotted(plotTraverse(parsedShape));
     } catch (err) {
       setParseError(
         err instanceof Error ? err.message : "Failed to plot traverse.",
@@ -295,7 +256,7 @@ export default function DeedDecoderPage() {
           : `Extracted using ${body.modelUsed}.`,
       );
       // Auto-parse the extracted text.
-      await runParseAndPlot(body.text ?? "");
+      runParseAndPlot(body.text ?? "");
     } catch (err) {
       setUploadStatus(
         err instanceof Error ? err.message : "Network error.",
@@ -344,24 +305,6 @@ export default function DeedDecoderPage() {
         </p>
       </header>
 
-      {(parserMissing || plotterMissing) && (
-        <div className="mb-6 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-          {parserMissing && (
-            <p>
-              Parser package not yet integrated — paste mode disabled. The
-              upload tab will still display extracted text, and the manual tab
-              can drive the plotter once both packages land.
-            </p>
-          )}
-          {plotterMissing && (
-            <p className="mt-1">
-              Plotter package not yet integrated — closure summary and SVG
-              preview will appear here once it ships.
-            </p>
-          )}
-        </div>
-      )}
-
       {/* ---------- Tabs ---------- */}
       <div className="mb-6 flex gap-2 border-b border-ink-100">
         {(
@@ -397,8 +340,8 @@ export default function DeedDecoderPage() {
           />
           <div className="flex gap-3">
             <button
-              onClick={() => void runParseAndPlot(pasteText)}
-              disabled={parserMissing || !pasteText.trim()}
+              onClick={() => runParseAndPlot(pasteText)}
+              disabled={!pasteText.trim()}
               className="rounded-md bg-ink-900 px-5 py-1.5 text-sm font-medium text-white transition hover:bg-ink-700 disabled:opacity-40"
             >
               Parse
@@ -453,9 +396,8 @@ export default function DeedDecoderPage() {
                 className="w-full rounded-md border border-ink-200 p-3 font-mono text-sm outline-none focus:border-ink-400"
               />
               <button
-                onClick={() => void runParseAndPlot(extractedText)}
-                disabled={parserMissing}
-                className="rounded-md border border-ink-200 px-4 py-1.5 text-sm font-medium text-ink-700 transition hover:bg-ink-50 disabled:opacity-40"
+                onClick={() => runParseAndPlot(extractedText)}
+                className="rounded-md border border-ink-200 px-4 py-1.5 text-sm font-medium text-ink-700 transition hover:bg-ink-50"
               >
                 Re-parse
               </button>
@@ -613,9 +555,8 @@ export default function DeedDecoderPage() {
               Add row
             </button>
             <button
-              onClick={() => void plotFromManual()}
-              disabled={plotterMissing}
-              className="rounded-md bg-ink-900 px-5 py-1.5 text-sm font-medium text-white transition hover:bg-ink-700 disabled:opacity-40"
+              onClick={() => plotFromManual()}
+              className="rounded-md bg-ink-900 px-5 py-1.5 text-sm font-medium text-white transition hover:bg-ink-700"
             >
               Plot
             </button>
@@ -702,13 +643,10 @@ export default function DeedDecoderPage() {
           <div className="rounded-lg border border-ink-100 p-4">
             <h2 className="mb-3 text-base font-semibold">Plot</h2>
             {plotted ? (
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              <DeedPlot plotted={plotted as any} />
+              <DeedPlot plotted={plotted} />
             ) : (
               <p className="text-sm text-ink-500">
-                Plotter package not yet integrated — install
-                <code className="mx-1">@civil3d-master-guide/deed-plotter</code>
-                to render the traverse.
+                No plot available — parsing did not produce a traverse.
               </p>
             )}
           </div>
