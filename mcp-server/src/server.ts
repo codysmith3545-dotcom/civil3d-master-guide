@@ -25,6 +25,7 @@ import {
   JurisdictionAtInput,
   GetResourceIndexInput,
   RunCalculatorInput,
+<<<<<<< HEAD
   ListLispRoutinesInput,
   GetLispInput,
   DecodeDeedInput,
@@ -33,6 +34,11 @@ import {
 import { listLispRoutines, getLisp } from "./lisp.js";
 import { decodeDeed } from "./decode-deed.js";
 import { getJurisdictionRules } from "./jurisdiction-rules.js";
+=======
+  ValidateLandXmlInput,
+} from "./schemas.js";
+import { validateLandXml } from "./landxml-validator.js";
+>>>>>>> worktree-agent-a3000337236dccbf8
 import {
   verticalCurve,
   horizontalCurve,
@@ -733,6 +739,7 @@ export function buildTools(): ToolDef[] {
       },
     },
     {
+<<<<<<< HEAD
       name: "decode_deed",
       description:
         "Parse a metes-and-bounds deed description into structured courses, optionally plotted.",
@@ -741,6 +748,16 @@ export function buildTools(): ToolDef[] {
         const parsed = DecodeDeedInput.parse(args);
         const result = await decodeDeed({ text: parsed.text });
         return jsonResult(result);
+=======
+      name: "validate_landxml",
+      description:
+        "Parse and validate a LandXML document. Returns a structured summary of surfaces, alignments, parcels, surveys, and CgPoints, plus errors and warnings (missing version, mixed units, empty surfaces, alignments without geometry, unclosed parcels, NaN coordinates, suspiciously large coordinates, etc.). Pass the full XML text in `xml`.",
+      schema: ValidateLandXmlInput,
+      handler: async (args) => {
+        const parsed = ValidateLandXmlInput.parse(args);
+        const summary = await validateLandXml({ xml: parsed.xml });
+        return jsonResult(summary);
+>>>>>>> worktree-agent-a3000337236dccbf8
       },
     },
   ];

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LandXML version="1.2">
+  <Units>
+    <Imperial linearUnit="USSurveyFoot"/>
+  </Units>
+  <Surfaces>
+    <Surface name="EG-Bad">
+      <Definition surfType="TIN">
+        <Pnts>
+          <P id="1">100.0 200.0 NOTANUMBER</P>
+          <P id="2">99999999.0 200.0 800.0</P>
+        </Pnts>
+      </Definition>
+    </Surface>
+  </Surfaces>
+</LandXML>

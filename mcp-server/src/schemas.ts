@@ -298,3 +298,16 @@ export const RunCalculatorInput = z.discriminatedUnion("name", [
   z.object({ name: z.literal("solar_observation"), inputs: SolarObservationInput }),
   z.object({ name: z.literal("grid_to_ground"), inputs: GridToGroundInput }),
 ]);
+
+// ---------------------------------------------------------------------------
+// validate_landxml tool input
+// ---------------------------------------------------------------------------
+
+export const ValidateLandXmlInput = z.object({
+  xml: z
+    .string()
+    .min(1)
+    .describe(
+      "Full LandXML document text. Must be a well-formed XML string starting with the <LandXML> root element (an XML prolog and comments are tolerated).",
+    ),
+});

@@ -112,6 +112,14 @@ const survey = [
   },
 ];
 
+const interop = [
+  {
+    href: "/tools/landxml-validator",
+    title: "LandXML validator",
+    body: "Inspect surfaces, alignments, parcels, surveys, and CgPoints in a LandXML file. Flags missing units, mixed unit blocks, empty surfaces, unclosed parcels, NaN coordinates, and more.",
+  },
+];
+
 function ToolSection({
   title,
   tools,
@@ -159,6 +167,7 @@ export default function ToolsIndex() {
         <ToolSection title="Engineering" tools={engineering} />
         <ToolSection title="Boundary" tools={boundary} />
         <ToolSection title="Survey" tools={survey} />
+        <ToolSection title="Interop & QA" tools={interop} />
       </div>
     </div>
   );
