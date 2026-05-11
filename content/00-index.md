@@ -4,7 +4,7 @@ section: ""
 order: 0
 visibility: public
 tags: [index, table-of-contents]
-updated: 2026-05-06
+updated: 2026-05-11
 ---
 
 > **TL;DR**
@@ -28,6 +28,7 @@ updated: 2026-05-06
 | Find good books / channels / forums | [resources](resources/index.md) |
 | Set up survey equipment | [field-and-boundary/survey-equipment](field-and-boundary/survey-equipment/index.md) |
 | Adjust a control network | [field-and-boundary/control-networks](field-and-boundary/control-networks/index.md) |
+| Pick a datum or track NSRS 2022 modernization | [field-and-boundary/datums](field-and-boundary/datums/index.md) |
 | Understand surveyor regulations | [field-and-boundary/professional-practice](field-and-boundary/professional-practice/index.md) |
 | Handle a tricky boundary | [field-and-boundary/advanced-boundary](field-and-boundary/advanced-boundary/index.md) |
 | Look up a term | [glossary](glossary.md) |
@@ -58,6 +59,7 @@ updated: 2026-05-06
 - [Monuments & evidence](field-and-boundary/monuments-and-evidence/index.md)
 - [Easements & right-of-way](field-and-boundary/easements-and-row/index.md)
 - [Coordinate systems](field-and-boundary/coordinate-systems/index.md)
+- [Datums & reference frames](field-and-boundary/datums/index.md)
 - [Survey Equipment & Technology](field-and-boundary/survey-equipment/index.md)
 - [Control Networks & Adjustment](field-and-boundary/control-networks/index.md)
 - [Professional Practice](field-and-boundary/professional-practice/index.md)
