@@ -59,6 +59,11 @@ export default function HomePage() {
           href="/docs/playbooks"
           body="End-to-end surveyor workflows that chain the Deed Decoder, jurisdiction intelligence, Civil 3D Power Pack LISP, calculators, and the AI Project Companion plat-check."
         />
+        <FeatureCard
+          title="CEU Modules"
+          href="/ceu"
+          body="Self-study CEU framework for Indiana licensed surveyors. 7 modules, 7 PDH documented, with a local tracker and printable completion report (pending Board approval)."
+        />
       </section>
 
       <section className="mt-16">
