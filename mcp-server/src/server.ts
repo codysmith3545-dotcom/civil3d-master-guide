@@ -24,7 +24,9 @@ import {
   ListJurisdictionsInput,
   GetResourceIndexInput,
   RunCalculatorInput,
+  GetJurisdictionRulesInput,
 } from "./schemas.js";
+import { getJurisdictionRules } from "./jurisdiction-rules.js";
 import {
   verticalCurve,
   horizontalCurve,
@@ -111,6 +113,9 @@ function zodToJsonSchema(schema: z.ZodTypeAny): Record<string, unknown> {
   }
   if (schema instanceof z.ZodArray) {
     return { type: "array", items: zodToJsonSchema((schema as z.ZodArray<z.ZodTypeAny>).element) };
+  }
+  if (schema instanceof z.ZodEffects) {
+    return zodToJsonSchema((schema as z.ZodEffects<z.ZodTypeAny>).innerType());
   }
   return {};
 }
@@ -346,6 +351,20 @@ export function buildTools(): ToolDef[] {
         const root = await resolveKbRoot();
         const items = await listJurisdictions(root, parsed.state);
         return jsonResult({ count: items.length, items });
+      },
+    },
+    {
+      name: "get_jurisdiction_rules",
+      description:
+        "Return the typed jurisdictional rules for a place — either by explicit slug (e.g. 'jurisdictions/indiana/hamilton-county/municipalities/carmel') or by lat/lng point-in-bounds match. Fields returned: submittal_checklist, setbacks, stormwater_thresholds, recording_requirements, plat_requirements. Missing fields cascade up the hierarchy (municipality → county → state). Any field still missing after cascade is returned as null. Returns null if nothing matches.",
+      schema: GetJurisdictionRulesInput,
+      handler: async (args) => {
+        const parsed = GetJurisdictionRulesInput.parse(args);
+        const result = await getJurisdictionRules(parsed);
+        if (!result) {
+          return jsonResult(null);
+        }
+        return jsonResult(result);
       },
     },
     {

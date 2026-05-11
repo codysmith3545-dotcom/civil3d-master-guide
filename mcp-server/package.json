@@ -19,7 +19,9 @@
     "build": "tsc -b",
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist dist-tests",
+    "pretest": "tsc -p tsconfig.test.json",
+    "test": "node --test \"dist-tests/tests/**/*.test.js\"",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
