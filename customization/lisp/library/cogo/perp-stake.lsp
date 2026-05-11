@@ -40,6 +40,6 @@
                 (prompt
                   (strcat "\n  Station="
                           (rtos station 2 4)
-                          "   Offset=" (rtos (abs offset) 2 4) " " sign-sym))))))))))
+                          "   Offset=" (rtos (abs offset) 2 4) " " sign-sym)))))))))
   (princ))
 (princ)
