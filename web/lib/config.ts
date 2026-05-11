@@ -119,3 +119,26 @@ export function getDeedVisionDailyLimitCents(): number {
 export function getDeedVisionRateLimitPerHour(): number {
   return serverEnv.DEED_VISION_RATE_LIMIT_PER_HOUR;
 }
+
+/**
+ * Whitespace-separated list of additional CSP `frame-ancestors`
+ * sources allowed to embed `/embed/*` widgets in an iframe.
+ * `'self'` is always included implicitly.
+ */
+export function getEmbedFrameAncestors(): string[] {
+  const raw = process.env.EMBED_ALLOWED_FRAME_ANCESTORS ?? "";
+  const extra = raw
+    .split(/\s+/)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+  const set = new Set<string>(["'self'", ...extra]);
+  return Array.from(set);
+}
+
+/**
+ * Build the `Content-Security-Policy` value used for `/embed/*` responses.
+ */
+export function buildEmbedCspHeader(): string {
+  const ancestors = getEmbedFrameAncestors().join(" ");
+  return `frame-ancestors ${ancestors};`;
+}
