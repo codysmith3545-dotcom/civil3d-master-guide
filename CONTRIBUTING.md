@@ -106,6 +106,77 @@ pnpm build:llms    # regenerates llms.txt + llms-full.txt
 pnpm verify:links  # checks jurisdiction links
 ```
 
+## Typed jurisdiction frontmatter
+
+Jurisdiction index pages (county and municipality `index.md`) may carry typed,
+machine-readable fields in frontmatter. All five are OPTIONAL, but supplying
+them lets the MCP server, web UI, and checklist generator produce structured
+answers without re-parsing prose. The full TypeScript schema lives in
+`packages/content/src/index.ts`. The content linter
+(`node scripts/lint-content.mjs`) validates shape and emits a WARNING (not an
+error) when a jurisdiction index page is missing one of these fields.
+
+`submittal_checklist` — array of `{ id, label, category, citation? }`. Categories
+are `submittal | drafting | recording | review`. Example:
+
+```yaml
+submittal_checklist:
+  - id: stamped-signed-by-licensed-surveyor
+    label: "Plat stamped and signed by an Indiana-licensed land surveyor"
+    category: submittal
+    citation: "IC 25-21.5; 865 IAC 1-12"
+```
+
+`setbacks` — typed yards for `residential`, `commercial`, `agricultural`, plus
+optional `citations`. All distances are in feet. Example:
+
+```yaml
+setbacks:
+  residential: { front_ft: 25, side_ft: 6, rear_ft: 20, corner_side_ft: 15 }
+  citations: ["Indianapolis - Marion County Revised Code, Chapter 744"]
+```
+
+`stormwater_thresholds` — disturbance / impervious area thresholds that trigger
+detention, water-quality, or BMP requirements, in square feet, plus optional
+`citations`. Use `null` for any value you cannot verify in this revision; do
+not fabricate. Example:
+
+```yaml
+stormwater_thresholds:
+  detention_trigger_sqft: 5000
+  citations: ["Indianapolis Stormwater Design and Specifications Manual"]
+```
+
+`recording_requirements` — county recorder document standards: `paper_size` (one
+of `8.5x11 | 8.5x14 | 11x17 | 18x24 | 24x36`), margins in inches, `ink_color`
+(`black | blue | black-or-blue`), fees in USD, plus `citations`. Example:
+
+```yaml
+recording_requirements:
+  paper_size: "8.5x14"
+  margin_top_in: 2
+  ink_color: black
+  fee_first_page_usd: 25
+  citations: ["IC 36-2-11-16.5"]
+```
+
+`plat_requirements` — array of `{ item, required, notes? }`. Use this for the
+items the local plan commission and recorder demand on every plat (north arrow,
+surveyor seal, monumentation table, etc.). Example:
+
+```yaml
+plat_requirements:
+  - item: "North arrow"
+    required: true
+  - item: "Monumentation table"
+    required: true
+    notes: "865 IAC 1-12-19"
+```
+
+Where a value is uncertain or sourced from an evolving local manual, mark it
+`null` and add a `# verification-needed: <field>` comment in frontmatter. Do
+not invent values.
+
 ## Style
 
 - Prose is plain English; no marketing voice.
