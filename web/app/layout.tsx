@@ -32,6 +32,9 @@ export default function RootLayout({
               <Link href="/tools" className="hover:text-ink-900">
                 Calculators
               </Link>
+              <Link href="/projects" className="hover:text-ink-900">
+                Projects
+              </Link>
               <Link href="/chat" className="hover:text-ink-900">
                 Chat
               </Link>
