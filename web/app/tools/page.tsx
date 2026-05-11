@@ -2,8 +2,16 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Calculators",
+  title: "Tools",
 };
+
+const customization = [
+  {
+    href: "/customization/lisp",
+    title: "LISP routine library",
+    body: "Browsable catalog of AutoLISP routines with copyable source and per-routine markdown docs. Filter by category (layer, points, cogo, parcel, annotation, qa, drafting, utilities).",
+  },
+];
 
 const engineering = [
   {
@@ -129,15 +137,17 @@ export default function ToolsIndex() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <header className="mb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">Calculators</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Tools</h1>
         <p className="mt-2 max-w-2xl text-ink-600">
-          Small, focused tools for screening-level civil-engineering math. Each
-          calculator runs in your browser and is also available as a pure
-          function for the MCP server to call. Verify any output that affects a
-          permit or construction document against the cited primary source.
+          Small, focused tools for screening-level civil-engineering math and a
+          curated AutoLISP library. Each calculator runs in your browser and is
+          also available as a pure function for the MCP server to call. Verify
+          any output that affects a permit or construction document against the
+          cited primary source.
         </p>
       </header>
       <div className="space-y-10">
+        <ToolSection title="Customization" tools={customization} />
         <ToolSection title="Engineering" tools={engineering} />
         <ToolSection title="Survey" tools={survey} />
       </div>

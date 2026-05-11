@@ -25,7 +25,10 @@ import {
   JurisdictionAtInput,
   GetResourceIndexInput,
   RunCalculatorInput,
+  ListLispRoutinesInput,
+  GetLispInput,
 } from "./schemas.js";
+import { listLispRoutines, getLisp } from "./lisp.js";
 import {
   verticalCurve,
   horizontalCurve,
@@ -638,6 +641,29 @@ export function buildTools(): ToolDef[] {
         const root = await resolveKbRoot();
         const index = await buildResourceIndex(root);
         return jsonResult(index);
+      },
+    },
+    {
+      name: "list_lisp_routines",
+      description:
+        "List all LISP routines available in the curated library at customization/lisp/library/. Returns metadata only (name, command, category, summary, appliesTo). Use `get_lisp` to fetch a routine's source and full markdown documentation.",
+      schema: ListLispRoutinesInput,
+      handler: async (args) => {
+        ListLispRoutinesInput.parse(args ?? {});
+        const items = await listLispRoutines();
+        return jsonResult({ count: items.length, items });
+      },
+    },
+    {
+      name: "get_lisp",
+      description:
+        "Fetch a single LISP routine from the library by its `name` slug. Returns the AutoLISP source, the markdown documentation, and metadata.",
+      schema: GetLispInput,
+      handler: async (args) => {
+        const parsed = GetLispInput.parse(args);
+        const result = await getLisp(parsed.name);
+        if (!result) return errorResult(`LISP routine not found: ${parsed.name}`);
+        return jsonResult(result);
       },
     },
     {

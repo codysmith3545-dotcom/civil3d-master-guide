@@ -51,6 +51,18 @@ export const JurisdictionAtInput = z.object({
 
 export const GetResourceIndexInput = z.object({}).strict();
 
+export const ListLispRoutinesInput = z.object({}).strict();
+
+export const GetLispInput = z.object({
+  name: z
+    .string()
+    .min(1)
+    .describe(
+      "The routine `name` (slug) from the LISP library, e.g. 'lfrz-pattern'. Must match an entry in customization/lisp/library/index.json.",
+    ),
+});
+export type GetLispInputT = z.infer<typeof GetLispInput>;
+
 // Calculator inputs
 export const VerticalCurveInput = z.object({
   g1: z.number().describe("Incoming grade in percent (e.g. -2 for -2.0%)."),
