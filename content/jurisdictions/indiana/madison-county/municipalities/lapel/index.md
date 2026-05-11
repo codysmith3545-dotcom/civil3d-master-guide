@@ -1,28 +1,28 @@
 ---
-title: "Mooresville"
-section: "jurisdictions/indiana/morgan-county/municipalities/mooresville"
+title: "Lapel"
+section: "jurisdictions/indiana/madison-county/municipalities/lapel"
 order: 100
 visibility: public
-tags: [indiana, morgan-county, mooresville]
+tags: [indiana, madison-county, lapel]
 updated: 2026-05-11
 sources:
-  - title: "Town of Mooresville"
-    url: "https://www.mooresville.in.gov/"
-    verified: 2026-05-06
+  - title: "Town of Lapel"
+    url: "https://www.townoflapel.com/"
+    verified: 2026-05-11
 # verification-needed: setbacks, stormwater_thresholds, recording_requirements, plat_requirements
-# Mooresville straddles Hendricks/Morgan; verify which county recorder accepts a
-# given plat. All numeric values null pending verification.
+# All numeric values below remain null pending verification against the current Town
+# of Lapel zoning, subdivision, and stormwater ordinances.
 submittal_checklist:
   - id: site-plan
-    label: "Site / development plan to Mooresville Plan Commission"
+    label: "Site / development plan to Lapel Plan Commission"
     category: submittal
-    citation: "Town of Mooresville zoning + subdivision ordinances (verify)"
+    citation: "Town of Lapel zoning + subdivision ordinances (verify)"
   - id: drainage-plan
     label: "Drainage plan signed and sealed by Indiana-licensed PE"
     category: submittal
-    citation: "Town of Mooresville stormwater ordinance (verify)"
+    citation: "Town of Lapel stormwater ordinance (verify)"
   - id: county-plat-recording
-    label: "Record approved plat with the appropriate county Recorder (Morgan or Hendricks)"
+    label: "Record approved plat with Madison County Recorder"
     category: recording
     citation: "IC 36-2-11"
 setbacks:
@@ -30,13 +30,13 @@ setbacks:
   commercial: { front_ft: null, side_ft: null, rear_ft: null }
   agricultural: { front_ft: null, side_ft: null, rear_ft: null }
   citations:
-    - "Town of Mooresville Zoning Ordinance (verify)"
+    - "Town of Lapel Zoning Ordinance (verify)"
 stormwater_thresholds:
   detention_trigger_sqft: null
   water_quality_trigger_sqft: null
   bmp_required_above_sqft: null
   citations:
-    - "Town of Mooresville Stormwater Ordinance (verify)"
+    - "Town of Lapel Stormwater Ordinance (verify)"
     - "327 IAC 15-5 (Indiana Rule 5)"
 recording_requirements:
   paper_size: null
@@ -48,7 +48,7 @@ recording_requirements:
   fee_each_additional_usd: null
   citations:
     - "IC 36-2-11"
-    - "County Recorder fee schedule (verify)"
+    - "Madison County Recorder fee schedule (verify)"
 plat_requirements:
   - item: "north arrow"
     required: true
@@ -60,14 +60,14 @@ plat_requirements:
 ---
 
 > **TL;DR**
-> 1. Straddles Hendricks/Morgan; largest town in Morgan County.
-> 2. Visit the official site for current ordinances, design standards, and submittal requirements: https://www.mooresville.in.gov/
+> 1. Small town in southwest Madison County, near the Hamilton County line.
+> 2. Detailed content forthcoming; see county-level page for current rules.
 > 3. Page is a stub; expand with engineering contact, adopted standards manual, plan-review checklist.
 
 ## Authorities
 
-- **Official site** — https://www.mooresville.in.gov/
-- Morgan County government — see [county page](../../index.md).
+- **Official site** — https://www.townoflapel.com/
+- Madison County government — see [county page](../../index.md).
 
 ## Codes & standards
 
@@ -76,5 +76,5 @@ plat_requirements:
 
 ## Related
 
-- [Morgan County](../../index.md)
+- [Madison County](../../index.md)
 - [State of Indiana](../../../state/index.md)
