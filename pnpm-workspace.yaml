@@ -2,3 +2,4 @@ packages:
   - 'web'
   - 'mcp-server'
   - 'packages/sdk'
+  - 'packages/deed-plotter'
