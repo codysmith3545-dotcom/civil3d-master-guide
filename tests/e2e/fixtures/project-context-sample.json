@@ -1,0 +1,23 @@
+{
+  "project": {
+    "name": "E2E Smoke Project",
+    "client": "Internal QA",
+    "jurisdiction": {
+      "state": "indiana",
+      "county": "marion-county",
+      "municipality": "indianapolis"
+    },
+    "horizontal_datum": "NAD83(2011)",
+    "vertical_datum": "NAVD88",
+    "units": "us-survey-feet",
+    "coordinate_system": "Indiana State Plane East (US ft)"
+  },
+  "scope": {
+    "type": "boundary-and-topo",
+    "deliverables": ["topo", "boundary", "alta"]
+  },
+  "design_controls": {
+    "design_speed_mph": 45,
+    "alignment_class": "rural-collector"
+  }
+}

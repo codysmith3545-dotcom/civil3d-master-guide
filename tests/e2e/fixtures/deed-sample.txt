@@ -1,0 +1,16 @@
+Sample deed description (synthetic, for harness use only — not from a real instrument).
+
+A part of the Northwest Quarter of Section 12, Township 16 North, Range 3 East,
+Marion County, Indiana, more particularly described as follows:
+
+Beginning at the Northwest corner of said Quarter Section; thence South 89
+degrees 58 minutes 12 seconds East along the North line of said Quarter
+Section, a distance of 660.00 feet to the point of beginning; thence
+continuing South 89 degrees 58 minutes 12 seconds East along said North line,
+a distance of 330.00 feet; thence South 00 degrees 01 minutes 48 seconds
+West, parallel with the West line of said Quarter Section, a distance of
+660.00 feet; thence North 89 degrees 58 minutes 12 seconds West, parallel
+with the North line of said Quarter Section, a distance of 330.00 feet;
+thence North 00 degrees 01 minutes 48 seconds East, parallel with the West
+line of said Quarter Section, a distance of 660.00 feet to the point of
+beginning, containing 5.00 acres, more or less.
