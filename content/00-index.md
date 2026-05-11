@@ -4,7 +4,7 @@ section: ""
 order: 0
 visibility: public
 tags: [index, table-of-contents]
-updated: 2026-05-06
+updated: 2026-05-11
 ---
 
 > **TL;DR**
@@ -43,10 +43,14 @@ updated: 2026-05-06
 - [Profiles](civil3d/profiles/index.md) — surface/layout profiles, profile views, vertical curves.
 - [Corridors](civil3d/corridors/index.md) — assemblies, subassemblies, targets, surfaces.
 - [Pipe networks](civil3d/pipe-networks/index.md) — gravity + pressure, parts list, rules.
+- [Pressure pipe networks](civil3d/pressure-pipe-networks/index.md) — pressure parts lists, rules, interferences, conversion.
+- [Surface analytics](civil3d/surfaces-analytics/index.md) — elevation/slope/aspect/watershed, volume surfaces, simplification.
 - [Grading](civil3d/grading/index.md) — feature lines, grading groups, daylighting.
 - [Parcels](civil3d/parcels/index.md) — creation, sizing, legal labeling.
 - [Plan production](civil3d/plan-production/index.md) — view frames, match lines, sheet sets.
+- [Sheet sets and plans production](civil3d/sheet-set-and-plans-production/index.md) — SSM, plan-profile, viewport scale, create sheets.
 - [Data shortcuts](civil3d/data-shortcuts/index.md) — shortcuts vs Vault, project structure.
+- [Data shortcuts and collaboration](civil3d/data-shortcuts-and-collaboration/index.md) — Vault, BIM Collaborate, xref vs data ref, recovery.
 - [Commands](civil3d/commands/index.md) — every Civil 3D command.
 
 ### Field & boundary practice
