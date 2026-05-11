@@ -27,6 +27,7 @@ updated: 2026-05-11
 | Set up a new project's CAD standards | [standards/cad-layer-standards](standards/cad-layer-standards/index.md), [customization/templates-and-kits](customization/templates-and-kits/index.md) |
 | Find good books / channels / forums | [resources](resources/index.md) |
 | Set up survey equipment | [field-and-boundary/survey-equipment](field-and-boundary/survey-equipment/index.md) |
+| Run an end-to-end workflow (deed to plat, ALTA, topo, etc.) | [playbooks](playbooks/00-index.md) |
 | Adjust a control network | [field-and-boundary/control-networks](field-and-boundary/control-networks/index.md) |
 | Pick a datum or track NSRS 2022 modernization | [field-and-boundary/datums](field-and-boundary/datums/index.md) |
 | Understand surveyor regulations | [field-and-boundary/professional-practice](field-and-boundary/professional-practice/index.md) |
@@ -120,6 +121,9 @@ updated: 2026-05-11
 ### Developers
 - [Integrations overview](developers/index.md)
 - [Public REST API](developers/public-api.md)
+
+### Playbooks
+- [Playbooks index](playbooks/00-index.md) — end-to-end workflows that chain Deed Decoder, Jurisdiction Intelligence, Civil 3D Power Pack, MCP tools, calculators, and the AI Project Companion.
 
 ### Reference
 - [Glossary](glossary.md)
