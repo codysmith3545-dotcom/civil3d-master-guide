@@ -1,0 +1,200 @@
+# Civil 3D drawing ambient settings.
+# Set via: Toolspace > Settings tab > <drawing-name> right-click >
+# Edit Drawing Settings... The categories below match the dialog tabs.
+
+drawing_settings:
+
+  units_and_zone:
+    drawing_units: us-foot                  # imperial, US Survey Feet
+    angular_units: degrees
+    imperial_to_metric_conversion: us-survey-foot-3937
+    scale_objects_inserted_from_other_drawings: true
+    set_autocad_variables_to_match: true
+    coordinate_system_zone:
+      category: "USA, Indiana"
+      available_zones:
+        - "NAD83 (2011) Indiana East (US Foot) — EPSG 6459"
+        - "NAD83 (2011) Indiana West (US Foot) — EPSG 6460"
+      default: "(unset — assign per project)"
+      notes: "InCORS network publishes adjusted positions on NAD83(2011); choose East/West zone by county."
+
+  transformation:
+    apply_transform: false
+    notes: "Survey templates ship un-transformed. If a project requires grid-to-ground, set the scale factor and rotation per project, not in the template."
+
+  object_layers:
+    # default layer for each Civil 3D object class
+    alignment: V-ROAD-CNTR
+    parcel: V-PROP-LINE
+    parcel_segment: V-PROP-LINE
+    profile: V-ROAD-CNTR
+    profile_view: V-ANNO-NOTE
+    sample_line: V-ANNO-NOTE
+    section: V-ANNO-NOTE
+    section_view: V-ANNO-NOTE
+    surface: C-TOPO
+    point: V-NODE
+    point_group: V-NODE
+    survey_figure: V-PROP-LINE
+    network_pipe: V-SSWR
+    network_structure: V-SSWR-MH
+    pressure_pipe: V-WATR
+    pressure_appurtenance: V-WATR-VALV
+    feature_line: C-TOPO-BRKL
+    grading: C-TOPO
+
+  abbreviations:
+    # Used inside label expressions; <[Length(Uft|P2|RN|AP|Sn|OF)]>=...
+    spiral: SPI
+    alignment_geometry_point: PI
+    profile_geometry_point: PVI
+    crest_curve: CR
+    sag_curve: SAG
+    horizontal_curve: HC
+    cul_de_sac: CDS
+    centerline: CL
+    right_of_way: R/W
+    edge_of_pavement: EOP
+    back_of_curb: BOC
+    top_of_curb: TC
+    benchmark: BM
+    temporary_benchmark: TBM
+    control_point: CP
+    iron_pin_found: IPF
+    iron_pin_set: IPS
+    rebar: RB
+    concrete_monument: CONC MON
+    railroad_spike: RR SPIKE
+    mag_nail: MAG
+    point_of_beginning: POB
+    point_of_commencement: POC
+    section_corner: SC
+    quarter_corner: 1/4 COR
+    rod_disk: ROD/DISK
+    cross_in_concrete: X-CONC
+
+  ambient_settings:
+    general:
+      plotted_unit_display_type: leave-decimal
+      set_autocad_units_when_editing_drawing_settings: true
+      independent_layer_on: optional
+    distance:
+      unit: us-foot
+      precision: 2
+      rounding: round-normal
+      sign: sign-negative-prefix
+    dimension:
+      unit: us-foot
+      precision: 2
+      rounding: round-normal
+    coordinate:
+      unit: us-foot
+      precision: 4
+      rounding: round-normal
+      drop_decimal_for_whole_numbers: false
+      coordinate_display: northing-easting
+    grid_coordinate:
+      unit: us-foot
+      precision: 4
+    elevation:
+      unit: us-foot
+      precision: 2
+      rounding: round-normal
+    angle:
+      unit: degree
+      precision: 4              # seconds places (DD-MM-SS.SSSS)
+      rounding: round-normal
+      drop_decimal_for_whole_numbers: false
+    direction:
+      unit: degree-dms
+      precision: 4
+      rounding: round-normal
+      direction_format: bearings
+      bearing_quadrant_format: "Q DD-MM-SS Q"
+      drop_decimal_for_whole_numbers: false
+    lat_long:
+      unit: degree-dms
+      precision: 4
+    azimuth:
+      unit: degree-dms
+      precision: 4
+      direction: clockwise-from-north
+    area:
+      unit: square-foot
+      precision: 2
+      secondary_display:
+        unit: acre
+        precision: 4
+    volume:
+      unit: cubic-yard
+      precision: 2
+    slope:
+      unit: percent
+      precision: 2
+    station:
+      unit: us-foot
+      precision: 2
+      rounding: round-normal
+      station_format: "1+00.00"
+    speed:
+      unit: mile-per-hour
+      precision: 0
+    pressure:
+      unit: pound-per-square-inch
+      precision: 2
+    pipe_diameter:
+      unit: inch
+      precision: 2
+    pipe_length:
+      unit: us-foot
+      precision: 2
+    pipe_slope:
+      unit: percent
+      precision: 2
+    structure_size:
+      unit: inch
+      precision: 2
+
+  survey_user_settings:
+    # Toolspace > Survey tab > Survey User Settings
+    miscellaneous:
+      automatically_create_break_lines: false
+      drawing_scale: 50
+      figure_layer: V-PROP-LINE
+      use_drawing_settings_for_units: true
+    interactive_graphics:
+      survey_command_line: false
+      use_interactive_graphics: true
+      glyph_color: 1
+      glyph_size: 10
+    equipment_database:
+      current_equipment_database: "(unset)"
+      default_equipment: "Total Station"
+    network_preview:
+      preview_size: 10
+      preview_color: 32
+    observation_database_defaults:
+      direction_type: bearings
+      angle_type: degrees-minutes-seconds
+      distance_type: us-survey-feet
+      coordinate_type: northing-easting
+
+  point_settings:
+    creation:
+      prompt_for_descriptions: automatic
+      prompt_for_elevations: automatic
+      prompt_for_point_numbers: yes
+      next_point_number: 1000
+      default_layer: V-NODE
+    update:
+      update_points_in_drawing: true
+      allow_externally_referenced_points_to_be_modified: false
+    list:
+      include_subset_of_points: true
+    coordinates:
+      coordinate_display: northing-easting
+
+notes:
+  - "Coordinate-system zone is intentionally left blank in the template; the surveyor assigns the right Indiana zone per project to avoid silent reprojection."
+  - "Bearing format 'Q DD-MM-SS Q' yields e.g. N 45-13-22 E. Adjust precision to 2 if seconds-fraction display crowds labels."
+  - "Drawing scale 50 in survey user settings matches the default 1\"=50' annotation scale; bump per project."

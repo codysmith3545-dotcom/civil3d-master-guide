@@ -1,0 +1,159 @@
+description_key_set:
+  name: "Indiana-Carlson (PNEZD)"
+  source_format: "Carlson SurvCE / SurvPC PNEZD export"
+  collector: "Carlson SurvCE 6 / SurvPC 6 and later"
+  collector_native_format: "CRD (coordinate file) + RW5 (raw observation); PNEZD CSV is the export route"
+  appliesTo: [civil3d-2022, civil3d-2024, civil3d-2025, civil3d-2026]
+  updated: 2026-05-11
+  sources:
+    - title: "Carlson Software — SurvCE / SurvPC reference manuals"
+      url: "https://web.carlsonsw.com/files/knowledgebase/kbase_attach/"
+      verified: 2026-05-11
+      note: "manuals live in the KB; unverified deep link"
+  notes: |
+    Carlson uses field-coding with explicit linework prefixes (`+` start
+    figure, `-` end figure) and supports a "Field-to-Finish" code table
+    that drives layer/symbol assignment outside of Civil 3D. Many offices
+    instead let Civil 3D's description keys do the work. PNEZD export from
+    Carlson typically places the full description (including any linework
+    suffix) in field 5, space-delimited.
+    Carlson is liberal with delimiters: `IPF -1` and `IPF-1` both occur.
+  match_order:
+    - "Specific monumentation first"
+    - "Feature codes with explicit linework suffix tolerated via trailing wildcards"
+    - "Catch-all last"
+
+keys:
+  # Monumentation
+  - { code: "IPF-RC*",       point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON-FND, format_string: "Found iron pin with cap" }
+  - { code: "IPF*",          point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON-FND, format_string: "Found 1/2-inch iron pin" }
+  - { code: "IPS-RC*",       point_style: SET-MONUMENT,         label_style: SET-MONUMENT-LABEL,   layer: V-MON-SET, format_string: "Set 5/8-inch iron pin with cap" }
+  - { code: "IPS*",          point_style: SET-MONUMENT,         label_style: SET-MONUMENT-LABEL,   layer: V-MON-SET, format_string: "Set 5/8-inch iron pin" }
+  - { code: "IRC*",          point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON-FND, format_string: "Iron rod with cap" }
+  - { code: "CONC-MON-SET*", point_style: SET-MONUMENT,         label_style: SET-MONUMENT-LABEL,   layer: V-MON-SET, format_string: "Set concrete monument" }
+  - { code: "CONC-MON*",     point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON-FND, format_string: "Found concrete monument" }
+  - { code: "CM*",           point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON-FND, format_string: "Concrete monument" }
+  - { code: "MAG-F*",        point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON-FND, format_string: "Found mag nail" }
+  - { code: "MAG-S*",        point_style: SET-MONUMENT,         label_style: SET-MONUMENT-LABEL,   layer: V-MON-SET, format_string: "Set mag nail" }
+  - { code: "MAG*",          point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON,     format_string: "Mag nail" }
+  - { code: "RR-SPIKE*",     point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON,     format_string: "Railroad spike" }
+  - { code: "X-CONC*",       point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON,     format_string: "Cross in concrete" }
+  - { code: "X-CURB*",       point_style: FOUND-MONUMENT,       label_style: FOUND-MONUMENT-LABEL, layer: V-MON,     format_string: "Cross cut in curb" }
+  - { code: "SEC-COR*",      point_style: FOUND-MONUMENT,       label_style: CONTROL-POINT-LABEL,  layer: V-PROP-CTRL, format_string: "Section corner" }
+  - { code: "QTR-COR*",      point_style: FOUND-MONUMENT,       label_style: CONTROL-POINT-LABEL,  layer: V-PROP-CTRL, format_string: "Quarter corner" }
+
+  # Control
+  - { code: "CP*",           point_style: CONTROL-POINT,        label_style: CONTROL-POINT-LABEL, layer: V-NODE-CTRL, format_string: "Control point" }
+  - { code: "TBM*",          point_style: CONTROL-POINT,        label_style: CONTROL-POINT-LABEL, layer: V-NODE-CTRL, format_string: "Temporary benchmark" }
+  - { code: "BM*",           point_style: CONTROL-POINT,        label_style: CONTROL-POINT-LABEL, layer: V-NODE-CTRL, format_string: "Benchmark" }
+  - { code: "GPS*",          point_style: CONTROL-POINT,        label_style: CONTROL-POINT-LABEL, layer: V-NODE-CTRL, format_string: "GPS control" }
+  - { code: "RTK*",          point_style: CONTROL-POINT,        label_style: CONTROL-POINT-LABEL, layer: V-NODE-CTRL, format_string: "RTK control" }
+
+  # Curb / pavement
+  - { code: "TBC*",          point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-CURB, format_string: "Top of back of curb" }
+  - { code: "BC*",           point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-CURB, format_string: "Back of curb" }
+  - { code: "TC*",           point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-CURB, format_string: "Top of curb" }
+  - { code: "FC*",           point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-CURB, format_string: "Face of curb" }
+  - { code: "FL*",           point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-CURB, format_string: "Flowline" }
+  - { code: "GUT*",          point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-CURB, format_string: "Gutter" }
+  - { code: "EOP*",          point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-EDGE, format_string: "Edge of pavement" }
+  - { code: "EOA*",          point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-EDGE, format_string: "Edge of asphalt" }
+  - { code: "EOG*",          point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-EDGE, format_string: "Edge of gravel" }
+  - { code: "EOC*",          point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-EDGE, format_string: "Edge of concrete" }
+  - { code: "WALK*",         point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-WALK, format_string: "Sidewalk" }
+  - { code: "DRV-CONC*",     point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-DRIV, format_string: "Concrete driveway" }
+  - { code: "DRV-ASPH*",     point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-DRIV, format_string: "Asphalt driveway" }
+  - { code: "DRV*",          point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-DRIV, format_string: "Driveway" }
+  - { code: "STRIPE*",       point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ROAD-STRP, format_string: "Pavement stripe" }
+  - { code: "PARK-STRIPE*",  point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ALTA-PARK, format_string: "Parking stall stripe" }
+
+  # Sanitary
+  - { code: "SAN-MH*",       point_style: SAN-MANHOLE,          label_style: UTILITY-LABEL, layer: V-SSWR-MH, format_string: "Sanitary manhole" }
+  - { code: "SAN-CO*",       point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-SSWR,    format_string: "Sanitary cleanout" }
+  - { code: "SAN-LAT*",      point_style: SHOT,                 label_style: SHOT-LABEL,    layer: V-SSWR-LATR, format_string: "Sanitary lateral" }
+
+  # Storm
+  - { code: "STM-MH*",       point_style: STM-MANHOLE,          label_style: UTILITY-LABEL, layer: V-STRM-MH, format_string: "Storm manhole" }
+  - { code: "STO-MH*",       point_style: STM-MANHOLE,          label_style: UTILITY-LABEL, layer: V-STRM-MH, format_string: "Storm manhole" }
+  - { code: "STM-CB*",       point_style: STM-INLET,            label_style: UTILITY-LABEL, layer: V-STRM-CB, format_string: "Storm catch basin" }
+  - { code: "STO-CB*",       point_style: STM-INLET,            label_style: UTILITY-LABEL, layer: V-STRM-CB, format_string: "Storm catch basin" }
+  - { code: "STM-IN*",       point_style: STM-INLET,            label_style: UTILITY-LABEL, layer: V-STRM-CB, format_string: "Storm inlet" }
+  - { code: "STM-FES*",      point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-STRM-ES, format_string: "Flared end section" }
+  - { code: "STM-ES*",       point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-STRM-ES, format_string: "Storm end section" }
+  - { code: "STM-PIPE*",     point_style: SHOT,                 label_style: SHOT-LABEL,    layer: V-STRM,    format_string: "Storm pipe" }
+  - { code: "DTCH*",         point_style: SHOT,                 label_style: SHOT-LABEL,    layer: V-STRM-DTCH, format_string: "Drainage ditch" }
+  - { code: "SWALE*",        point_style: SHOT,                 label_style: SHOT-LABEL,    layer: V-STRM-DTCH, format_string: "Drainage swale" }
+
+  # Water
+  - { code: "WV*",           point_style: WATER-VALVE,          label_style: UTILITY-LABEL, layer: V-WATR-VALV, format_string: "Water valve" }
+  - { code: "GV*",           point_style: WATER-VALVE,          label_style: UTILITY-LABEL, layer: V-WATR-VALV, format_string: "Gate valve" }
+  - { code: "BV*",           point_style: WATER-VALVE,          label_style: UTILITY-LABEL, layer: V-WATR-VALV, format_string: "Butterfly valve" }
+  - { code: "WM*",           point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-WATR-METR, format_string: "Water meter" }
+  - { code: "FH*",           point_style: HYDRANT,              label_style: UTILITY-LABEL, layer: V-WATR-VALV, format_string: "Fire hydrant" }
+  - { code: "PIV*",          point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-WATR-VALV, format_string: "Post indicator valve" }
+
+  # Gas / Electric / Telecom
+  - { code: "GAS-MK*",       point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-NGAS-MARK, format_string: "Gas marker" }
+  - { code: "GAS-METER*",    point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-NGAS-MARK, format_string: "Gas meter" }
+  - { code: "GAS-VLV*",      point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-NGAS-MARK, format_string: "Gas valve" }
+  - { code: "ELEC-TR*",      point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-ELEC-UGND, format_string: "Electric transformer" }
+  - { code: "ELEC-PB*",      point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-ELEC-UGND, format_string: "Electric pull box" }
+  - { code: "ELEC-MH*",      point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-ELEC-UGND, format_string: "Electric manhole" }
+  - { code: "ELEC-METER*",   point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-ELEC-UGND, format_string: "Electric meter" }
+  - { code: "PP*",           point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-ELEC-POLE, format_string: "Power pole" }
+  - { code: "POLE*",         point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-ELEC-POLE, format_string: "Utility pole" }
+  - { code: "GUY*",          point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-ELEC-OVHD, format_string: "Guy anchor" }
+  - { code: "LITE*",         point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-ELEC-LITE, format_string: "Light pole" }
+  - { code: "TEL-PED*",      point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-COMM-UGND, format_string: "Telecom pedestal" }
+  - { code: "TEL-MH*",       point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-COMM-UGND, format_string: "Telecom manhole" }
+  - { code: "CATV-PED*",     point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-COMM-CATV, format_string: "Cable TV pedestal" }
+  - { code: "FBR-MK*",       point_style: UTILITY-APPURTENANCE, label_style: UTILITY-LABEL, layer: V-COMM-FBR,  format_string: "Fiber marker" }
+
+  # Buildings / hardscape
+  - { code: "BLDG*",         point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-BLDG,        format_string: "Building corner" }
+  - { code: "ROOF*",         point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-BLDG-ROOF,   format_string: "Roof overhang" }
+  - { code: "FENCE*",        point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-FENC,        format_string: "Fence" }
+  - { code: "WALL*",         point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-FENC-WALL,   format_string: "Wall" }
+  - { code: "CONC-PAD*",     point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-FLOR-PATT,   format_string: "Concrete pad" }
+  - { code: "AC-PAD*",       point_style: UTILITY-STRUCTURE,    label_style: UTILITY-LABEL, layer: V-MISC,     format_string: "AC pad" }
+  - { code: "DECK*",         point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-FLOR-PATT,   format_string: "Deck" }
+  - { code: "PATIO*",        point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-FLOR-PATT,   format_string: "Patio" }
+
+  # Vegetation — Carlson convention `TR-DEC 12` (with space)
+  - { code: "TR-DEC*",       point_style: TREE,                 label_style: TREE-LABEL, layer: V-VEGE-TREE, format_string: "Deciduous tree $2\"", scale_param_1: 2 }
+  - { code: "TR-CON*",       point_style: TREE,                 label_style: TREE-LABEL, layer: V-VEGE-TREE, format_string: "Coniferous tree $2\"", scale_param_1: 2 }
+  - { code: "TR-MAP*",       point_style: TREE,                 label_style: TREE-LABEL, layer: V-VEGE-TREE, format_string: "Maple $2\"", scale_param_1: 2 }
+  - { code: "TR-OAK*",       point_style: TREE,                 label_style: TREE-LABEL, layer: V-VEGE-TREE, format_string: "Oak $2\"", scale_param_1: 2 }
+  - { code: "TR*",           point_style: TREE,                 label_style: TREE-LABEL, layer: V-VEGE-TREE, format_string: "Tree" }
+  - { code: "BRUSH*",        point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-VEGE-BRSH, format_string: "Brush" }
+  - { code: "FIELD-EDGE*",   point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-VEGE-LINE, format_string: "Edge of field" }
+
+  # Topography
+  - { code: "GR-MAJ*",       point_style: SHOT,                 label_style: SHOT-LABEL, layer: C-TOPO-BRKL, format_string: "Major grade break" }
+  - { code: "GR-MIN*",       point_style: SHOT,                 label_style: SHOT-LABEL, layer: C-TOPO-BRKL, format_string: "Minor grade break" }
+  - { code: "SPOT*",         point_style: SPOT-ELEVATION,       label_style: ELEV-ONLY-LABEL, layer: C-TOPO-SPOT, format_string: "Spot elevation" }
+  - { code: "GR*",           point_style: SPOT-ELEVATION,       label_style: ELEV-ONLY-LABEL, layer: C-TOPO-SPOT, format_string: "Ground shot" }
+  - { code: "HP*",           point_style: SPOT-ELEVATION,       label_style: ELEV-ONLY-LABEL, layer: C-TOPO-SPOT, format_string: "High point" }
+  - { code: "LP*",           point_style: SPOT-ELEVATION,       label_style: ELEV-ONLY-LABEL, layer: C-TOPO-SPOT, format_string: "Low point" }
+
+  # ALTA
+  - { code: "ENCR*",         point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ALTA-ENCR, format_string: "Encroachment: $*" }
+  - { code: "EVID*",         point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ALTA-EVID, format_string: "Observed evidence: $*" }
+  - { code: "ZONE*",         point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ALTA-ZONE, format_string: "Zoning setback" }
+  - { code: "FLD*",          point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-ALTA-FLD,  format_string: "Flood zone" }
+
+  # Catch-all
+  - { code: "*",             point_style: SHOT,                 label_style: SHOT-LABEL, layer: V-MISC,        format_string: "$*" }
+
+format_quirks:
+  linework_prefixes:
+    - "+    start figure"
+    - "-    end figure"
+    - "PC   start curve"
+    - "PT   end curve"
+    - "CLS  close polygon"
+  field_to_finish_warning: |
+    If your office uses Carlson Field-to-Finish (.FLD code table) for
+    layer/symbol assignment, disable it on PNEZD export so Civil 3D
+    description keys can do the work. Otherwise the symbology will be
+    duplicated and the layer values may conflict.

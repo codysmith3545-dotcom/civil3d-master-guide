@@ -1,0 +1,85 @@
+name,color_index,linetype,lineweight,plot,description,ncs_reference,source
+0,7,Continuous,Default,Yes,AutoCAD default — never draw on it; required for blocks,n/a,AutoCAD default
+DEFPOINTS,7,Continuous,Default,No,Non-plotting construction points,n/a,AutoCAD default
+V-ANNO-NOTE,7,Continuous,0.18,Yes,Survey general notes and call-outs,NCS V-ANNO-NOTE,NCS v6
+V-ANNO-TITL,7,Continuous,0.35,Yes,Survey sheet titles,NCS V-ANNO-TITL,NCS v6
+V-ANNO-TEXT,7,Continuous,0.18,Yes,Generic survey text,NCS V-ANNO-TEXT,NCS v6
+V-ANNO-DIMS,3,Continuous,0.18,Yes,Survey dimensions (bearings/distances on plat),NCS V-ANNO-DIMS,NCS v6
+V-ANNO-LEAD,7,Continuous,0.18,Yes,Leaders / callouts,NCS V-ANNO-LEAD,NCS v6
+V-ANNO-TABL,7,Continuous,0.18,Yes,Line/curve tables and legal-description tables,NCS V-ANNO-TABL,NCS v6
+V-ANNO-LEGN,7,Continuous,0.25,Yes,Legend block,NCS V-ANNO-LEGN,NCS v6
+V-ANNO-NPLT,8,Continuous,Default,No,Construction text — not plotted,NCS V-ANNO-NPLT,NCS v6
+V-VPORT,8,Continuous,Default,No,Viewport frames on paperspace,NCS V-VPORT,NCS v6
+V-NODE,7,Continuous,Default,Yes,Survey points (generic node host),NCS V-NODE,NCS v6
+V-NODE-TEXT,7,Continuous,0.18,Yes,Survey point labels,NCS V-NODE,NCS v6
+V-NODE-CTRL,1,Continuous,0.30,Yes,Survey control points (CP/TBM/BM),NCS V-NODE,NCS v6
+V-MON,2,Continuous,0.30,Yes,Boundary monuments (found and set),NCS V-PROP-MON,NCS v6
+V-MON-FND,2,Continuous,0.30,Yes,Found monuments,NCS V-PROP-MON,NCS v6 + 865 IAC 1-12
+V-MON-SET,4,Continuous,0.30,Yes,Set monuments,NCS V-PROP-MON,NCS v6 + 865 IAC 1-12
+V-PROP-LINE,2,Continuous,0.50,Yes,Boundary line — subject parcel,NCS V-PROP-LINE,NCS v6
+V-PROP-LINE-ADJ,8,DASHED,0.30,Yes,Adjoining boundary lines,NCS V-PROP-LINE,NCS v6
+V-PROP-RTWY,4,Continuous,0.40,Yes,Right-of-way lines,NCS V-PROP-RTWY,NCS v6 + INDOT
+V-PROP-RTWY-EX,4,DASHED,0.30,Yes,Existing right-of-way,NCS V-PROP-RTWY,NCS v6 + INDOT
+V-PROP-ESMT,6,DASHEDX2,0.30,Yes,Easements (generic),NCS V-PROP-ESMT,NCS v6
+V-PROP-ESMT-DRNG,6,DASHED,0.30,Yes,Drainage easement,NCS V-PROP-ESMT,Hamilton Co SWMTSM
+V-PROP-ESMT-UTIL,6,DASHED,0.30,Yes,Utility easement,NCS V-PROP-ESMT,NCS v6
+V-PROP-ESMT-INGR,6,HIDDEN,0.30,Yes,Ingress/egress easement,NCS V-PROP-ESMT,NCS v6
+V-PROP-ESMT-TEMP,30,DASHED,0.25,Yes,Temporary construction easement,NCS V-PROP-ESMT,INDOT R/W
+V-PROP-SECT,1,PHANTOM,0.40,Yes,Section / township / range lines,NCS V-PROP-SECT,NCS v6
+V-PROP-CTRL,1,CENTER,0.30,Yes,Section corners and 1/4-corner ties,NCS V-PROP-CTRL,NCS v6
+V-PROP-PLAT,2,Continuous,0.40,Yes,Recorded plat lines,NCS V-PROP-LINE,NCS v6
+V-PROP-LOT,2,Continuous,0.30,Yes,Lot lines within plats,NCS V-PROP-LINE,NCS v6
+V-PROP-ADRS,7,Continuous,0.18,Yes,Address numbers,NCS V-PROP,NCS v6
+C-TOPO,8,Continuous,0.18,Yes,Topographic features (generic catch-all),NCS C-TOPO,NCS v6
+C-TOPO-MAJR,32,Continuous,0.40,Yes,Major contours (5 ft or 10 ft),NCS C-TOPO-MAJR,NCS v6
+C-TOPO-MINR,33,Continuous,0.18,Yes,Minor contours (1 ft or 2 ft),NCS C-TOPO-MINR,NCS v6
+C-TOPO-SPOT,7,Continuous,0.18,Yes,Spot elevations,NCS C-TOPO-SPOT,NCS v6
+C-TOPO-BRKL,3,Continuous,0.25,Yes,Breaklines for surface model,NCS C-TOPO-BRKL,NCS v6
+C-TOPO-BNDY,1,Continuous,0.25,Yes,Surface boundary (inner/outer),NCS C-TOPO-BNDY,NCS v6
+V-ROAD-CNTR,1,CENTER,0.30,Yes,Roadway centerline (existing),NCS V-ROAD-CNTR,NCS v6 + INDOT
+V-ROAD-EDGE,7,Continuous,0.30,Yes,Edge of pavement,NCS V-ROAD-EDGE,NCS v6
+V-ROAD-CURB,7,Continuous,0.30,Yes,Curb and gutter,NCS V-ROAD-CURB,NCS v6 + INDOT
+V-ROAD-SHLD,7,Continuous,0.25,Yes,Shoulder edge,NCS V-ROAD,NCS v6
+V-ROAD-WALK,7,Continuous,0.25,Yes,Existing sidewalk,NCS V-FLOR-WALK,NCS v6
+V-ROAD-DRIV,7,Continuous,0.25,Yes,Existing driveway,NCS V-ROAD,NCS v6
+V-ROAD-STRP,7,DASHED,0.18,Yes,Existing pavement striping,NCS V-ROAD,NCS v6
+V-COMM-OVHD,2,DASHED,0.30,Yes,Overhead telecom,NCS V-COMM-OVHD,NCS v6
+V-COMM-UGND,2,DASHEDX2,0.30,Yes,Underground telecom,NCS V-COMM-UGND,NCS v6
+V-COMM-CATV,4,HIDDEN,0.30,Yes,Cable television,NCS V-COMM,NCS v6
+V-COMM-FBR,4,HIDDEN2,0.30,Yes,Fiber optic communications,NCS V-COMM-FBR,NCS v6
+V-ELEC-OVHD,1,Continuous,0.30,Yes,Overhead electric,NCS V-ELEC-OVHD,NCS v6
+V-ELEC-UGND,1,DASHED,0.30,Yes,Underground electric,NCS V-ELEC-UGND,NCS v6
+V-ELEC-POLE,1,Continuous,0.40,Yes,Utility poles,NCS V-ELEC,NCS v6
+V-ELEC-LITE,1,Continuous,0.30,Yes,Street and area lighting,NCS V-ELEC-LITE,NCS v6
+V-NGAS,2,DASHED,0.30,Yes,Natural gas main,NCS V-NGAS,NCS v6
+V-NGAS-MARK,2,Continuous,0.30,Yes,Gas markers / meters,NCS V-NGAS,NCS v6
+V-WATR,5,Continuous,0.30,Yes,Existing water main,NCS V-WATR,NCS v6
+V-WATR-SERV,5,DASHED,0.25,Yes,Water service lines,NCS V-WATR,NCS v6
+V-WATR-VALV,5,Continuous,0.30,Yes,Water valves and hydrants,NCS V-WATR,NCS v6
+V-WATR-METR,5,Continuous,0.30,Yes,Water meters,NCS V-WATR,NCS v6
+V-SSWR,30,Continuous,0.30,Yes,Existing sanitary sewer,NCS V-SSWR,NCS v6
+V-SSWR-MH,30,Continuous,0.30,Yes,Sanitary manholes,NCS V-SSWR-MH,NCS v6
+V-SSWR-LATR,30,DASHED,0.25,Yes,Sanitary laterals,NCS V-SSWR,NCS v6
+V-STRM,3,Continuous,0.30,Yes,Existing storm sewer,NCS V-STRM,NCS v6 + Hamilton SWMTSM
+V-STRM-MH,3,Continuous,0.30,Yes,Storm manholes,NCS V-STRM-MH,NCS v6
+V-STRM-CB,3,Continuous,0.30,Yes,Storm inlets and catch basins,NCS V-STRM-CB,NCS v6 + Hamilton SWMTSM
+V-STRM-ES,3,Continuous,0.30,Yes,Storm end sections / FES,NCS V-STRM,NCS v6
+V-STRM-DTCH,3,DASHED,0.25,Yes,Drainage ditches and swales,NCS V-STRM,Hamilton SWMTSM
+V-FENC,8,FENCELINE1,0.30,Yes,Fences,NCS V-FENC,NCS v6
+V-FENC-WALL,8,Continuous,0.40,Yes,Retaining and screen walls,NCS V-FENC,NCS v6
+V-BLDG,1,Continuous,0.50,Yes,Building footprints,NCS V-BLDG,NCS v6
+V-BLDG-ROOF,8,DASHED,0.25,Yes,Building roof overhang lines,NCS V-BLDG,NCS v6
+V-BLDG-CANP,8,DASHEDX2,0.25,Yes,Canopies / awnings,NCS V-BLDG,NCS v6
+V-VEGE-TREE,3,Continuous,0.25,Yes,Tree trunks and dripline,NCS V-VEGE-TREE,NCS v6
+V-VEGE-BRSH,3,DASHED,0.18,Yes,Brush / undergrowth,NCS V-VEGE,NCS v6
+V-VEGE-LINE,3,DASHED,0.18,Yes,Tree line / field edge,NCS V-VEGE,NCS v6
+V-FLOR-PATT,8,Continuous,0.18,Yes,Hardscape patterns (concrete/asphalt hatch),NCS V-FLOR-PATT,NCS v6
+V-WATR-BODY,5,Continuous,0.30,Yes,Edge of water (creeks/ponds/lakes),NCS V-WATR,NCS v6
+V-WATR-FLOW,5,DASHED,0.25,Yes,Stream centerlines,NCS V-WATR,NCS v6
+V-ALTA-EVID,30,Continuous,0.30,Yes,ALTA observed evidence of use,NCS V-PROP,ALTA/NSPS 2021
+V-ALTA-ENCR,1,Continuous,0.40,Yes,ALTA encroachments,NCS V-PROP,ALTA/NSPS 2021
+V-ALTA-ZONE,8,PHANTOM,0.25,Yes,Zoning setback lines (Table A item 6b),NCS V-PROP,ALTA/NSPS 2021
+V-ALTA-FLD,5,DASHEDX2,0.25,Yes,FEMA flood-zone boundaries (Table A item 3),NCS V-PROP,FEMA FIRM
+V-ALTA-PARK,8,Continuous,0.18,Yes,Parking-stall stripes (Table A item 9),NCS V-PROP,ALTA/NSPS 2021
+V-RAIL,7,RAILROAD,0.30,Yes,Railroad tracks,NCS V-RAIL,NCS v6
+V-MISC,8,Continuous,0.25,Yes,Miscellaneous surveyed features,NCS V-MISC,NCS v6
