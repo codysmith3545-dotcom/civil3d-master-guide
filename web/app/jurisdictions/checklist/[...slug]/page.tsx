@@ -31,12 +31,12 @@ export default function ChecklistPage({ params }: Props) {
 
       <ChecklistClient
         slug={j.jurisdictionSlug}
-        items={items.map((it, i) => ({
-          id: it.id ?? String(i),
-          label: it.label,
-          description: it.description,
-          required: it.required,
-          source: it.source,
+        items={items.map((it: Record<string, unknown>, i: number) => ({
+          id: typeof it.id === "string" ? it.id : String(i),
+          label: typeof it.label === "string" ? it.label : "",
+          description: typeof it.description === "string" ? it.description : undefined,
+          required: typeof it.required === "boolean" ? it.required : true,
+          source: typeof it.source === "string" ? it.source : undefined,
         }))}
       />
 
