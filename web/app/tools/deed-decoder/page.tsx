@@ -701,7 +701,16 @@ export default function DeedDecoderPage() {
 
           <div className="rounded-lg border border-ink-100 p-4">
             <h2 className="mb-3 text-base font-semibold">Plot</h2>
-            <DeedPlot plotted={plotted} highlightIndex={highlighted} />
+            {plotted ? (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              <DeedPlot plotted={plotted as any} />
+            ) : (
+              <p className="text-sm text-ink-500">
+                Plotter package not yet integrated — install
+                <code className="mx-1">@civil3d-master-guide/deed-plotter</code>
+                to render the traverse.
+              </p>
+            )}
           </div>
         </section>
       )}
