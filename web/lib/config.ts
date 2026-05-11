@@ -33,10 +33,21 @@ const serverSchema = z.object({
   // Override for where markdown content lives. Useful in tests.
   CIVIL3D_CONTENT_ROOT: z.string().optional(),
 
+  // Server-only Supabase service-role key (AI Project Companion).
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
 });
+
+export function hasPublicSupabaseConfig(): boolean {
+  return Boolean(publicEnv.NEXT_PUBLIC_SUPABASE_URL && publicEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+}
+
+export function hasServerSupabaseConfig(): boolean {
+  return Boolean(publicEnv.NEXT_PUBLIC_SUPABASE_URL && serverEnv.SUPABASE_SERVICE_ROLE_KEY);
+}
 
 const publicSchema = z.object({
   // Canonical public URL of the deployment. Used for absolute links in
