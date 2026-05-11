@@ -4,7 +4,7 @@ section: "civil3d/grading"
 order: 90
 visibility: public
 tags: [grading, feature-line, grading-group, daylight]
-updated: 2026-05-06
+updated: 2026-05-11
 ---
 
 > **TL;DR**
@@ -16,11 +16,16 @@ updated: 2026-05-06
 
 - [Feature lines](feature-lines.md)
 - [Feature line editing (elevation tools, smooth, weed)](feature-line-editing.md)
+- [Feature line elevation editing (Elevation Editor deep-dive)](feature-line-elevation-editing.md)
 - [Grading objects (criteria sets, projection, daylight)](grading-objects.md)
+- [Grading criteria sets (distance-grade vs elevation-grade)](grading-criteria-sets.md)
+- [Grading from feature lines (footprint -> surface, infill)](grading-from-feature-lines.md)
 - [Grading groups and grading surfaces](grading-groups.md)
 - [Site interaction and feature line sites](sites-and-feature-lines.md)
 - [Corridor-based grading vs feature-line grading](corridor-vs-feature-line-grading.md)
-- [Grading troubleshooting](troubleshooting-grading.md)
+- [Grading volumes and reports](grading-volumes-and-reports.md)
+- [Grading troubleshooting (common errors, diagnosis)](grading-troubleshooting.md)
+- [Grading troubleshooting (legacy)](troubleshooting-grading.md)
 
 ## Related
 
