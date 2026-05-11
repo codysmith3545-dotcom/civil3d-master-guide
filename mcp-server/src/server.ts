@@ -24,7 +24,9 @@ import {
   ListJurisdictionsInput,
   GetResourceIndexInput,
   RunCalculatorInput,
+  ImportDataCollectorInput,
 } from "./schemas.js";
+import { importDataCollectorText } from "./datacollector-import.js";
 import {
   verticalCurve,
   horizontalCurve,
@@ -403,6 +405,20 @@ export function buildTools(): ToolDef[] {
           case "grid_to_ground":
             return jsonResult(gridToGround(parsed.inputs));
         }
+      },
+    },
+    {
+      name: "import_datacollector",
+      description:
+        "Parse a surveying data-collector ASCII file (PNEZD/NEZD/PXYZ CSV, Trimble CSV, Topcon CSV, Carlson RW5) and return the points plus warnings. Auto-detects the format unless `format` is specified. Binary formats (.crd, .crdb, .job, .dc) are not supported — export to CSV from the collector first.",
+      schema: ImportDataCollectorInput,
+      handler: async (args) => {
+        const parsed = ImportDataCollectorInput.parse(args);
+        const result = await importDataCollectorText(parsed.text, {
+          format: parsed.format,
+          filename: parsed.filename,
+        });
+        return jsonResult(result);
       },
     },
   ];
