@@ -25,12 +25,9 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@civil3d-master-guide/content": "workspace:*",
-    "@civil3d-master-guide/search": "workspace:*",
-=======
     "@civil3d-master-guide/landxml-validator": "workspace:*",
->>>>>>> worktree-agent-a3000337236dccbf8
+    "@civil3d-master-guide/search": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.0.4",
     "gray-matter": "^4.0.3",
     "zod": "^3.23.8"
