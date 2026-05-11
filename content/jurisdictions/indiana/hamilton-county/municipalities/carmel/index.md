@@ -4,16 +4,120 @@ section: "jurisdictions/indiana/hamilton-county/municipalities/carmel"
 order: 100
 visibility: public
 tags: [indiana, hamilton-county, carmel]
-updated: 2026-05-06
-state: indiana
-county: hamilton-county
-municipality: carmel
-# Approximate municipal bbox in [minLng, minLat, maxLng, maxLat] order.
-bounds: [-86.21, 39.92, -86.04, 40.02]
+updated: 2026-05-11
 sources:
   - title: "City of Carmel, Indiana"
     url: "https://www.carmel.in.gov/"
     verified: 2026-05-06
+  - title: "Carmel Unified Development Ordinance (UDO)"
+    url: "https://www.carmel.in.gov/department-services/community-services-/-planning-zoning"
+    verified: 2026-05-11
+# verification-needed: setbacks (S-1 / S-2 / B-3 yards from current UDO; values shown here
+#   are typical and must be confirmed against the currently adopted UDO for any parcel)
+# verification-needed: stormwater_thresholds (Carmel Stormwater Technical Standards Manual
+#   editions evolve; confirm trigger thresholds against the currently adopted manual)
+submittal_checklist:
+  - id: tac-review-package
+    label: "Technical Advisory Committee (TAC) review package complete"
+    category: review
+    citation: "Carmel UDO"
+  - id: stormwater-plan-per-carmel-manual
+    label: "Stormwater management plan tied to Carmel Stormwater Technical Standards Manual"
+    category: submittal
+  - id: idem-rule-5-noi
+    label: "IDEM Rule 5 NOI submitted for disturbance >= 1 ac"
+    category: submittal
+    citation: "327 IAC 15-5"
+  - id: will-serve-carmel-utilities
+    label: "Will-serve letter from Carmel Utilities (water)"
+    category: submittal
+  - id: will-serve-ctrwd
+    label: "Will-serve letter from Clay Township Regional Waste District (sanitary)"
+    category: submittal
+  - id: docs-development-plan
+    label: "Department of Community Services (DOCS) development plan approval"
+    category: review
+  - id: engineering-surety
+    label: "Performance and maintenance surety posted with Engineering before recording"
+    category: submittal
+  - id: fire-access-review
+    label: "Carmel Fire Department review of access, hydrant spacing, and fire flow"
+    category: review
+  - id: ada-compliance-package
+    label: "ADA compliance documentation for sidewalks, ramps, and crossings"
+    category: drafting
+  - id: stamped-signed-by-licensed-surveyor
+    label: "Plat stamped and signed by an Indiana-licensed land surveyor"
+    category: submittal
+    citation: "IC 25-21.5; 865 IAC 1-12"
+  - id: plat-recorded-hamilton-county
+    label: "Approved plat recorded with the Hamilton County Recorder"
+    category: recording
+    citation: "IC 36-2-11"
+setbacks:
+  residential:
+    front_ft: 30
+    side_ft: 10
+    rear_ft: 25
+    corner_side_ft: 20
+  commercial:
+    front_ft: 30
+    side_ft: 15
+    rear_ft: 25
+  citations:
+    - "Carmel Unified Development Ordinance (UDO), Article 2 (Zoning Districts)"
+stormwater_thresholds:
+  detention_trigger_sqft: null
+  water_quality_trigger_sqft: null
+  bmp_required_above_sqft: null
+  citations:
+    - "Carmel Stormwater Technical Standards Manual (verify adopted edition)"
+recording_requirements:
+  paper_size: "8.5x14"
+  margin_top_in: 2
+  margin_left_in: 0.5
+  margin_right_in: 0.5
+  margin_bottom_in: 0.5
+  ink_color: black
+  fee_first_page_usd: 25
+  fee_each_additional_usd: 25
+  citations:
+    - "IC 36-2-11-16.5 (Hamilton County Recorder applies for plats in Carmel)"
+plat_requirements:
+  - item: "North arrow"
+    required: true
+  - item: "Graphic and written scale"
+    required: true
+  - item: "Indiana-licensed land surveyor seal and signature"
+    required: true
+    notes: "865 IAC 1-12"
+  - item: "Basis of bearings statement"
+    required: true
+  - item: "Legal description tied to PLSS corner"
+    required: true
+  - item: "Monumentation table"
+    required: true
+    notes: "865 IAC 1-12-19"
+  - item: "Boundary courses and distances on every line"
+    required: true
+  - item: "Curve data table"
+    required: true
+  - item: "Lot numbers, lot areas, block designations"
+    required: true
+  - item: "Easements with dimensions and purpose"
+    required: true
+  - item: "Right-of-way widths and street names"
+    required: true
+  - item: "Floodplain / floodway boundaries with FIRM panel reference"
+    required: true
+  - item: "Vicinity map"
+    required: true
+  - item: "Owner's certificate and dedication"
+    required: true
+  - item: "Carmel Plan Commission approval block"
+    required: true
+  - item: "Auditor and Hamilton County Recorder certificate blocks"
+    required: true
 ---
 
 > **TL;DR**

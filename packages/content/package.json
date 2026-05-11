@@ -1,7 +1,7 @@
 {
   "name": "@civil3d-master-guide/content",
   "version": "0.1.0",
-  "description": "Shared content loader for the Civil 3D Master Guide knowledge base.",
+  "description": "Shared content loader and typed Frontmatter schema for the Civil 3D Master Guide knowledge base.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "test": "vitest run",
     "clean": "rm -rf dist"
   },
   "dependencies": {
@@ -23,7 +24,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0"
   },
   "license": "MIT"
 }
