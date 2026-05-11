@@ -54,6 +54,11 @@ export default function HomePage() {
           href="/docs/standards"
           body="AASHTO Green Book, ALTA/NSPS 2021, INDOT Design Manual, NCS layer naming, and Ten States Standards — summarized with source links."
         />
+        <FeatureCard
+          title="Playbooks"
+          href="/docs/playbooks"
+          body="End-to-end surveyor workflows that chain the Deed Decoder, jurisdiction intelligence, Civil 3D Power Pack LISP, calculators, and the AI Project Companion plat-check."
+        />
       </section>
 
       <section className="mt-16">

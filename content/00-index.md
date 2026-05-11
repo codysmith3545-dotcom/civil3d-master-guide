@@ -27,6 +27,7 @@ updated: 2026-05-06
 | Set up a new project's CAD standards | [standards/cad-layer-standards](standards/cad-layer-standards/index.md), [customization/templates-and-kits](customization/templates-and-kits/index.md) |
 | Find good books / channels / forums | [resources](resources/index.md) |
 | Set up survey equipment | [field-and-boundary/survey-equipment](field-and-boundary/survey-equipment/index.md) |
+| Run an end-to-end workflow (deed to plat, ALTA, topo, etc.) | [playbooks](playbooks/00-index.md) |
 | Adjust a control network | [field-and-boundary/control-networks](field-and-boundary/control-networks/index.md) |
 | Understand surveyor regulations | [field-and-boundary/professional-practice](field-and-boundary/professional-practice/index.md) |
 | Handle a tricky boundary | [field-and-boundary/advanced-boundary](field-and-boundary/advanced-boundary/index.md) |
@@ -105,6 +106,9 @@ updated: 2026-05-06
 - [Podcasts](resources/podcasts.md)
 - [Training & certifications](resources/training-and-certs.md)
 - [Tools & companion software](resources/tools-and-software.md)
+
+### Playbooks
+- [Playbooks index](playbooks/00-index.md) — end-to-end workflows that chain Deed Decoder, Jurisdiction Intelligence, Civil 3D Power Pack, MCP tools, calculators, and the AI Project Companion.
 
 ### Reference
 - [Glossary](glossary.md)
