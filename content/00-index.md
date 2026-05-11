@@ -68,12 +68,16 @@ updated: 2026-05-11
 
 ### Engineering
 - [Stormwater](engineering/stormwater/index.md)
+- [Stormwater design (deep)](engineering/stormwater-design/index.md)
 - [Sanitary sewer](engineering/sanitary-sewer/index.md)
+- [Sanitary sewer design (deep)](engineering/sanitary-sewer-design/index.md)
 - [Water distribution](engineering/water-distribution/index.md)
+- [Water distribution design (deep)](engineering/water-distribution-design/index.md)
 - [Roadway design](engineering/roadway-design/index.md)
 - [ADA & accessibility](engineering/ada-and-accessibility/index.md)
 - [Earthwork](engineering/earthwork/index.md)
 - [Erosion & sediment](engineering/erosion-and-sediment/index.md)
+- [Erosion & sediment control (deep)](engineering/erosion-and-sediment-control/index.md)
 - [Hydraulics](engineering/hydraulics/index.md)
 
 ### Standards
