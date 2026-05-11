@@ -1,0 +1,26 @@
+{
+  "name": "@civil3d-master-guide/search",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tiny BM25 retriever used by the web app's RAG layer and the MCP server's project-context tool.",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

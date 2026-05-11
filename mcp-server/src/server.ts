@@ -24,7 +24,9 @@ import {
   ListJurisdictionsInput,
   GetResourceIndexInput,
   RunCalculatorInput,
+  GetProjectContextInput,
 } from "./schemas.js";
+import { getProjectContext } from "./project-context.js";
 import {
   verticalCurve,
   horizontalCurve,
@@ -403,6 +405,24 @@ export function buildTools(): ToolDef[] {
           case "grid_to_ground":
             return jsonResult(gridToGround(parsed.inputs));
         }
+      },
+    },
+    {
+      name: "get_project_context",
+      description:
+        "Fetch the project-scoped RAG context for a given project: top public KB chunks for the query, top project-document chunks (when a project loader is registered), and a jurisdiction summary derived from the project's bounds. Designed for AI clients (Claude Desktop, Cursor) connecting via MCP that want a single call to assemble grounding context before answering a project question.",
+      schema: GetProjectContextInput,
+      handler: async (args) => {
+        const parsed = GetProjectContextInput.parse(args);
+        const ctx = await getProjectContext({
+          projectId: parsed.projectId,
+          userId: parsed.userId,
+          query: parsed.query,
+          kbK: parsed.kbK,
+          projectK: parsed.projectK,
+          jurisdictionLookup: parsed.jurisdictionLookup,
+        });
+        return jsonResult(ctx);
       },
     },
   ];
