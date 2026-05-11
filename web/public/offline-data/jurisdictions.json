@@ -1,0 +1,156 @@
+{
+  "generatedAt": "2026-05-11T23:53:37.163Z",
+  "state": {
+    "slug": "state",
+    "title": "State of Indiana",
+    "rules": {}
+  },
+  "counties": [
+    {
+      "slug": "boone-county",
+      "title": "Boone County, Indiana",
+      "section": "jurisdictions/indiana/boone-county",
+      "tags": [
+        "indiana",
+        "boone-county",
+        "lebanon",
+        "zionsville",
+        "whitestown"
+      ],
+      "bounds": {
+        "west": -86.696,
+        "south": 39.927,
+        "east": -86.323,
+        "north": 40.279
+      },
+      "rules": {}
+    },
+    {
+      "slug": "hamilton-county",
+      "title": "Hamilton County, Indiana",
+      "section": "jurisdictions/indiana/hamilton-county",
+      "tags": [
+        "indiana",
+        "hamilton-county",
+        "carmel",
+        "fishers",
+        "noblesville"
+      ],
+      "bounds": {
+        "west": -86.323,
+        "south": 39.927,
+        "east": -85.917,
+        "north": 40.275
+      },
+      "rules": {}
+    },
+    {
+      "slug": "hancock-county",
+      "title": "Hancock County, Indiana",
+      "section": "jurisdictions/indiana/hancock-county",
+      "tags": [
+        "indiana",
+        "hancock-county",
+        "greenfield"
+      ],
+      "bounds": {
+        "west": -85.957,
+        "south": 39.633,
+        "east": -85.633,
+        "north": 39.927
+      },
+      "rules": {}
+    },
+    {
+      "slug": "hendricks-county",
+      "title": "Hendricks County, Indiana",
+      "section": "jurisdictions/indiana/hendricks-county",
+      "tags": [
+        "indiana",
+        "hendricks-county",
+        "danville",
+        "plainfield",
+        "avon",
+        "brownsburg"
+      ],
+      "bounds": {
+        "west": -86.696,
+        "south": 39.612,
+        "east": -86.328,
+        "north": 39.927
+      },
+      "rules": {}
+    },
+    {
+      "slug": "johnson-county",
+      "title": "Johnson County, Indiana",
+      "section": "jurisdictions/indiana/johnson-county",
+      "tags": [
+        "indiana",
+        "johnson-county",
+        "franklin",
+        "greenwood"
+      ],
+      "bounds": {
+        "west": -86.328,
+        "south": 39.382,
+        "east": -85.957,
+        "north": 39.665
+      },
+      "rules": {}
+    },
+    {
+      "slug": "marion-county",
+      "title": "Marion County, Indiana",
+      "section": "jurisdictions/indiana/marion-county",
+      "tags": [
+        "indiana",
+        "marion-county",
+        "indianapolis",
+        "unigov"
+      ],
+      "bounds": {
+        "west": -86.328,
+        "south": 39.633,
+        "east": -85.937,
+        "north": 39.927
+      },
+      "rules": {}
+    },
+    {
+      "slug": "morgan-county",
+      "title": "Morgan County, Indiana",
+      "section": "jurisdictions/indiana/morgan-county",
+      "tags": [
+        "indiana",
+        "morgan-county",
+        "martinsville",
+        "mooresville"
+      ],
+      "bounds": {
+        "west": -86.696,
+        "south": 39.382,
+        "east": -86.328,
+        "north": 39.665
+      },
+      "rules": {}
+    },
+    {
+      "slug": "shelby-county",
+      "title": "Shelby County, Indiana",
+      "section": "jurisdictions/indiana/shelby-county",
+      "tags": [
+        "indiana",
+        "shelby-county",
+        "shelbyville"
+      ],
+      "bounds": {
+        "west": -85.957,
+        "south": 39.382,
+        "east": -85.633,
+        "north": 39.665
+      },
+      "rules": {}
+    }
+  ]
+}

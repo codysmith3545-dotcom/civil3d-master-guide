@@ -37,6 +37,11 @@ const steps = [
     optional: false,
   },
   {
+    label: 'build-offline-data',
+    cmd: 'node scripts/build-offline-data.mjs',
+    optional: false,
+  },
+  {
     label: 'mcp-server build',
     cmd: 'pnpm --filter @civil3d-master-guide/mcp run build',
     optional: true,
