@@ -106,6 +106,10 @@ updated: 2026-05-06
 - [Training & certifications](resources/training-and-certs.md)
 - [Tools & companion software](resources/tools-and-software.md)
 
+### Developers
+- [Integrations overview](developers/index.md)
+- [Public REST API](developers/public-api.md)
+
 ### Reference
 - [Glossary](glossary.md)
 - [Docs mirror (public-domain works)](docs-mirror/index.md)
