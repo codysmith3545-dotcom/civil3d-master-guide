@@ -2,14 +2,36 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 import SearchBox from "@/components/SearchBox";
+import Footer from "@/components/Footer";
+import { getSiteConfig } from "@/lib/site-config";
+
+const config = getSiteConfig();
 
 export const metadata: Metadata = {
   title: {
-    default: "Civil 3D Master Guide",
-    template: "%s — Civil 3D Master Guide",
+    default: config.brand.name,
+    template: `%s — ${config.brand.name}`,
   },
-  description:
-    "A working reference for land surveyors and civil engineers using Autodesk Civil 3D, with Indiana jurisdictional content, calculators, and an AI assistant.",
+  description: config.knowledge.scope,
+  openGraph: {
+    title: config.brand.name,
+    description: config.knowledge.scope,
+    type: "website",
+    images: [
+      {
+        url: "/og-default.svg",
+        width: 1200,
+        height: 630,
+        alt: config.brand.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: config.brand.name,
+    description: config.knowledge.scope,
+    images: ["/og-default.svg"],
+  },
 };
 
 export default function RootLayout({
@@ -42,9 +64,7 @@ export default function RootLayout({
           </div>
         </header>
         <main>{children}</main>
-        <footer className="border-t border-ink-100 py-6 text-center text-xs text-ink-500">
-          Civil 3D Master Guide. Original content licensed CC BY-SA 4.0.
-        </footer>
+        <Footer />
       </body>
     </html>
   );
