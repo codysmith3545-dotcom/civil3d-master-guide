@@ -405,7 +405,7 @@ const calcs: CalculatorEntry[] = [
         n2: num(input["n2"], "n2"),
         e2: num(input["e2"], "e2"),
         d2_ft: pos(input["d2_ft"], "d2_ft"),
-      } as unknown as dd.DistanceDistanceInput);
+      });
     },
   },
   {
@@ -462,7 +462,7 @@ const calcs: CalculatorEntry[] = [
         if (!isObj(b)) throw new ValidationError(`benchmarks[${i}] must be an object`);
         return {
           name: str(b["name"], `benchmarks[${i}].name`),
-          known_elevation_ft:
+          elevation:
             b["known_elevation_ft"] === undefined
               ? undefined
               : num(b["known_elevation_ft"], `benchmarks[${i}].known_elevation_ft`),
@@ -473,14 +473,14 @@ const calcs: CalculatorEntry[] = [
         return {
           from: str(o["from"], `observations[${i}].from`),
           to: str(o["to"], `observations[${i}].to`),
-          delta_h_ft: num(o["delta_h_ft"], `observations[${i}].delta_h_ft`),
-          distance_ft:
+          delta_h: num(o["delta_h_ft"], `observations[${i}].delta_h_ft`),
+          distance:
             o["distance_ft"] === undefined
               ? undefined
               : pos(o["distance_ft"], `observations[${i}].distance_ft`),
         };
       });
-      return levelLoop.compute({ benchmarks, observations } as unknown as levelLoop.LevelLoopInput);
+      return levelLoop.compute({ benchmarks, observations });
     },
   },
   {
@@ -547,12 +547,11 @@ const calcs: CalculatorEntry[] = [
         radius_ft: pos(input["radius_ft"], "radius_ft"),
         delta_deg: pos(input["delta_deg"], "delta_deg"),
         pc_station_ft: num(input["pc_station_ft"], "pc_station_ft"),
-        stake_interval_ft:
+        interval_ft:
           input["stake_interval_ft"] === undefined
             ? 25
             : pos(input["stake_interval_ft"], "stake_interval_ft"),
-        method: ((input["method"] as string) ?? "deflection") as "deflection" | "chord_offset",
-      } as unknown as curveStakeout.CurveStakeoutInput);
+      });
     },
   },
   {
@@ -582,13 +581,12 @@ const calcs: CalculatorEntry[] = [
     invoke: (input) => {
       if (!isObj(input)) throw new ValidationError("input must be an object");
       return trigLeveling.compute({
-        slope_distance_ft: pos(input["slope_distance_ft"], "slope_distance_ft"),
-        zenith_angle_deg: num(input["zenith_angle_deg"], "zenith_angle_deg"),
-        instrument_height_ft: num(input["instrument_height_ft"], "instrument_height_ft"),
-        target_height_ft: num(input["target_height_ft"], "target_height_ft"),
-        known_elevation_ft: num(input["known_elevation_ft"], "known_elevation_ft"),
-        apply_curvature_refraction: Boolean(input["apply_curvature_refraction"] ?? false),
-      } as unknown as trigLeveling.TrigLevelingInput);
+        slope_dist_ft: pos(input["slope_distance_ft"], "slope_distance_ft"),
+        zenith_deg: num(input["zenith_angle_deg"], "zenith_angle_deg"),
+        hi_ft: num(input["instrument_height_ft"], "instrument_height_ft"),
+        ht_ft: num(input["target_height_ft"], "target_height_ft"),
+        known_elev_ft: num(input["known_elevation_ft"], "known_elevation_ft"),
+      });
     },
   },
   {
@@ -615,8 +613,8 @@ const calcs: CalculatorEntry[] = [
         time_utc: str(input["time_utc"], "time_utc"),
         lat_deg: num(input["lat_deg"], "lat_deg"),
         lon_deg: num(input["lon_deg"], "lon_deg"),
-        measured_hz_angle_deg: num(input["measured_hz_angle_deg"], "measured_hz_angle_deg"),
-      } as unknown as solarObservation.SolarObservationInput);
+        hz_angle_deg: num(input["measured_hz_angle_deg"], "measured_hz_angle_deg"),
+      });
     },
   },
   {
@@ -626,15 +624,11 @@ const calcs: CalculatorEntry[] = [
     description: "Convert between grid and ground using a Combined Scale Factor.",
     inputSchema: {
       type: "object",
-      required: ["mode", "csf"],
+      required: ["mode", "csf", "distance_ft"],
       properties: {
         mode: { type: "string", enum: ["grid_to_ground", "ground_to_grid"] },
         csf: { type: "number", exclusiveMinimum: 0 },
         distance_ft: { type: "number" },
-        grid_northing: { type: "number" },
-        grid_easting: { type: "number" },
-        origin_northing: { type: "number" },
-        origin_easting: { type: "number" },
       },
       additionalProperties: false,
     },
@@ -642,30 +636,14 @@ const calcs: CalculatorEntry[] = [
       if (!isObj(input)) throw new ValidationError("input must be an object");
       const modeRaw = str(input["mode"], "mode");
       const mode = modeRaw === "ground_to_grid" ? "ground-to-grid" : "grid-to-ground";
+      if (input["distance_ft"] === undefined) {
+        throw new ValidationError("distance_ft is required");
+      }
       return gridToGround.compute({
         mode,
         csf: pos(input["csf"], "csf"),
-        distance_ft:
-          input["distance_ft"] === undefined
-            ? undefined
-            : num(input["distance_ft"], "distance_ft"),
-        grid_northing:
-          input["grid_northing"] === undefined
-            ? undefined
-            : num(input["grid_northing"], "grid_northing"),
-        grid_easting:
-          input["grid_easting"] === undefined
-            ? undefined
-            : num(input["grid_easting"], "grid_easting"),
-        origin_northing:
-          input["origin_northing"] === undefined
-            ? undefined
-            : num(input["origin_northing"], "origin_northing"),
-        origin_easting:
-          input["origin_easting"] === undefined
-            ? undefined
-            : num(input["origin_easting"], "origin_easting"),
-      } as unknown as gridToGround.GridToGroundInput);
+        distance_ft: num(input["distance_ft"], "distance_ft"),
+      });
     },
   },
 ];
