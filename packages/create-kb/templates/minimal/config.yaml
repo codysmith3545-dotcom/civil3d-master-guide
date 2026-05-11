@@ -1,0 +1,33 @@
+brand:
+  name: "{{brand.name}}"
+  short_name: "{{brand.name}}"
+  primary_color: "{{brand.primary}}"
+  accent_color: "{{brand.accent}}"
+  footer: "Original content licensed {{license}}."
+
+knowledge:
+  focus: "{{knowledge.scope}}"
+  geography: "{{knowledge.geography}}"
+  content_dir: "content"
+
+ai:
+  model: "{{ai.model}}"
+  persona: "{{ai.persona}}"
+  citation_style: "always cite the source page path"
+  system_prompt_template: "prompts/system.md"
+
+auth:
+  mode: "{{auth.mode}}"
+
+calculators:
+  enabled:
+{{#each calculators}}
+    - { slug: "{{this.slug}}", name: "{{this.name}}", category: "{{this.category}}" }
+{{/each}}
+{{#unless hasCalculators}}
+  # No calculators selected. Add entries like:
+  # - { slug: "example", name: "Example", category: "domain" }
+{{/unless}}
+
+deploy:
+  web: "vercel"
