@@ -1,0 +1,14 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+This fixture omits the seconds component on some bearings and uses informal
+phrasing like "more or less" on each course.
+
+Part of the Northwest Quarter of Section 25, Township 15 North, Range 2 East,
+Hendricks County, Indiana, described as:
+
+Beginning at the Point of Beginning;
+
+thence North 30 degrees 15 minutes East, 250.00 feet, more or less;
+thence South 59 degrees 45 minutes East, 250.00 feet, more or less;
+thence South 30 degrees 15 minutes West, 250.00 feet, more or less;
+thence North 59 degrees 45 minutes West, 250.00 feet, more or less, to the
+Point of Beginning.

@@ -1,0 +1,26 @@
+{
+  "note": "Synthetic deed corpus. None of these are recorded Indiana deeds. They were authored by hand for parser/plotter regression testing.",
+  "expectedClosurePrecisionNote": "1:50000+ for internally consistent fixtures; intentionally lower for the stressor set.",
+  "fixtures": [
+    { "filename": "01-marion-simple-square.txt", "expectedCourseCount": 5, "expectedClosurePrecision": "1:50000+", "category": "simple-line", "note": "Course #1 is the commencement-to-POB tie; the perimeter is courses 2-5." },
+    { "filename": "02-marion-five-line.txt", "expectedCourseCount": 5, "expectedClosurePrecision": "1:5000+", "category": "simple-line" },
+    { "filename": "03-hamilton-rectangle.txt", "expectedCourseCount": 4, "expectedClosurePrecision": "1:50000+", "category": "simple-line" },
+    { "filename": "04-hamilton-six-line.txt", "expectedCourseCount": 6, "expectedClosurePrecision": "1:5000+", "category": "simple-line" },
+    { "filename": "05-hendricks-triangle.txt", "expectedCourseCount": 3, "expectedClosurePrecision": "1:5000+", "category": "simple-line" },
+    { "filename": "06-hendricks-seven-line.txt", "expectedCourseCount": 7, "expectedClosurePrecision": "1:50000+", "category": "simple-line" },
+    { "filename": "07-curve-single-left.txt", "expectedCourseCount": 4, "expectedClosurePrecision": "1:1000+", "category": "curve" },
+    { "filename": "08-curve-single-right.txt", "expectedCourseCount": 4, "expectedClosurePrecision": "1:1000+", "category": "curve" },
+    { "filename": "09-curve-double.txt", "expectedCourseCount": 7, "expectedClosurePrecision": "1:500+", "category": "curve" },
+    { "filename": "10-curve-with-delta.txt", "expectedCourseCount": 5, "expectedClosurePrecision": "1:1000+", "category": "curve" },
+    { "filename": "11-curve-cul-de-sac.txt", "expectedCourseCount": 5, "expectedClosurePrecision": "1:5000+", "category": "curve" },
+    { "filename": "12-curve-three-call.txt", "expectedCourseCount": 11, "expectedClosurePrecision": "1:500+", "category": "curve" },
+    { "filename": "13-long-15-course.txt", "expectedCourseCount": 15, "expectedClosurePrecision": "1:200+", "category": "long" },
+    { "filename": "14-long-18-course-mixed.txt", "expectedCourseCount": 18, "expectedClosurePrecision": "1:200+", "category": "long" },
+    { "filename": "15-long-20-course.txt", "expectedCourseCount": 20, "expectedClosurePrecision": "1:200+", "category": "long" },
+    { "filename": "16-stressor-smart-quotes.txt", "expectedCourseCount": 4, "expectedClosurePrecision": "1:1000+", "category": "stressor" },
+    { "filename": "17-stressor-missing-seconds.txt", "expectedCourseCount": 4, "expectedClosurePrecision": "1:1000+", "category": "stressor" },
+    { "filename": "18-stressor-mixed-noise.txt", "expectedCourseCount": 4, "expectedClosurePrecision": "1:200", "category": "stressor", "expectedUnparsedFragments": 1 },
+    { "filename": "19-edge-due-north.txt", "expectedCourseCount": 4, "expectedClosurePrecision": "1:50000+", "category": "edge" },
+    { "filename": "20-edge-due-east-west.txt", "expectedCourseCount": 4, "expectedClosurePrecision": "1:50000+", "category": "edge" }
+  ]
+}

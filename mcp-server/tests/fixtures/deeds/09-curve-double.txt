@@ -1,0 +1,19 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Part of the Southwest Quarter of Section 30, Township 16 North, Range 2 East,
+Hendricks County, Indiana, described as follows:
+
+Beginning at a point of beginning;
+
+thence North 00 degrees 00 minutes 00 seconds East, 250.00 feet;
+thence Northeasterly along a curve to the right having a radius of 400.00
+feet, an arc length of 209.44 feet, and a chord bearing North 15 degrees 00
+minutes 00 seconds East, 207.06 feet;
+thence North 30 degrees 00 minutes 00 seconds East, 180.00 feet;
+thence Southeasterly along a curve to the right having a radius of 250.00
+feet, an arc length of 130.90 feet, and a chord bearing South 75 degrees 00
+minutes 00 seconds East, 129.41 feet;
+thence South 60 degrees 00 minutes 00 seconds East, 200.00 feet;
+thence South 45 degrees 00 minutes 00 seconds West, 600.00 feet;
+thence North 75 degrees 00 minutes 00 seconds West, 220.00 feet to the Point
+of Beginning.

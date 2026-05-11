@@ -1,0 +1,16 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Part of the Northeast Quarter of Section 11, Township 15 North, Range 3 East,
+Marion County, Indiana, described as follows:
+
+Beginning at the Point of Beginning;
+
+thence North 25 degrees 00 minutes 00 seconds East, 320.00 feet;
+thence along a curve to the left having a radius of 600.00 feet, a central
+angle of 30 degrees 00 minutes 00 seconds, an arc length of 314.16 feet, and
+a chord bearing North 10 degrees 00 minutes 00 seconds East, a chord distance
+of 310.58 feet;
+thence North 05 degrees 00 minutes 00 seconds West, 150.00 feet;
+thence South 85 degrees 00 minutes 00 seconds East, 250.00 feet;
+thence South 25 degrees 00 minutes 00 seconds West, 740.00 feet to the Point
+of Beginning.

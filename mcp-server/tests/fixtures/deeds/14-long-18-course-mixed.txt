@@ -1,0 +1,30 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Part of the Northwest Quarter of Section 7, Township 17 North, Range 3 East,
+Hamilton County, Indiana, described as follows:
+
+Beginning at the Point of Beginning;
+
+thence North 12 degrees 15 minutes 30 seconds East, 250.00 feet;
+thence North 25 degrees 45 minutes 10 seconds East, 175.00 feet;
+thence along a curve to the right having a radius of 500.00 feet, an arc
+length of 130.90 feet, and a chord bearing North 33 degrees 15 minutes 10
+seconds East, 130.53 feet;
+thence North 40 degrees 45 minutes 10 seconds East, 200.00 feet;
+thence South 49 degrees 14 minutes 50 seconds East, 175.00 feet;
+thence South 30 degrees 00 minutes 00 seconds East, 150.00 feet;
+thence South 15 degrees 30 minutes 00 seconds East, 125.00 feet;
+thence South 02 degrees 45 minutes 00 seconds East, 200.00 feet;
+thence South 88 degrees 30 minutes 00 seconds West, 220.00 feet;
+thence along a curve to the left having a radius of 300.00 feet, an arc
+length of 156.21 feet, and a chord bearing South 73 degrees 35 minutes 00
+seconds West, 154.43 feet;
+thence South 58 degrees 40 minutes 00 seconds West, 175.00 feet;
+thence North 65 degrees 00 minutes 00 seconds West, 200.00 feet;
+thence North 80 degrees 30 minutes 00 seconds West, 150.00 feet;
+thence North 02 degrees 15 minutes 00 seconds West, 250.00 feet;
+thence North 15 degrees 00 minutes 00 seconds West, 175.00 feet;
+thence North 30 degrees 00 minutes 00 seconds West, 200.00 feet;
+thence North 45 degrees 00 minutes 00 seconds West, 150.00 feet;
+thence North 60 degrees 00 minutes 00 seconds East, 220.00 feet to the Point
+of Beginning.

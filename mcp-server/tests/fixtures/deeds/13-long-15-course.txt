@@ -1,0 +1,23 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Part of the East Half of the Southwest Quarter of Section 19, Township 16
+North, Range 4 East, Marion County, Indiana, described as follows:
+
+Beginning at a point of beginning;
+
+thence North 89 degrees 00 minutes 00 seconds East, 200.00 feet;
+thence North 75 degrees 00 minutes 00 seconds East, 150.00 feet;
+thence North 60 degrees 00 minutes 00 seconds East, 120.00 feet;
+thence North 45 degrees 00 minutes 00 seconds East, 100.00 feet;
+thence South 60 degrees 00 minutes 00 seconds East, 175.00 feet;
+thence South 30 degrees 00 minutes 00 seconds East, 200.00 feet;
+thence South 15 degrees 00 minutes 00 seconds East, 220.00 feet;
+thence South 02 degrees 00 minutes 00 seconds East, 150.00 feet;
+thence South 88 degrees 00 minutes 00 seconds West, 250.00 feet;
+thence South 75 degrees 00 minutes 00 seconds West, 200.00 feet;
+thence North 80 degrees 00 minutes 00 seconds West, 175.00 feet;
+thence North 65 degrees 00 minutes 00 seconds West, 150.00 feet;
+thence North 30 degrees 00 minutes 00 seconds West, 200.00 feet;
+thence North 10 degrees 00 minutes 00 seconds West, 220.00 feet;
+thence North 02 degrees 00 minutes 00 seconds West, 175.00 feet to the Point
+of Beginning.

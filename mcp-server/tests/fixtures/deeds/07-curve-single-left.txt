@@ -1,0 +1,14 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Part of the Southeast Quarter of Section 14, Township 16 North, Range 4 East,
+Marion County, Indiana, described as follows:
+
+Beginning at a point of reference;
+
+thence North 45 degrees 00 minutes 00 seconds East, 300.00 feet;
+thence Southeasterly along a curve to the right having a radius of 500.00
+feet, an arc length of 261.80 feet, and a chord bearing South 60 degrees 00
+minutes 00 seconds East, a chord 258.82 feet;
+thence South 45 degrees 00 minutes 00 seconds West, 300.00 feet;
+thence North 45 degrees 00 minutes 00 seconds West, 282.84 feet to the Point
+of Beginning.
