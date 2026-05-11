@@ -13,6 +13,7 @@
     "@civil3d-master-guide/content": "workspace:*",
     "@civil3d-master-guide/search": "workspace:*",
     "@anthropic-ai/sdk": "^0.30.1",
+    "@civil3d-master-guide/deed-plotter": "workspace:*",
     "@tailwindcss/typography": "^0.5.13",
     "autoprefixer": "^10.4.19",
     "clsx": "^2.1.1",
