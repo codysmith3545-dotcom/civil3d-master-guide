@@ -1,0 +1,13 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+This fixture exercises the cardinal-bearing edge at azimuth 90 (due east) and
+270 (due west).
+
+Part of the Southwest Quarter of Section 33, Township 14 North, Range 1 West,
+Hendricks County, Indiana, described as:
+
+Beginning at the Point of Beginning;
+
+thence due East, 500.00 feet;
+thence due South, 250.00 feet;
+thence due West, 500.00 feet;
+thence due North, 250.00 feet to the Point of Beginning.

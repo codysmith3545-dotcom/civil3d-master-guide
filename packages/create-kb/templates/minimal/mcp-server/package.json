@@ -1,0 +1,10 @@
+{
+  "name": "mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP server for {{brand.name}}",
+  "scripts": {
+    "build": "echo 'TODO: wire up MCP server build'"
+  }
+}

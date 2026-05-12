@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -11,6 +12,9 @@ import { ResultRow } from "@/components/CalculatorForm";
 type LegRow = { bearing: string; distance: string };
 
 export default function TraverseClosurePage() {
+  useEffect(() => {
+    trackCalculator("traverse-closure");
+  }, []);
   const [legs, setLegs] = useState<LegRow[]>([
     { bearing: "90", distance: "100" },
     { bearing: "180", distance: "100" },

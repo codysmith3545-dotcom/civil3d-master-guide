@@ -1,0 +1,15 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+Part of the Northwest Quarter of Section 24, Township 15 North, Range 3 East,
+Marion County, Indiana, described as:
+
+Beginning at a point on the West line of said Quarter Section, said point
+being South 00 degrees 12 minutes 45 seconds East, 350.00 feet from the
+Northwest corner thereof;
+
+thence North 88 degrees 47 minutes 15 seconds East, 410.50 feet;
+thence South 12 degrees 03 minutes 22 seconds East, 215.18 feet;
+thence South 78 degrees 11 minutes 09 seconds West, 395.66 feet;
+thence South 00 degrees 12 minutes 45 seconds East, 50.00 feet;
+thence South 89 degrees 47 minutes 15 seconds West, 25.00 feet to the Point of
+Beginning.

@@ -16,11 +16,17 @@ import FlexSearch from "flexsearch";
 export type SearchDoc = {
   id: number;
   slug: string;
+  /** Slug of the parent markdown page; same as `slug` for page-level entries. */
+  parentSlug?: string;
   href: string;
   title: string;
+  /** H2 heading this chunk lives under, or null for the page-level entry. */
+  heading?: string | null;
   body: string;
+  section?: string;
   tags?: string[];
   visibility?: string;
+  updated?: string;
 };
 
 export type SearchHit = {
@@ -59,18 +65,26 @@ export async function search(query: string, limit = 10): Promise<SearchHit[]> {
   const q = query.trim();
   if (!q) return [];
   const { index, docs } = await loadIndex();
-  const result = index.search(q, { limit, enrich: true }) as unknown as Array<{
+  // Pull a few extra results so we still hit `limit` after parent-slug dedupe.
+  const fetchLimit = limit * 4;
+  const result = index.search(q, { limit: fetchLimit, enrich: true }) as unknown as Array<{
     field: string;
     result: Array<{ id: number; doc: SearchDoc }>;
   }>;
-  // Merge across fields, preserving rank from each.
-  const seen = new Set<number>();
+  // Merge across fields, preserving rank from each. Dedupe by parentSlug so
+  // multiple chunks of the same page collapse to a single hit.
+  const seenIds = new Set<number>();
+  const seenParents = new Set<string>();
   const ordered: SearchDoc[] = [];
   for (const group of result) {
     for (const r of group.result) {
-      if (seen.has(r.id)) continue;
-      seen.add(r.id);
-      ordered.push(r.doc ?? docs.find((d) => d.id === r.id)!);
+      if (seenIds.has(r.id)) continue;
+      seenIds.add(r.id);
+      const doc = r.doc ?? docs.find((d) => d.id === r.id)!;
+      const parentKey = doc.parentSlug ?? doc.slug;
+      if (seenParents.has(parentKey)) continue;
+      seenParents.add(parentKey);
+      ordered.push(doc);
       if (ordered.length >= limit) break;
     }
     if (ordered.length >= limit) break;

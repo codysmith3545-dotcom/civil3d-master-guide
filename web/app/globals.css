@@ -74,3 +74,119 @@ pre[data-language] {
 .prose :target {
   scroll-margin-top: 5rem;
 }
+
+/* ------------------------------------------------------------------ */
+/* Mobile / touch ergonomics                                           */
+/* ------------------------------------------------------------------ */
+
+/* On touch devices (no hover), give interactive controls a 44px target. */
+@media (hover: none) {
+  button,
+  [role="button"],
+  a.btn,
+  .btn,
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    min-height: 44px;
+  }
+}
+
+/* Bump tap target on the homepage hero search. */
+@media (hover: none) {
+  form[role="search"] input[type="search"],
+  .home-search input[type="search"] {
+    min-height: 48px;
+    font-size: 1rem;
+  }
+}
+
+/* Force single-column layout for /tools on phones. The page already uses
+ * md:grid-cols-3, which gives 1 column < 768px in Tailwind, but this keeps
+ * the single-column rule explicit even for non-Tailwind grids on the page. */
+@media (max-width: 767px) {
+  main .tools-grid,
+  main ul[class*="grid-cols-3"],
+  main ul[class*="grid-cols-2"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Outdoor / high-contrast mode                                        */
+/* Toggled via <html data-outdoor="true"> by OutdoorModeToggle.        */
+/* ------------------------------------------------------------------ */
+
+html[data-outdoor="true"] {
+  --bg: #ffffff;
+  --fg: #000000;
+  --muted: #1a1a1a;
+  --border: #000000;
+  --accent: #002654;
+  --accent-soft: #ffffff;
+}
+
+html[data-outdoor="true"] body {
+  color: #000000;
+  background: #ffffff;
+  font-weight: 500;
+}
+
+html[data-outdoor="true"] h1,
+html[data-outdoor="true"] h2,
+html[data-outdoor="true"] h3,
+html[data-outdoor="true"] h4 {
+  color: #000000;
+  font-weight: 800;
+}
+
+html[data-outdoor="true"] p,
+html[data-outdoor="true"] li,
+html[data-outdoor="true"] td,
+html[data-outdoor="true"] th,
+html[data-outdoor="true"] dd,
+html[data-outdoor="true"] dt {
+  color: #000000;
+  font-weight: 600;
+}
+
+html[data-outdoor="true"] a {
+  color: #002654;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+html[data-outdoor="true"] .text-ink-400,
+html[data-outdoor="true"] .text-ink-500,
+html[data-outdoor="true"] .text-ink-600,
+html[data-outdoor="true"] .text-ink-700 {
+  color: #000000 !important;
+}
+
+/* Disable subtle backgrounds and tinted panels in outdoor mode. */
+html[data-outdoor="true"] .bg-ink-50,
+html[data-outdoor="true"] .bg-white\/90,
+html[data-outdoor="true"] .bg-amber-50,
+html[data-outdoor="true"] .bg-emerald-50 {
+  background: #ffffff !important;
+}
+
+html[data-outdoor="true"] .border-ink-100,
+html[data-outdoor="true"] .border-ink-200 {
+  border-color: #000000 !important;
+}
+
+html[data-outdoor="true"] .btn {
+  border-color: #000000;
+  color: #000000;
+  font-weight: 700;
+}
+
+html[data-outdoor="true"] .btn-primary {
+  background: #002654;
+  border-color: #000000;
+  color: #ffffff;
+}

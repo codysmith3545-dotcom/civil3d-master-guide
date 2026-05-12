@@ -2,6 +2,9 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
+import { safeResolveContentPath, PathTraversalError } from "./path-safety.js";
+
+export { PathTraversalError } from "./path-safety.js";
 
 export interface Frontmatter {
   title?: string;
@@ -176,11 +179,17 @@ export async function getPage(root: string, slugInput: string): Promise<PageReco
   const slug = normalizeSlug(slugInput);
   const base = contentDir(root);
 
-  const tryPaths = [
-    path.join(base, `${slug}.md`),
-    path.join(base, slug, "index.md"),
-    path.join(base, `${slug}/index.md`),
-  ];
+  // Path-safety: refuse slugs that contain `..`, embedded separators, leading
+  // dots, URL-encoded traversals, or otherwise resolve outside `base`.
+  let safeBase: string;
+  try {
+    safeBase = safeResolveContentPath(slug, base);
+  } catch (err) {
+    if (err instanceof PathTraversalError) return null;
+    throw err;
+  }
+
+  const tryPaths = [`${safeBase}.md`, path.join(safeBase, "index.md")];
 
   for (const p of tryPaths) {
     if (await fileExists(p)) {

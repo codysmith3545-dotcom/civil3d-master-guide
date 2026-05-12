@@ -1,0 +1,22 @@
+{
+  "name": "@civil3d-master-guide/create-kb",
+  "version": "0.1.0",
+  "description": "Scaffolder CLI that forks the Civil 3D Master Guide framework into a new domain (ArcGIS, Revit, etc.).",
+  "type": "module",
+  "bin": {
+    "create-knowledge-base": "./bin/create-kb.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "templates",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test tests/scaffold.test.mjs"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "license": "MIT"
+}

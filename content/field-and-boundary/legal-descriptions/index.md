@@ -21,6 +21,7 @@ updated: 2026-05-06
 - [Calls and their priority (record vs measured)](call-priority.md)
 - [Description from a parcel (Civil 3D workflow)](description-from-parcel.md)
 - [Common errors in legal descriptions](common-errors.md)
+- [Deed decoder guide (metes-and-bounds parser)](deed-decoder-guide.md)
 
 ## Related
 

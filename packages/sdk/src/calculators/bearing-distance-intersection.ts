@@ -38,7 +38,18 @@ export interface BearingDistanceIntersectionResult {
   solutions: BearingDistanceSolution[];
   source: string;
   notes: string[];
+  relatedContent: string | null;
 }
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+// TODO: no dedicated doc page yet for bearing-distance intersection.
+const BD_RELATED: string | null = null;
 
 const DEG = Math.PI / 180;
 
@@ -51,7 +62,15 @@ export function bearingDistanceIntersection(
 ): BearingDistanceIntersectionResult {
   const notes: string[] = [];
 
-  const az = input.bearing_deg * DEG;
+  const n1 = requireFinite(input?.n1, "n1");
+  const e1 = requireFinite(input?.e1, "e1");
+  const bearingDeg = requireFinite(input?.bearing_deg, "bearing_deg");
+  const n2 = requireFinite(input?.n2, "n2");
+  const e2 = requireFinite(input?.e2, "e2");
+  const distance = requireFinite(input?.distance_ft, "distance_ft");
+  if (distance < 0) throw new Error("distance_ft must be >= 0");
+
+  const az = bearingDeg * DEG;
   const dN = Math.cos(az); // unit direction northing
   const dE = Math.sin(az); // unit direction easting
 
@@ -68,9 +87,9 @@ export function bearingDistanceIntersection(
   // Since dN^2 + dE^2 = 1 (unit vector):
   //   t^2 + 2*b*t + c = 0  where b = fN*dN + fE*dE, c = fN^2 + fE^2 - r^2
 
-  const fN = input.n1 - input.n2;
-  const fE = input.e1 - input.e2;
-  const r = input.distance_ft;
+  const fN = n1 - n2;
+  const fE = e1 - e2;
+  const r = distance;
 
   const b = fN * dN + fE * dE;
   const c = fN * fN + fE * fE - r * r;
@@ -85,6 +104,7 @@ export function bearingDistanceIntersection(
         "Bearing–distance intersection (line–circle). " +
         "Reference: Wolf & Ghilani, Elementary Surveying, Ch. 10.",
       notes,
+      relatedContent: BD_RELATED,
     };
   }
 
@@ -99,20 +119,20 @@ export function bearingDistanceIntersection(
       );
     }
     solutions.push({
-      northing: r6(input.n1 + t * dN),
-      easting: r6(input.e1 + t * dE),
+      northing: r6(n1 + t * dN),
+      easting: r6(e1 + t * dE),
     });
     notes.push("Line is tangent to the circle; exactly one intersection.");
   } else {
     const sqrtDisc = Math.sqrt(disc);
     const t1 = -b + sqrtDisc;
-    const t2 = -b - sqrtDisc;
+    const t2v = -b - sqrtDisc;
 
     // Include both solutions; note if either is behind P1
-    for (const [label, t] of [["first", t1], ["second", t2]] as const) {
+    for (const [label, t] of [["first", t1], ["second", t2v]] as const) {
       solutions.push({
-        northing: r6(input.n1 + (t as number) * dN),
-        easting: r6(input.e1 + (t as number) * dE),
+        northing: r6(n1 + (t as number) * dN),
+        easting: r6(e1 + (t as number) * dE),
       });
       if ((t as number) < -1e-6) {
         notes.push(
@@ -122,11 +142,20 @@ export function bearingDistanceIntersection(
     }
   }
 
+  for (const sol of solutions) {
+    if (!Number.isFinite(sol.northing) || !Number.isFinite(sol.easting)) {
+      throw new Error(
+        "Calculation produced non-finite result for solutions: check inputs",
+      );
+    }
+  }
+
   return {
     solutions,
     source:
       "Bearing–distance intersection (line–circle). " +
       "Reference: Wolf & Ghilani, Elementary Surveying, Ch. 10.",
     notes,
+    relatedContent: BD_RELATED,
   };
 }

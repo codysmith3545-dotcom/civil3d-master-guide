@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -62,6 +63,9 @@ const kirpichFields: FieldDef[] = [
 ];
 
 export default function RationalMethodPage() {
+  useEffect(() => {
+    trackCalculator("rational-method");
+  }, []);
   const [values, setValues] = useState<Record<string, string>>({
     C: "0.35",
     i: "4.5",

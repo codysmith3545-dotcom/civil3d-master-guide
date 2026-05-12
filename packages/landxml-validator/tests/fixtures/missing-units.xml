@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LandXML version="1.2">
+  <Application name="LDD" version="2018"/>
+  <CgPoints>
+    <CgPoint name="A">100.0 200.0 300.0</CgPoint>
+  </CgPoints>
+</LandXML>

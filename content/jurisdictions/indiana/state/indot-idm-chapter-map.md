@@ -4,11 +4,11 @@ section: "jurisdictions/indiana/state"
 order: 10
 visibility: public
 tags: [indiana, indot, idm, design-manual]
-updated: 2026-05-06
+updated: 2026-05-11
 sources:
   - title: "INDOT Indiana Design Manual"
     url: https://www.in.gov/indot/engineering/design-manual/
-    verified: 2026-05-06
+    verified: 2026-05-11
 ---
 
 > **TL;DR**
@@ -68,6 +68,31 @@ The following is a summary of major parts and chapters. Chapter numbers follow t
 ## How to cite
 
 Reference by chapter and section number, for example: "IDM Ch. 203, §203-3.02(02)" for a specific hydraulic calculation procedure. Include the access date because the manual is updated in place.
+
+## Mirrored chapters
+
+Selected IDM chapters are mirrored verbatim under [`content/docs-mirror/indot-idm/`](../../../docs-mirror/indot-idm/index.md). These mirror pages preserve the published chapter numbering used in the INDOT `chNN.pdf` files (which may differ from the Part-based numbering used in the chapter-by-chapter summary above; INDOT has reorganized the IDM more than once).
+
+| Chapter | Title | Mirror page |
+|---|---|---|
+| 20 | Project Development Process | [ch20](../../../docs-mirror/indot-idm/ch20-project-development-process.md) |
+| 23 | Coordinate Systems and Datums | [ch23](../../../docs-mirror/indot-idm/ch23-coordinate-systems-and-datums.md) |
+| 33 | Pavement Design | [ch33](../../../docs-mirror/indot-idm/ch33-pavement-design.md) |
+| 40 | Drainage of Highway Pavements | [ch40](../../../docs-mirror/indot-idm/ch40-drainage-of-highway-pavements.md) |
+| 41 | Surface Drainage Facilities | [ch41](../../../docs-mirror/indot-idm/ch41-surface-drainage-facilities.md) |
+| 42 | Cross Drainage Facilities (Culverts) | [ch42](../../../docs-mirror/indot-idm/ch42-cross-drainage-facilities.md) |
+| 43 | Storm Drainage Systems | [ch43](../../../docs-mirror/indot-idm/ch43-storm-drainage-systems.md) |
+| 44 | Bridge Hydraulics | [ch44](../../../docs-mirror/indot-idm/ch44-bridge-hydraulics.md) |
+| 53 | Geometric Design — Two-Lane Highways | [ch53](../../../docs-mirror/indot-idm/ch53-geometric-design-two-lane.md) |
+| 54 | Geometric Design — Multi-Lane Highways | [ch54](../../../docs-mirror/indot-idm/ch54-geometric-design-multi-lane.md) |
+| 55 | Geometric Design — Freeways | [ch55](../../../docs-mirror/indot-idm/ch55-geometric-design-freeways.md) |
+| 60 | Pavement Markings, Signs, Signals | [ch60](../../../docs-mirror/indot-idm/ch60-pavement-markings-signs-signals.md) |
+| 70 | Construction Plans | [ch70](../../../docs-mirror/indot-idm/ch70-construction-plans.md) |
+| 71 | Structures Plans | [ch71](../../../docs-mirror/indot-idm/ch71-structures-plans.md) |
+| 72 | Right-of-Way Plans | [ch72](../../../docs-mirror/indot-idm/ch72-right-of-way-plans.md) |
+| 80 | Survey | [ch80](../../../docs-mirror/indot-idm/ch80-survey.md) |
+
+Each mirror page declares a `mirror_status:` of `placeholder` (outline only, awaiting human paste of the verbatim chapter text) or `complete`. Run `node scripts/check-mirror-status.mjs` to see which pages still need text pasted in.
 
 ## Related
 

@@ -1,0 +1,857 @@
+{
+  "$schema": "./bank.schema.json",
+  "version": "1.0.0",
+  "updated": "2026-05-11",
+  "questions": [
+    {
+      "id": "ps-in-001",
+      "topic": "fundamentals/bearings-azimuths",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "easy",
+      "prompt": "An azimuth of 247 degrees 32 minutes corresponds to which bearing?",
+      "choices": [
+        { "id": "a", "text": "N 67 deg 32 min E" },
+        { "id": "b", "text": "S 67 deg 32 min W" },
+        { "id": "c", "text": "S 67 deg 32 min E" },
+        { "id": "d", "text": "N 67 deg 32 min W" }
+      ],
+      "correct": "b",
+      "rationale": "247 deg 32 min lies in the SW quadrant (180 to 270). Subtract 180 to get 67 deg 32 min; quadrant SW gives S 67 deg 32 min W.",
+      "source": "fundamentals/bearings-azimuths",
+      "tags": ["indiana", "bearing-conversion"]
+    },
+    {
+      "id": "ps-in-002",
+      "topic": "fundamentals/bearings-azimuths",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "easy",
+      "prompt": "The back-azimuth of a line whose forward azimuth is 73 deg 15 min is closest to:",
+      "choices": [
+        { "id": "a", "text": "286 deg 45 min" },
+        { "id": "b", "text": "253 deg 15 min" },
+        { "id": "c", "text": "106 deg 45 min" },
+        { "id": "d", "text": "73 deg 15 min" }
+      ],
+      "correct": "b",
+      "rationale": "Back-azimuth = forward + 180 deg (mod 360). 73 deg 15 min + 180 deg = 253 deg 15 min.",
+      "source": "fundamentals/bearings-azimuths",
+      "tags": ["back-azimuth"]
+    },
+    {
+      "id": "ps-in-003",
+      "topic": "fundamentals/bearings-azimuths",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "medium",
+      "prompt": "A bearing of S 12 deg 40 min E has which corresponding azimuth from north?",
+      "choices": [
+        { "id": "a", "text": "12 deg 40 min" },
+        { "id": "b", "text": "167 deg 20 min" },
+        { "id": "c", "text": "192 deg 40 min" },
+        { "id": "d", "text": "347 deg 20 min" }
+      ],
+      "correct": "b",
+      "rationale": "SE quadrant: azimuth = 180 - bearing angle = 180 deg - 12 deg 40 min = 167 deg 20 min.",
+      "source": "fundamentals/bearings-azimuths",
+      "tags": ["bearing-to-azimuth"]
+    },
+    {
+      "id": "ps-in-004",
+      "topic": "fundamentals/bearings-azimuths",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "medium",
+      "prompt": "Why is stating 'bearing N 45 deg 00 min E' insufficient on a survey plat without further qualification?",
+      "choices": [
+        { "id": "a", "text": "Bearings must always be given in azimuth form on plats." },
+        { "id": "b", "text": "The basis of bearings (grid, geodetic, magnetic, assumed) is required so the line can be retraced." },
+        { "id": "c", "text": "Indiana law forbids stating a bearing to less than one second." },
+        { "id": "d", "text": "Bearings are only valid for distances under 500 ft." }
+      ],
+      "correct": "b",
+      "rationale": "A bearing means nothing without a stated meridian basis. 865 IAC 1-12-11 requires the plat to state the basis of bearings.",
+      "source": "fundamentals/bearings-azimuths",
+      "tags": ["basis-of-bearings", "indiana", "865-iac"]
+    },
+    {
+      "id": "ps-in-005",
+      "topic": "fundamentals/bearings-azimuths",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "hard",
+      "prompt": "A line has a geodetic azimuth of 178 deg 10 min and a grid convergence of +0 deg 45 min (grid north east of true north) at the instrument. What is the grid azimuth of the line?",
+      "choices": [
+        { "id": "a", "text": "177 deg 25 min" },
+        { "id": "b", "text": "178 deg 55 min" },
+        { "id": "c", "text": "179 deg 25 min" },
+        { "id": "d", "text": "176 deg 25 min" }
+      ],
+      "correct": "a",
+      "rationale": "When grid north is east of true (geodetic) north (positive convergence), grid azimuth = geodetic azimuth - convergence. 178 deg 10 min - 0 deg 45 min = 177 deg 25 min.",
+      "source": "fundamentals/coordinate-systems",
+      "tags": ["convergence", "grid-azimuth"]
+    },
+    {
+      "id": "ps-in-006",
+      "topic": "fundamentals/distance-measurement",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "easy",
+      "prompt": "A total station reports a slope distance of 200.00 ft and a zenith angle of 87 deg 00 min 00 sec. The horizontal distance is closest to:",
+      "choices": [
+        { "id": "a", "text": "199.73 ft" },
+        { "id": "b", "text": "10.47 ft" },
+        { "id": "c", "text": "200.00 ft" },
+        { "id": "d", "text": "189.36 ft" }
+      ],
+      "correct": "a",
+      "rationale": "H = S * sin(z) = 200.00 * sin(87 deg) = 199.726 ft.",
+      "source": "fundamentals/distance-measurement",
+      "tags": ["slope-to-horizontal"]
+    },
+    {
+      "id": "ps-in-007",
+      "topic": "fundamentals/distance-measurement",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "easy",
+      "prompt": "A measured ground distance of 1000.000 ft is to be converted to grid for State Plane reporting. The combined scale factor at the project is 0.99988. The grid distance is:",
+      "choices": [
+        { "id": "a", "text": "1000.120 ft" },
+        { "id": "b", "text": "999.880 ft" },
+        { "id": "c", "text": "999.988 ft" },
+        { "id": "d", "text": "1001.200 ft" }
+      ],
+      "correct": "b",
+      "rationale": "Grid = Ground * CSF = 1000.000 * 0.99988 = 999.880 ft.",
+      "source": "fundamentals/distance-measurement",
+      "tags": ["grid-to-ground", "csf"]
+    },
+    {
+      "id": "ps-in-008",
+      "topic": "fundamentals/distance-measurement",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "medium",
+      "prompt": "Which of the following is a SYSTEMATIC error in EDM measurement?",
+      "choices": [
+        { "id": "a", "text": "Mis-pointing of the instrument crosshair on a single shot." },
+        { "id": "b", "text": "Random scintillation of the air path between instrument and prism." },
+        { "id": "c", "text": "An incorrect prism constant entered into the data collector." },
+        { "id": "d", "text": "Transposing two digits while writing the distance in the field book." }
+      ],
+      "correct": "c",
+      "rationale": "An incorrect prism constant biases every distance by the same amount, the defining trait of a systematic error. The others are random or blunder.",
+      "source": "fundamentals/error-theory",
+      "tags": ["error-classification"]
+    },
+    {
+      "id": "ps-in-009",
+      "topic": "fundamentals/distance-measurement",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "medium",
+      "prompt": "Atmospheric ppm corrections on an EDM primarily account for variations in:",
+      "choices": [
+        { "id": "a", "text": "Magnetic declination at the project location." },
+        { "id": "b", "text": "Speed of light through air, which depends on temperature, pressure, and humidity." },
+        { "id": "c", "text": "Refraction of GNSS signals through the ionosphere." },
+        { "id": "d", "text": "Geoid-ellipsoid separation." }
+      ],
+      "correct": "b",
+      "rationale": "EDM distances rely on the speed of light through air. Temperature and pressure (and to a smaller extent humidity) change air refractive index, so ppm corrections are applied.",
+      "source": "fundamentals/distance-measurement",
+      "tags": ["edm", "atmospheric-correction"]
+    },
+    {
+      "id": "ps-in-010",
+      "topic": "fundamentals/distance-measurement",
+      "objective": "NCEES PS field data acquisition",
+      "difficulty": "hard",
+      "prompt": "A slope distance of 1532.45 ft is measured at a vertical angle of +3 deg 25 min from horizontal. The vertical difference between instrument and target axes is closest to:",
+      "choices": [
+        { "id": "a", "text": "91.45 ft" },
+        { "id": "b", "text": "1529.72 ft" },
+        { "id": "c", "text": "10.71 ft" },
+        { "id": "d", "text": "91.36 ft" }
+      ],
+      "correct": "a",
+      "rationale": "dV = S * sin(V) where V is the vertical angle from horizontal. 1532.45 * sin(3 deg 25 min) = 1532.45 * 0.05966 = 91.45 ft.",
+      "source": "fundamentals/distance-measurement",
+      "tags": ["vertical-component"]
+    },
+    {
+      "id": "ps-in-011",
+      "topic": "fundamentals/coordinate-systems",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "easy",
+      "prompt": "Which projection is used by the Indiana State Plane coordinate system?",
+      "choices": [
+        { "id": "a", "text": "Universal Transverse Mercator (UTM)" },
+        { "id": "b", "text": "Lambert Conformal Conic" },
+        { "id": "c", "text": "Transverse Mercator" },
+        { "id": "d", "text": "Albers Equal Area Conic" }
+      ],
+      "correct": "b",
+      "rationale": "Indiana State Plane (both East FIPS 1301 and West FIPS 1302) uses Lambert Conformal Conic on NAD83.",
+      "source": "fundamentals/coordinate-systems",
+      "tags": ["state-plane", "indiana", "projection"]
+    },
+    {
+      "id": "ps-in-012",
+      "topic": "fundamentals/coordinate-systems",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "easy",
+      "prompt": "The current National Spatial Reference System vertical datum for the contiguous United States is:",
+      "choices": [
+        { "id": "a", "text": "NGVD29" },
+        { "id": "b", "text": "NAVD88" },
+        { "id": "c", "text": "MSL62" },
+        { "id": "d", "text": "WGS84" }
+      ],
+      "correct": "b",
+      "rationale": "NAVD88 is the current US orthometric datum. NGVD29 is its predecessor.",
+      "source": "fundamentals/coordinate-systems",
+      "tags": ["vertical-datum"]
+    },
+    {
+      "id": "ps-in-013",
+      "topic": "fundamentals/coordinate-systems",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "medium",
+      "prompt": "A GNSS receiver reports an ellipsoid height of 875.20 ft at a point where the Geoid18 model gives a geoid height of -114.30 ft (geoid below ellipsoid). The NAVD88 orthometric height is:",
+      "choices": [
+        { "id": "a", "text": "760.90 ft" },
+        { "id": "b", "text": "989.50 ft" },
+        { "id": "c", "text": "875.20 ft" },
+        { "id": "d", "text": "-114.30 ft" }
+      ],
+      "correct": "b",
+      "rationale": "H_orthometric = h_ellipsoid - N_geoid = 875.20 - (-114.30) = 989.50 ft.",
+      "source": "fundamentals/coordinate-systems",
+      "tags": ["geoid", "ellipsoid-to-orthometric"]
+    },
+    {
+      "id": "ps-in-014",
+      "topic": "fundamentals/coordinate-systems",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "medium",
+      "prompt": "Hamilton County, Indiana, lies in which State Plane zone?",
+      "choices": [
+        { "id": "a", "text": "Indiana East (FIPS 1301)" },
+        { "id": "b", "text": "Indiana West (FIPS 1302)" },
+        { "id": "c", "text": "Indiana North (FIPS 1303)" },
+        { "id": "d", "text": "UTM Zone 16N" }
+      ],
+      "correct": "a",
+      "rationale": "Hamilton County (Carmel, Fishers, Noblesville, Westfield) is in the eastern half of Indiana, in the Indiana East zone (FIPS 1301).",
+      "source": "fundamentals/coordinate-systems",
+      "tags": ["indiana", "state-plane-zone"]
+    },
+    {
+      "id": "ps-in-015",
+      "topic": "fundamentals/coordinate-systems",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "hard",
+      "prompt": "If a project's mean elevation factor is 0.99996 and the grid scale factor at the project latitude is 0.99993, the combined scale factor is closest to:",
+      "choices": [
+        { "id": "a", "text": "0.99989" },
+        { "id": "b", "text": "1.00011" },
+        { "id": "c", "text": "0.99994" },
+        { "id": "d", "text": "1.00003" }
+      ],
+      "correct": "a",
+      "rationale": "CSF = grid scale * elevation factor = 0.99993 * 0.99996 = 0.999890 (to six places).",
+      "source": "fundamentals/coordinate-systems",
+      "tags": ["csf-calculation"]
+    },
+    {
+      "id": "ps-in-016",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "easy",
+      "prompt": "For a traverse leg of bearing N 30 deg 00 min E and distance 500.00 ft, the latitude (N-S component) is closest to:",
+      "choices": [
+        { "id": "a", "text": "+433.01 ft" },
+        { "id": "b", "text": "+250.00 ft" },
+        { "id": "c", "text": "+500.00 ft" },
+        { "id": "d", "text": "-250.00 ft" }
+      ],
+      "correct": "a",
+      "rationale": "Latitude = D * cos(bearing) = 500 * cos(30 deg) = 500 * 0.8660 = 433.01 ft. NE quadrant gives positive latitude.",
+      "source": "fundamentals/plane-trigonometry",
+      "tags": ["latitudes-departures"]
+    },
+    {
+      "id": "ps-in-017",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "easy",
+      "prompt": "For the same leg (N 30 deg 00 min E, 500.00 ft), the departure (E-W component) is closest to:",
+      "choices": [
+        { "id": "a", "text": "+433.01 ft" },
+        { "id": "b", "text": "+250.00 ft" },
+        { "id": "c", "text": "-250.00 ft" },
+        { "id": "d", "text": "+500.00 ft" }
+      ],
+      "correct": "b",
+      "rationale": "Departure = D * sin(bearing) = 500 * sin(30 deg) = 250.00 ft. NE quadrant gives positive departure.",
+      "source": "fundamentals/plane-trigonometry",
+      "tags": ["latitudes-departures"]
+    },
+    {
+      "id": "ps-in-018",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "medium",
+      "prompt": "A four-cornered parcel has coordinates (in ft, N then E): (0, 0), (300, 0), (300, 200), (0, 200). The area is:",
+      "choices": [
+        { "id": "a", "text": "60,000 sq ft" },
+        { "id": "b", "text": "30,000 sq ft" },
+        { "id": "c", "text": "1.377 acres" },
+        { "id": "d", "text": "Cannot be determined" }
+      ],
+      "correct": "a",
+      "rationale": "Rectangle 300 ft by 200 ft = 60,000 sq ft. Verifiable with the shoelace formula.",
+      "source": "fundamentals/plane-trigonometry",
+      "tags": ["area-by-coordinates"]
+    },
+    {
+      "id": "ps-in-019",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "medium",
+      "prompt": "A closed traverse has total perimeter 2400 ft and linear misclosure 0.20 ft. The linear precision is approximately:",
+      "choices": [
+        { "id": "a", "text": "1:480" },
+        { "id": "b", "text": "1:1,200" },
+        { "id": "c", "text": "1:12,000" },
+        { "id": "d", "text": "1:24,000" }
+      ],
+      "correct": "c",
+      "rationale": "Precision = perimeter / misclosure = 2400 / 0.20 = 12,000, expressed as 1:12,000.",
+      "source": "fundamentals/error-theory",
+      "tags": ["traverse-precision"]
+    },
+    {
+      "id": "ps-in-020",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "hard",
+      "prompt": "Using the compass (Bowditch) rule, a traverse leg of length 600 ft on a traverse with perimeter 3000 ft and a latitude misclosure of +0.15 ft receives what latitude correction?",
+      "choices": [
+        { "id": "a", "text": "+0.030 ft" },
+        { "id": "b", "text": "-0.030 ft" },
+        { "id": "c", "text": "+0.075 ft" },
+        { "id": "d", "text": "-0.075 ft" }
+      ],
+      "correct": "b",
+      "rationale": "Correction = -(closure) * (L_leg / perimeter) = -(+0.15) * (600 / 3000) = -0.030 ft. Sign is opposite of closure to drive net to zero.",
+      "source": "fundamentals/error-theory",
+      "tags": ["bowditch", "compass-rule"]
+    },
+    {
+      "id": "ps-in-021",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "easy",
+      "prompt": "A circular curve has radius R = 500 ft and central angle delta = 30 deg. The tangent length T is closest to:",
+      "choices": [
+        { "id": "a", "text": "133.97 ft" },
+        { "id": "b", "text": "261.80 ft" },
+        { "id": "c", "text": "150.00 ft" },
+        { "id": "d", "text": "259.81 ft" }
+      ],
+      "correct": "a",
+      "rationale": "T = R * tan(delta/2) = 500 * tan(15 deg) = 500 * 0.26795 = 133.97 ft.",
+      "source": "fundamentals/plane-trigonometry",
+      "tags": ["curve-geometry"]
+    },
+    {
+      "id": "ps-in-022",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "easy",
+      "prompt": "For the same curve (R = 500 ft, delta = 30 deg), the arc length L is closest to:",
+      "choices": [
+        { "id": "a", "text": "261.80 ft" },
+        { "id": "b", "text": "133.97 ft" },
+        { "id": "c", "text": "258.82 ft" },
+        { "id": "d", "text": "150.00 ft" }
+      ],
+      "correct": "a",
+      "rationale": "L = R * delta (radians) = 500 * (30 * pi / 180) = 500 * 0.52360 = 261.80 ft.",
+      "source": "fundamentals/plane-trigonometry",
+      "tags": ["curve-geometry", "arc-length"]
+    },
+    {
+      "id": "ps-in-023",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "medium",
+      "prompt": "For a circular curve with R = 1000 ft and delta = 12 deg 00 min, the chord length C is closest to:",
+      "choices": [
+        { "id": "a", "text": "209.43 ft" },
+        { "id": "b", "text": "208.97 ft" },
+        { "id": "c", "text": "104.72 ft" },
+        { "id": "d", "text": "104.55 ft" }
+      ],
+      "correct": "b",
+      "rationale": "C = 2 * R * sin(delta/2) = 2 * 1000 * sin(6 deg) = 2000 * 0.10453 = 208.97 ft.",
+      "source": "fundamentals/plane-trigonometry",
+      "tags": ["curve-chord"]
+    },
+    {
+      "id": "ps-in-024",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "medium",
+      "prompt": "For a curve with R = 1000 ft and delta = 12 deg, the middle ordinate M is closest to:",
+      "choices": [
+        { "id": "a", "text": "5.48 ft" },
+        { "id": "b", "text": "10.96 ft" },
+        { "id": "c", "text": "104.72 ft" },
+        { "id": "d", "text": "2.74 ft" }
+      ],
+      "correct": "a",
+      "rationale": "M = R * (1 - cos(delta/2)) = 1000 * (1 - cos(6 deg)) = 1000 * (1 - 0.99452) = 5.48 ft.",
+      "source": "fundamentals/plane-trigonometry",
+      "tags": ["middle-ordinate"]
+    },
+    {
+      "id": "ps-in-025",
+      "topic": "fundamentals/plane-trigonometry",
+      "objective": "NCEES PS office data processing",
+      "difficulty": "hard",
+      "prompt": "Two curves of opposite hand share a common tangent (reverse curve). Curve 1: R = 600 ft, delta = 25 deg. Curve 2: R = 800 ft, delta = 25 deg. The total tangent distance from PI1 back to PI2 along the common-tangent direction is closest to:",
+      "choices": [
+        { "id": "a", "text": "310.40 ft" },
+        { "id": "b", "text": "133.06 ft" },
+        { "id": "c", "text": "177.34 ft" },
+        { "id": "d", "text": "266.13 ft" }
+      ],
+      "correct": "a",
+      "rationale": "Each curve's tangent T_i = R_i * tan(delta_i/2). T1 = 600 * tan(12.5 deg) = 133.06 ft. T2 = 800 * tan(12.5 deg) = 177.34 ft. Sum = 310.40 ft.",
+      "source": "fundamentals/plane-trigonometry",
+      "tags": ["reverse-curve"]
+    },
+    {
+      "id": "ps-in-026",
+      "topic": "legal-principles/boundary-law-basics",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "easy",
+      "prompt": "In the classical hierarchy of evidence for boundary determination, which is generally given the LEAST weight?",
+      "choices": [
+        { "id": "a", "text": "Natural monuments" },
+        { "id": "b", "text": "Course (bearings)" },
+        { "id": "c", "text": "Distance" },
+        { "id": "d", "text": "Area or coordinates" }
+      ],
+      "correct": "d",
+      "rationale": "The dignity-of-calls hierarchy favors monuments first, then adjoiners, course, distance, with area and coordinates last.",
+      "source": "legal-principles/boundary-law-basics",
+      "tags": ["hierarchy-of-evidence"]
+    },
+    {
+      "id": "ps-in-027",
+      "topic": "legal-principles/boundary-law-basics",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "easy",
+      "prompt": "A boundary surveyor's primary task on a retracement survey is to:",
+      "choices": [
+        { "id": "a", "text": "Create new boundary lines that resolve any apparent overlap." },
+        { "id": "b", "text": "Locate the lines created by the original surveyor, following the original footsteps." },
+        { "id": "c", "text": "Establish coordinates on the current State Plane realization regardless of monuments." },
+        { "id": "d", "text": "File a complaint with the county court whenever evidence conflicts." }
+      ],
+      "correct": "b",
+      "rationale": "Retracement reconstructs an existing boundary; it does not create new ones. The original surveyor's lines, marked by monuments, are the law of that survey.",
+      "source": "legal-principles/boundary-law-basics",
+      "tags": ["retracement"]
+    },
+    {
+      "id": "ps-in-028",
+      "topic": "legal-principles/senior-junior-rights",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "medium",
+      "prompt": "Grantor conveys Tract A in 1990 with a metes-and-bounds description. In 2000, the same grantor conveys adjoining Tract B; when plotted, the two descriptions overlap by 6 ft. Assuming no other controlling evidence, who keeps the disputed 6 ft strip?",
+      "choices": [
+        { "id": "a", "text": "Tract B owner, because the 2000 deed is more recent and reflects updated measurements." },
+        { "id": "b", "text": "Tract A owner, because the 1990 deed is senior." },
+        { "id": "c", "text": "The disputed area is divided equally between the two owners." },
+        { "id": "d", "text": "The disputed area reverts to the original grantor." }
+      ],
+      "correct": "b",
+      "rationale": "Senior rights doctrine: the earlier-recorded deed gets its full description; the later (junior) deed takes what is left.",
+      "source": "legal-principles/senior-junior-rights",
+      "tags": ["senior-rights"]
+    },
+    {
+      "id": "ps-in-029",
+      "topic": "legal-principles/senior-junior-rights",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "medium",
+      "prompt": "On a recorded subdivision plat, lots 1 through 20 are created at the same instant. When a record gap between lots 8 and 9 is discovered, the gap is generally:",
+      "choices": [
+        { "id": "a", "text": "Assigned to whichever lot was sold first." },
+        { "id": "b", "text": "Pro-rated between the affected lots, since they are simultaneously created." },
+        { "id": "c", "text": "Awarded to the developer who recorded the plat." },
+        { "id": "d", "text": "Returned to the township or county." }
+      ],
+      "correct": "b",
+      "rationale": "Lots within a recorded plat are simultaneous; senior/junior does not apply among them. Gaps and overlaps are resolved by proration.",
+      "source": "legal-principles/senior-junior-rights",
+      "tags": ["simultaneous-conveyance"]
+    },
+    {
+      "id": "ps-in-030",
+      "topic": "legal-principles/boundary-law-basics",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "hard",
+      "prompt": "A surveyor finds an iron pin 1.3 ft from the platted dimension at a recorded subdivision corner. Field evidence (occupation, neighbor recognition) suggests the pin was set at the time of the original plat. The surveyor's correct conclusion is:",
+      "choices": [
+        { "id": "a", "text": "Reject the pin and set a new monument at the platted dimension." },
+        { "id": "b", "text": "Hold the original pin as controlling; the original monument controls the platted dimension." },
+        { "id": "c", "text": "Average the position of the pin and the platted dimension." },
+        { "id": "d", "text": "Refuse to issue a plat until the discrepancy is litigated." }
+      ],
+      "correct": "b",
+      "rationale": "Original undisturbed monuments control over the recorded measurements. The platted dimension is evidence of intent but yields to a found original monument.",
+      "source": "legal-principles/boundary-law-basics",
+      "tags": ["original-monument"]
+    },
+    {
+      "id": "ps-in-031",
+      "topic": "legal-principles/riparian-littoral",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "easy",
+      "prompt": "Which is the correct distinction between riparian and littoral rights?",
+      "choices": [
+        { "id": "a", "text": "Riparian applies to flowing watercourses; littoral applies to non-flowing water bodies such as lakes." },
+        { "id": "b", "text": "Riparian applies to lakes; littoral applies to rivers." },
+        { "id": "c", "text": "Both terms mean the same thing." },
+        { "id": "d", "text": "Riparian applies to navigable waters only; littoral to non-navigable only." }
+      ],
+      "correct": "a",
+      "rationale": "Riparian = flowing (river, stream). Littoral = static (lake, ocean).",
+      "source": "legal-principles/riparian-littoral",
+      "tags": ["riparian-vs-littoral"]
+    },
+    {
+      "id": "ps-in-032",
+      "topic": "legal-principles/riparian-littoral",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "medium",
+      "prompt": "In Indiana, the boundary of a parcel adjoining a non-navigable stream typically extends to:",
+      "choices": [
+        { "id": "a", "text": "The ordinary high-water mark." },
+        { "id": "b", "text": "The edge of the water at the time of survey." },
+        { "id": "c", "text": "The thread (centerline) of the stream." },
+        { "id": "d", "text": "The far bank of the stream." }
+      ],
+      "correct": "c",
+      "rationale": "On non-navigable Indiana streams, the bed belongs to the adjoining landowners to the thread of the stream. Navigable waters have state-owned beds.",
+      "source": "legal-principles/riparian-littoral",
+      "tags": ["thread-of-stream"]
+    },
+    {
+      "id": "ps-in-033",
+      "topic": "legal-principles/riparian-littoral",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "medium",
+      "prompt": "A river slowly deposits soil along the bank of a parcel over decades, expanding the dry land by 10 ft. The new soil belongs to:",
+      "choices": [
+        { "id": "a", "text": "The state, by escheat." },
+        { "id": "b", "text": "The riparian owner of the abutting parcel, by accretion." },
+        { "id": "c", "text": "The original grantor, by reservation." },
+        { "id": "d", "text": "Whoever first uses the new ground for ten years." }
+      ],
+      "correct": "b",
+      "rationale": "Accretion: gradual deposit of soil belongs to the abutting riparian owner. Avulsion (sudden change) does not move the boundary.",
+      "source": "legal-principles/riparian-littoral",
+      "tags": ["accretion"]
+    },
+    {
+      "id": "ps-in-034",
+      "topic": "legal-principles/boundary-law-basics",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "hard",
+      "prompt": "Indiana adverse possession (IC 32-21-7) requires that the claimant's possession be all of the following, EXCEPT:",
+      "choices": [
+        { "id": "a", "text": "Open and notorious" },
+        { "id": "b", "text": "Continuous for at least 10 years" },
+        { "id": "c", "text": "Exclusive and hostile" },
+        { "id": "d", "text": "With permission of the record owner" }
+      ],
+      "correct": "d",
+      "rationale": "Adverse possession requires possession that is open, notorious, hostile (without permission), continuous, and exclusive for the statutory period (10 years in Indiana).",
+      "source": "legal-principles/boundary-law-basics",
+      "tags": ["adverse-possession", "indiana"]
+    },
+    {
+      "id": "ps-in-035",
+      "topic": "legal-principles/plss-restoration",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "easy",
+      "prompt": "An interior section corner of the PLSS for which no physical evidence and no collateral testimony can be found is classified as:",
+      "choices": [
+        { "id": "a", "text": "Existent" },
+        { "id": "b", "text": "Obliterated" },
+        { "id": "c", "text": "Lost" },
+        { "id": "d", "text": "Original" }
+      ],
+      "correct": "c",
+      "rationale": "BLM Manual: existent = found undisturbed; obliterated = position recoverable from collateral evidence; lost = no direct or indirect evidence remains.",
+      "source": "legal-principles/plss-restoration",
+      "tags": ["plss", "corner-classification"]
+    },
+    {
+      "id": "ps-in-036",
+      "topic": "legal-principles/plss-restoration",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "medium",
+      "prompt": "Per the BLM Manual, a LOST interior section corner is reconstructed using:",
+      "choices": [
+        { "id": "a", "text": "Single proportionate measurement" },
+        { "id": "b", "text": "Double proportionate measurement" },
+        { "id": "c", "text": "Bearing-bearing intersection from adjacent quarter corners" },
+        { "id": "d", "text": "Whatever method the local county surveyor prefers" }
+      ],
+      "correct": "b",
+      "rationale": "Interior section corners (where four sections meet) are reconstructed by double proportionate measurement using the four nearest controlling corners.",
+      "source": "legal-principles/plss-restoration",
+      "tags": ["double-proportion"]
+    },
+    {
+      "id": "ps-in-037",
+      "topic": "legal-principles/plss-restoration",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "medium",
+      "prompt": "A lost standard quarter corner along a single section line is reconstructed by:",
+      "choices": [
+        { "id": "a", "text": "Single proportionate measurement between the two controlling section corners on that line." },
+        { "id": "b", "text": "Double proportionate measurement." },
+        { "id": "c", "text": "Setting at the platted record distance from only one controlling corner." },
+        { "id": "d", "text": "Adopting any iron pin found within 5 ft of the record position." }
+      ],
+      "correct": "a",
+      "rationale": "Quarter corners along a line are line corners; they are restored by single proportionate measurement.",
+      "source": "legal-principles/plss-restoration",
+      "tags": ["single-proportion"]
+    },
+    {
+      "id": "ps-in-038",
+      "topic": "legal-principles/plss-restoration",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "easy",
+      "prompt": "Indiana law (IC 36-2-12) places statutory responsibility for perpetuating PLSS section corners on the:",
+      "choices": [
+        { "id": "a", "text": "County recorder" },
+        { "id": "b", "text": "County surveyor" },
+        { "id": "c", "text": "Indiana Professional Licensing Agency" },
+        { "id": "d", "text": "Indiana Department of Transportation" }
+      ],
+      "correct": "b",
+      "rationale": "IC 36-2-12 assigns the county surveyor the duty to perpetuate corners and maintain the section corner tie card index.",
+      "source": "legal-principles/plss-restoration",
+      "tags": ["county-surveyor", "indiana"]
+    },
+    {
+      "id": "ps-in-039",
+      "topic": "legal-principles/plss-restoration",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "hard",
+      "prompt": "A surveyor finds a stone monument at an Indiana section corner with weathered chisel marks consistent with the original GLO survey. There is no cap or modern identification. The original GLO field notes describe a stone at this location. The correct classification is:",
+      "choices": [
+        { "id": "a", "text": "Existent, controlling." },
+        { "id": "b", "text": "Lost, must be reconstructed by double proportion." },
+        { "id": "c", "text": "Obliterated, since no cap exists." },
+        { "id": "d", "text": "Cannot be used; only iron pins with caps are valid in Indiana." }
+      ],
+      "correct": "a",
+      "rationale": "An undisturbed original GLO stone monument, identifiable by chisel marks matching the original notes, is an existent original corner and controls.",
+      "source": "legal-principles/plss-restoration",
+      "tags": ["original-glo-monument"]
+    },
+    {
+      "id": "ps-in-040",
+      "topic": "legal-principles/indiana-865-iac-scope",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "easy",
+      "prompt": "Per 865 IAC 1-12-10, the minimum acceptable iron monument for a boundary corner in Indiana is:",
+      "choices": [
+        { "id": "a", "text": "3/8 in. diameter, 18 in. long" },
+        { "id": "b", "text": "1/2 in. diameter, 24 in. long" },
+        { "id": "c", "text": "5/8 in. diameter, 30 in. long" },
+        { "id": "d", "text": "1 in. diameter, 36 in. long" }
+      ],
+      "correct": "b",
+      "rationale": "865 IAC 1-12-10 specifies a minimum 1/2 in. diameter and 24 in. length for iron monuments. Other materials are permitted for specific applications.",
+      "source": "legal-principles/indiana-865-iac-scope",
+      "tags": ["865-iac", "monument-dimensions"]
+    },
+    {
+      "id": "ps-in-041",
+      "topic": "legal-principles/indiana-865-iac-scope",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "easy",
+      "prompt": "865 IAC 1-12-13 requires an Indiana licensed surveyor to retain survey records for:",
+      "choices": [
+        { "id": "a", "text": "Three years from the date of the survey." },
+        { "id": "b", "text": "Seven years from the date of the survey." },
+        { "id": "c", "text": "The life of the license plus five years." },
+        { "id": "d", "text": "Until the next renewal cycle." }
+      ],
+      "correct": "c",
+      "rationale": "865 IAC 1-12-13: records must be retained for the life of the license plus 5 years.",
+      "source": "legal-principles/indiana-865-iac-scope",
+      "tags": ["record-retention"]
+    },
+    {
+      "id": "ps-in-042",
+      "topic": "legal-principles/indiana-865-iac-scope",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "medium",
+      "prompt": "Which of the following is NOT required by 865 IAC 1-12-11 to appear on a survey plat?",
+      "choices": [
+        { "id": "a", "text": "Basis of bearings" },
+        { "id": "b", "text": "Names of adjoining owners or subdivisions" },
+        { "id": "c", "text": "Surveyor's home address" },
+        { "id": "d", "text": "Surveyor's seal, signature, and license number" }
+      ],
+      "correct": "c",
+      "rationale": "865 IAC 1-12-11 lists required plat content. Seal/signature/license number, basis of bearings, and adjoiner names are required. The surveyor's home address is not.",
+      "source": "legal-principles/indiana-865-iac-scope",
+      "tags": ["plat-content"]
+    },
+    {
+      "id": "ps-in-043",
+      "topic": "legal-principles/indiana-865-iac-scope",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "medium",
+      "prompt": "Per 865 IAC 1-12, a monument cap on a set boundary corner must include:",
+      "choices": [
+        { "id": "a", "text": "The client's name." },
+        { "id": "b", "text": "The surveyor's license number." },
+        { "id": "c", "text": "The date of the survey." },
+        { "id": "d", "text": "The parcel's tax ID." }
+      ],
+      "correct": "b",
+      "rationale": "865 IAC 1-12-10 requires identification of the surveyor by license number (or firm name with license number) on the cap.",
+      "source": "practice/monumentation",
+      "tags": ["monument-cap"]
+    },
+    {
+      "id": "ps-in-044",
+      "topic": "legal-principles/indiana-865-iac-scope",
+      "objective": "NCEES PS standards and specifications",
+      "difficulty": "hard",
+      "prompt": "An Indiana licensed surveyor retires after 35 years of practice. Under 865 IAC 1-12-13, the surveyor's project records must be:",
+      "choices": [
+        { "id": "a", "text": "Destroyed immediately to protect client confidentiality." },
+        { "id": "b", "text": "Retained for at least five years after the license is surrendered, and arrangements made for transfer to another licensed surveyor or the county surveyor." },
+        { "id": "c", "text": "Transferred only to a title insurance company." },
+        { "id": "d", "text": "Released to clients on request only; otherwise destroyed at the time of retirement." }
+      ],
+      "correct": "b",
+      "rationale": "865 IAC 1-12-13 imposes ongoing retention and transfer-on-retirement obligations. Records must be retained at least 5 years past surrender, and arrangements made to transfer them to another licensed surveyor or the county surveyor.",
+      "source": "legal-principles/indiana-865-iac-scope",
+      "tags": ["retirement", "record-transfer"]
+    },
+    {
+      "id": "ps-in-045",
+      "topic": "practice/submittal-procedures",
+      "objective": "NCEES PS project management",
+      "difficulty": "easy",
+      "prompt": "In Indiana, when a surveyor finds, sets, or perpetuates a PLSS section corner, that surveyor must file a tie card with the:",
+      "choices": [
+        { "id": "a", "text": "County recorder" },
+        { "id": "b", "text": "County assessor" },
+        { "id": "c", "text": "County surveyor" },
+        { "id": "d", "text": "Indiana Department of Natural Resources" }
+      ],
+      "correct": "c",
+      "rationale": "IC 36-2-12 directs the county surveyor to maintain the perpetual section corner record. Tie cards are filed there.",
+      "source": "practice/submittal-procedures",
+      "tags": ["tie-card", "ic-36-2-12"]
+    },
+    {
+      "id": "ps-in-046",
+      "topic": "practice/submittal-procedures",
+      "objective": "NCEES PS project management",
+      "difficulty": "medium",
+      "prompt": "Indiana subdivision plats generally require, in order:",
+      "choices": [
+        { "id": "a", "text": "Final plat recording, then primary plan commission approval." },
+        { "id": "b", "text": "Primary plat approval, construction or bonding of improvements, secondary plat approval, then recording." },
+        { "id": "c", "text": "Only county surveyor approval, no plan commission step." },
+        { "id": "d", "text": "Recording first; plan commission review is optional in Indiana." }
+      ],
+      "correct": "b",
+      "rationale": "Standard Indiana subdivision flow under the plat acts and local subdivision control ordinances: primary approval, improvements (or bond), secondary approval, then recording.",
+      "source": "practice/submittal-procedures",
+      "tags": ["subdivision-flow"]
+    },
+    {
+      "id": "ps-in-047",
+      "topic": "practice/record-research",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "easy",
+      "prompt": "On a boundary retracement, the surveyor's record research should at minimum include:",
+      "choices": [
+        { "id": "a", "text": "Only the subject deed." },
+        { "id": "b", "text": "The subject deed and adjoiner deeds, plus relevant plats, easements, prior surveys, and section corner tie cards." },
+        { "id": "c", "text": "Only documents listed on the title commitment." },
+        { "id": "d", "text": "The county assessor's parcel viewer only." }
+      ],
+      "correct": "b",
+      "rationale": "A complete file includes the subject and adjoiners, plats, easements, prior surveys, and tie cards. Title commitments help but do not substitute for direct research.",
+      "source": "practice/record-research",
+      "tags": ["record-research"]
+    },
+    {
+      "id": "ps-in-048",
+      "topic": "practice/record-research",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "medium",
+      "prompt": "A title commitment is BEST characterized for the boundary surveyor as:",
+      "choices": [
+        { "id": "a", "text": "A complete substitute for courthouse research." },
+        { "id": "b", "text": "A useful starting list that must be verified and supplemented by the surveyor's own research." },
+        { "id": "c", "text": "Authoritative only when it includes a survey exception." },
+        { "id": "d", "text": "Required only on ALTA surveys, never on Indiana boundary surveys." }
+      ],
+      "correct": "b",
+      "rationale": "Title commitments aid the survey but are not authoritative for boundary determination. The surveyor must verify every cited document and identify any omitted record.",
+      "source": "practice/record-research",
+      "tags": ["title-commitment"]
+    },
+    {
+      "id": "ps-in-049",
+      "topic": "practice/submittal-procedures",
+      "objective": "NCEES PS project management",
+      "difficulty": "hard",
+      "prompt": "An Indiana boundary plat is delivered to a client but bears no surveyor's seal. Under 865 IAC, the plat is:",
+      "choices": [
+        { "id": "a", "text": "Valid for recording until the seal is added later." },
+        { "id": "b", "text": "Not a complete plat; the seal, signature, and license number are required for a recordable plat under 865 IAC." },
+        { "id": "c", "text": "Valid only if the client is also a licensed surveyor." },
+        { "id": "d", "text": "Valid because Indiana abolished the seal requirement in 1985." }
+      ],
+      "correct": "b",
+      "rationale": "865 IAC 1-12-11 requires the seal, signature, and license number on the plat. Without them the plat is not complete and cannot be recorded.",
+      "source": "practice/submittal-procedures",
+      "tags": ["seal", "plat-recording"]
+    },
+    {
+      "id": "ps-in-050",
+      "topic": "legal-principles/boundary-law-basics",
+      "objective": "NCEES PS legal principles",
+      "difficulty": "hard",
+      "prompt": "A fence has occupied a line 4 ft inside the deeded boundary between two parcels for 35 years; both neighbors have always treated the fence as the boundary. The surveyor's correct treatment on a retracement is to:",
+      "choices": [
+        { "id": "a", "text": "Move the boundary to the fence and certify the new line, since possession trumps deed." },
+        { "id": "b", "text": "Locate the deed line per the writings and show both the deed line and the long-standing fence, noting the apparent conflict in the surveyor's report; ownership of the disputed strip is a question for the courts, not the surveyor." },
+        { "id": "c", "text": "Refuse to complete the survey until the neighbors litigate." },
+        { "id": "d", "text": "Ignore the fence; only courts may consider occupation." }
+      ],
+      "correct": "b",
+      "rationale": "The surveyor locates and reports; courts adjudicate ownership. Indiana doctrines (acquiescence, adverse possession) may have moved title, but the surveyor's role is to show the conflict, not resolve it.",
+      "source": "legal-principles/boundary-law-basics",
+      "tags": ["acquiescence", "occupation-vs-deed"]
+    }
+  ]
+}

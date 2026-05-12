@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LandXML version="1.2">
+  <Units>
+    <Imperial linearUnit="USSurveyFoot"/>
+  </Units>
+  <Alignments>
+    <Alignment name="BAD-ALIGN" length="0.0" staStart="0.0">
+      <CoordGeom/>
+    </Alignment>
+  </Alignments>
+</LandXML>

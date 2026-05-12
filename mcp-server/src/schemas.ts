@@ -38,6 +38,45 @@ export const ListJurisdictionsInput = z.object({
 
 export const GetResourceIndexInput = z.object({}).strict();
 
+export const GetProjectContextInput = z.object({
+  projectId: z
+    .string()
+    .min(1)
+    .describe("Project id (uuid or slug) the AI client wants context for."),
+  userId: z
+    .string()
+    .min(1)
+    .describe(
+      "User id of the requester. Used by the project store to enforce access control; opaque to the MCP server itself.",
+    ),
+  query: z
+    .string()
+    .optional()
+    .describe(
+      "Optional free-text query. When supplied, public KB chunks and project-document chunks are ranked against it. When omitted, KB retrieval is skipped.",
+    ),
+  kbK: z
+    .number()
+    .int()
+    .positive()
+    .max(20)
+    .optional()
+    .describe("Max number of public-KB chunks to return. Default 5."),
+  projectK: z
+    .number()
+    .int()
+    .positive()
+    .max(20)
+    .optional()
+    .describe("Max number of project-document chunks to return. Default 5."),
+  jurisdictionLookup: z
+    .boolean()
+    .optional()
+    .describe(
+      "Whether to derive a jurisdiction summary from the project's bounds (when set). Default true.",
+    ),
+});
+
 // Calculator inputs
 export const VerticalCurveInput = z.object({
   g1: z.number().describe("Incoming grade in percent (e.g. -2 for -2.0%)."),

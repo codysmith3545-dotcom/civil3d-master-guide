@@ -1,0 +1,125 @@
+# Civil 3D Survey Template — master specification
+# This file is the index for the rest of the bundle. A surveyor or an
+# automation script consumes this YAML and rebuilds the .dwt by walking
+# every reference below in order.
+#
+# Status: spec-only. No binary .dwt is built in this repo.
+
+template:
+  name: "Civil 3D Survey Template (Indiana)"
+  version: "1.0.0-spec"
+  description: >
+    Survey-focused Civil 3D drawing template for Indiana boundary, topographic,
+    ALTA/NSPS, and control work. Vendor-neutral; layer naming follows NCS v6
+    with INDOT-aligned colors for survey/right-of-way subsets.
+  base_units: imperial-us-survey-feet
+  base_angle: north-clockwise
+  precision:
+    linear: 4       # decimal places shown in COMMAND line and most labels
+    angular: 4      # seconds precision for bearings
+    coordinate: 4
+  default_annotation_scale: "1\" = 50'"
+  appliesTo:
+    - civil3d-2022
+    - civil3d-2024
+    - civil3d-2025
+    - civil3d-2026
+  contributors_note: >
+    When bumping the template against a newer Civil 3D version, verify that
+    new Civil 3D ambient setting categories haven't been added (Autodesk
+    occasionally adds a category — most recently the Pressure Network
+    ambient block in 2020).
+  sources:
+    - title: "INDOT Standard Drawings (current edition)"
+      url: "https://www.in.gov/indot/engineering/design/standard-drawings/"
+      verified: 2026-05-11
+    - title: "National CAD Standard (NCS) v6 — National Institute of Building Sciences"
+      url: "https://www.nationalcadstandard.org/"
+      verified: 2026-05-11
+    - title: "Indiana 865 IAC 1-12 — Minimum Technical Standards for Surveys"
+      url: "https://www.in.gov/pla/professional-licensing-boards/professional-licensing-agency-boards/state-board-of-registration-for-professional-surveyors/"
+      verified: 2026-05-11
+      note: "deep IAC URL not stable; access via in.gov/legislative/iac/ search — unverified, needs check"
+    - title: "Hamilton County (Indiana) — Stormwater Technical Standards Manual"
+      url: "https://www.hamiltoncounty.in.gov/197/Surveyor"
+      verified: 2026-05-11
+      note: "manual is linked from the Surveyor's office page; URL to the PDF rotates — unverified, needs check"
+    - title: "AIA CAD Layer Guidelines (basis for NCS layer convention)"
+      url: "https://www.aia.org/"
+      verified: 2026-05-11
+      note: "AIA guidelines are the historical basis; current normative reference is NCS v6 — unverified"
+
+# ---------------------------------------------------------------------------
+# References to sibling spec files. Each one is independently consumable but
+# this file fixes the bundle version.
+# ---------------------------------------------------------------------------
+
+layers:
+  source: ./layer-standard.csv
+  format: csv
+  header_columns:
+    - name
+    - color_index
+    - linetype
+    - lineweight
+    - plot
+    - description
+    - ncs_reference
+    - source
+
+text_styles:
+  source: ./text-styles.csv
+  format: csv
+  header_columns:
+    - name
+    - font
+    - height
+    - width_factor
+    - obliquing
+    - notes
+
+dimension_styles:
+  source: ./dim-styles.yaml
+
+multileader_styles:
+  source: ./mleader-styles.yaml
+
+table_styles:
+  source: ./table-styles.yaml
+
+point_styles:
+  source: ./point-styles.yaml
+  notes: >
+    Point Label Styles share a base style with composition overrides per
+    feature class (monumentation, utility, topo, control). The label
+    visibility-by-scale rules are tuned for 1"=50' default but the
+    annotation-scale toggle on each style remains on.
+
+drawing_settings:
+  source: ./drawing-settings.yaml
+
+# ---------------------------------------------------------------------------
+# Quick-glance values that callers commonly want without parsing every file.
+# ---------------------------------------------------------------------------
+
+quick_ref:
+  bearing_format: "Q DD-MM-SS Q"        # e.g. N 45-13-22 E
+  azimuth_format: "DDD-MM-SS"
+  coordinate_display: "northing-easting"
+  elevation_precision: 0.01
+  station_format: "1+00.00"
+  point_number_seed: 1
+  next_point_number: 1000
+  survey_database_settings:
+    extended_properties: true
+    direction_type: bearings
+    angle_type: degrees-minutes-seconds
+    distance_type: us-survey-feet
+    coordinate_type: northing-easting
+
+related_in_repo:
+  - path: customization/description-keys/trimble-access-pnezd.deskey.yaml
+  - path: customization/description-keys/topcon-magnet-pnezd.deskey.yaml
+  - path: customization/description-keys/carlson-survce-pnezd.deskey.yaml
+  - path: content/civil3d/points/description-keys.md
+  - path: content/standards/cad-layer-standards/ncs-overview.md

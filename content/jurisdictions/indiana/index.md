@@ -5,6 +5,9 @@ order: 10
 visibility: public
 tags: [indiana, jurisdictions]
 updated: 2026-05-06
+state: indiana
+# Approximate state bbox in [minLng, minLat, maxLng, maxLat] order.
+bounds: [-88.10, 37.77, -84.78, 41.76]
 ---
 
 > **TL;DR**

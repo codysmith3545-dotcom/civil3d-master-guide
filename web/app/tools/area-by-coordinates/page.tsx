@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { trackCalculator } from "@/lib/analytics";
 import Link from "next/link";
 import {
   compute,
@@ -11,6 +12,9 @@ import { ResultRow } from "@/components/CalculatorForm";
 type CoordRow = { northing: string; easting: string };
 
 export default function AreaByCoordinatesPage() {
+  useEffect(() => {
+    trackCalculator("area-by-coordinates");
+  }, []);
   const [coords, setCoords] = useState<CoordRow[]>([
     { northing: "0", easting: "0" },
     { northing: "0", easting: "200" },

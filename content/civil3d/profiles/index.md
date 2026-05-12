@@ -4,7 +4,7 @@ section: "civil3d/profiles"
 order: 60
 visibility: public
 tags: [profile, vertical-curve, profile-view]
-updated: 2026-05-06
+updated: 2026-05-11
 ---
 
 > **TL;DR**
@@ -15,12 +15,17 @@ updated: 2026-05-06
 ## Pages
 
 - [Surface profiles vs layout profiles](surface-vs-layout-profiles.md)
+- [Profile creation from surface (sample, multiple surfaces, offsets)](profile-creation-from-surface.md)
+- [Layout profile design (PVI editor, vertical curve sets, criteria)](layout-profile-design.md)
 - [Profile views and bands](profile-views-and-bands.md)
+- [Profile view styles (band sets, grids, datum)](profile-view-styles.md)
 - [Vertical curve design](vertical-curve-design.md)
 - [Profile labels](profile-labels.md)
+- [Profile labels and bands (label-set + band-set setup)](profile-labels-and-bands.md)
 - [Editing profiles (geometry editor, grip edits)](editing-profiles.md)
 - [Profile design criteria](profile-design-criteria.md)
 - [Multiple profiles in one view (existing + design + offset)](multiple-profiles.md)
+- [Profiles in data shortcuts (publishing, references, promote)](profile-data-shortcuts.md)
 
 ## Related
 

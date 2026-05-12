@@ -50,6 +50,14 @@ export interface TraverseClosureResult {
   precision_ratio: string;
   source: string;
   notes: string[];
+  relatedContent: string | null;
+}
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
 }
 
 const DEG = Math.PI / 180;
@@ -61,8 +69,20 @@ function r6(x: number): number {
 export function traverseClosure(input: TraverseClosureInput): TraverseClosureResult {
   const notes: string[] = [];
 
+  if (!input || !Array.isArray(input.legs)) {
+    throw new Error("Invalid input: legs must be an array");
+  }
+  for (let i = 0; i < input.legs.length; i++) {
+    const leg = input.legs[i];
+    requireFinite(leg?.bearing_deg, `legs[${i}].bearing_deg`);
+    const dist = requireFinite(leg?.distance_ft, `legs[${i}].distance_ft`);
+    if (dist < 0) {
+      throw new Error(`legs[${i}].distance_ft must be >= 0`);
+    }
+  }
+
   if (input.legs.length < 2) {
-    notes.push("A traverse must have at least two legs.");
+    throw new Error("A traverse must have at least two legs.");
   }
 
   // Compute raw latitudes and departures.
@@ -128,7 +148,7 @@ export function traverseClosure(input: TraverseClosureInput): TraverseClosureRes
     }
   }
 
-  return {
+  const result: TraverseClosureResult = {
     perimeter_ft: r6(perimeter),
     legs: adjustedLegs,
     sum_latitude: r6(sumLat),
@@ -140,5 +160,21 @@ export function traverseClosure(input: TraverseClosureInput): TraverseClosureRes
     source:
       "Compass rule adjustment. Reference: Wolf & Ghilani, Elementary Surveying, Ch. 10.",
     notes,
+    relatedContent: "field-and-boundary/control-networks/traverse-types",
   };
+
+  for (const key of [
+    "perimeter_ft",
+    "sum_latitude",
+    "sum_departure",
+    "closure_error_north",
+    "closure_error_east",
+    "linear_closure_ft",
+  ] as const) {
+    if (!Number.isFinite(result[key])) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+
+  return result;
 }

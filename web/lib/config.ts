@@ -1,0 +1,194 @@
+import { z } from "zod";
+
+// Validated environment configuration.
+//
+// Every value the app reads from `process.env` should be funneled through
+// here so that:
+//   1. Typos in env-var names blow up at boot, not at first request.
+//   2. Type information flows through to call sites instead of `any`.
+//
+// Two surfaces are exported: `serverEnv` (Node-only secrets) and
+// `publicEnv` (anything safe to expose to the browser, i.e. NEXT_PUBLIC_*).
+
+const serverSchema = z.object({
+  // Operator-funded fallback Anthropic key. When set, anonymous users get a
+  // small per-IP daily quota on /api/chat backed by this key. Also used by
+  // /api/deed-decode for the AI-vision OCR pathway under a separate budget.
+  ANTHROPIC_API_KEY: z.string().min(1).optional(),
+
+  // HMAC secret for signing invite-link JWTs. Required when invite auth is
+  // exercised (see lib/invites.ts). Validated lazily there to allow boots
+  // without invites configured.
+  INVITE_SECRET: z.string().min(16).optional(),
+
+  // Per-IP daily cap for the operator-funded chat fallback.
+  OPERATOR_CHAT_DAILY_LIMIT: z.coerce.number().int().positive().default(10),
+
+  // Daily spend cap for the deed-decode vision route, in cents.
+  DEED_VISION_DAILY_LIMIT_CENTS: z.coerce.number().int().nonnegative().default(200),
+
+  // Per-IP hourly rate limit for the deed-decode vision route.
+  DEED_VISION_RATE_LIMIT_PER_HOUR: z.coerce.number().int().positive().default(5),
+
+  // Override for where markdown content lives. Useful in tests.
+  CIVIL3D_CONTENT_ROOT: z.string().optional(),
+
+  // Server-only Supabase service-role key (AI Project Companion).
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
+});
+
+export function hasPublicSupabaseConfig(): boolean {
+  return Boolean(publicEnv.NEXT_PUBLIC_SUPABASE_URL && publicEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+}
+
+export function hasServerSupabaseConfig(): boolean {
+  return Boolean(publicEnv.NEXT_PUBLIC_SUPABASE_URL && serverEnv.SUPABASE_SERVICE_ROLE_KEY);
+}
+
+const publicSchema = z.object({
+  // Canonical public URL of the deployment. Used for absolute links in
+  // metadata. Defaults to localhost in dev.
+  NEXT_PUBLIC_SITE_URL: z
+    .string()
+    .url()
+    .default("http://localhost:3000"),
+
+  // Optional Supabase config (Phase 2).
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional(),
+});
+
+function parseOrThrow<T extends z.ZodTypeAny>(
+  schema: T,
+  input: Record<string, unknown>,
+  label: string,
+): z.infer<T> {
+  const result = schema.safeParse(input);
+  if (!result.success) {
+    const issues = result.error.issues
+      .map((i) => `  - ${i.path.join(".") || "(root)"}: ${i.message}`)
+      .join("\n");
+    throw new Error(
+      `Invalid ${label} environment configuration:\n${issues}\n\n` +
+        `Check your .env.local against .env.example.`,
+    );
+  }
+  return result.data;
+}
+
+// Lazy-evaluate so unit tests can override `process.env` before import-time
+// surprise. `globalThis` cache keeps it cheap on subsequent calls.
+const CACHE_KEY = "__civil3d_env_cache__";
+type EnvCache = {
+  server?: z.infer<typeof serverSchema>;
+  public?: z.infer<typeof publicSchema>;
+};
+function cache(): EnvCache {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const g = globalThis as any;
+  if (!g[CACHE_KEY]) g[CACHE_KEY] = {} as EnvCache;
+  return g[CACHE_KEY] as EnvCache;
+}
+
+export function getServerEnv() {
+  const c = cache();
+  if (!c.server) {
+    c.server = parseOrThrow(serverSchema, process.env, "server");
+  }
+  return c.server;
+}
+
+export function getPublicEnv() {
+  const c = cache();
+  if (!c.public) {
+    c.public = parseOrThrow(publicSchema, process.env, "public");
+  }
+  return c.public;
+}
+
+// Eagerly resolved exports for ergonomic call sites in server-only modules.
+// Importing these from a client component will fail at build time because
+// `serverEnv` references server-only vars; that is intentional.
+export const serverEnv = getServerEnv();
+export const publicEnv = getPublicEnv();
+
+// Convenience helpers used by the deed-decode route. These read from the
+// validated serverEnv but are exposed as functions so callers can swap them
+// in tests without rebuilding the cache.
+export function getOperatorAnthropicKey(): string | undefined {
+  return serverEnv.ANTHROPIC_API_KEY;
+}
+
+export function getDeedVisionDailyLimitCents(): number {
+  return serverEnv.DEED_VISION_DAILY_LIMIT_CENTS;
+}
+
+export function getDeedVisionRateLimitPerHour(): number {
+  return serverEnv.DEED_VISION_RATE_LIMIT_PER_HOUR;
+}
+
+/**
+ * Whitespace-separated list of additional CSP `frame-ancestors`
+ * sources allowed to embed `/embed/*` widgets in an iframe.
+ * `'self'` is always included implicitly.
+ */
+export function getEmbedFrameAncestors(): string[] {
+  const raw = process.env.EMBED_ALLOWED_FRAME_ANCESTORS ?? "";
+  const extra = raw
+    .split(/\s+/)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+  const set = new Set<string>(["'self'", ...extra]);
+  return Array.from(set);
+}
+
+/**
+ * Build the `Content-Security-Policy` value used for `/embed/*` responses.
+ */
+export function buildEmbedCspHeader(): string {
+  const ancestors = getEmbedFrameAncestors().join(" ");
+  return `frame-ancestors ${ancestors};`;
+}
+
+// --- AI Project Companion (Phase 5B) ----------------------------------------
+function envNum(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (!raw) return fallback;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+export const PROJECT_DOC_VISION_DAILY_LIMIT_CENTS = envNum(
+  "PROJECT_DOC_VISION_DAILY_LIMIT_CENTS",
+  500,
+);
+export const PROJECT_DOC_MAX_BYTES = envNum("PROJECT_DOC_MAX_BYTES", 25_000_000);
+export const DEED_DECODE_DAILY_LIMIT_CENTS = envNum("DEED_DECODE_DAILY_LIMIT_CENTS", 500);
+export const VISION_MODEL = process.env.VISION_MODEL ?? "claude-opus-4-7";
+
+export const PROJECT_DOC_ACCEPTED_MIME = new Set<string>([
+  "application/pdf",
+  "image/png",
+  "image/jpeg",
+  "text/plain",
+  "text/markdown",
+]);
+
+export function getServerAnthropicKey(): string | null {
+  return process.env.ANTHROPIC_API_KEY || null;
+}
+
+// Compatibility shim for code that wants the old `getEnv()` shape.
+export function getEnv() {
+  return {
+    ANTHROPIC_API_KEY: serverEnv.ANTHROPIC_API_KEY,
+    INVITE_SECRET: serverEnv.INVITE_SECRET,
+    SUPABASE_SERVICE_ROLE_KEY: serverEnv.SUPABASE_SERVICE_ROLE_KEY,
+    NEXT_PUBLIC_SUPABASE_URL: publicEnv.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: publicEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  };
+}

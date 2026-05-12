@@ -1,0 +1,13 @@
+SYNTHETIC FIXTURE - NOT A RECORDED DEED. For parser testing only.
+
+A part of the Southeast Quarter of Section 9, Township 15 North, Range 1 East,
+Hendricks County, Indiana, described as follows:
+
+Beginning at a point on the South line of said Quarter Section, said point
+being North 89 degrees 45 minutes 00 seconds East, 200.00 feet from the
+Southwest corner thereof;
+
+thence North 30 degrees 00 minutes 00 seconds East, 400.00 feet;
+thence South 60 degrees 00 minutes 00 seconds East, 346.41 feet;
+thence South 89 degrees 45 minutes 00 seconds West, 545.21 feet to the Point
+of Beginning.

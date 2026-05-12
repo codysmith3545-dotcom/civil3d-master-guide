@@ -1,0 +1,11 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'TODO: wire up Next.js dev server for {{brand.name}}'",
+    "build": "echo 'TODO: wire up Next.js build for {{brand.name}}'",
+    "start": "echo 'TODO: wire up Next.js start for {{brand.name}}'"
+  }
+}

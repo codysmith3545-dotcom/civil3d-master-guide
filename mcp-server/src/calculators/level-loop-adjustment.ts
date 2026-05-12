@@ -44,7 +44,17 @@ export interface LevelLoopAdjustmentResult {
   method: "proportional_by_distance" | "equal_weight";
   source: string;
   notes: string[];
+  relatedContent: string | null;
 }
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+const LEVEL_LOOP_RELATED = "field-and-boundary/control-networks/level-networks";
 
 function r6(x: number): number {
   return Math.round(x * 1e6) / 1e6;
@@ -55,6 +65,32 @@ export function levelLoopAdjustment(
 ): LevelLoopAdjustmentResult {
   const notes: string[] = [];
 
+  if (!input || !Array.isArray(input.benchmarks) || !Array.isArray(input.observations)) {
+    throw new Error("Invalid input: benchmarks and observations must be arrays");
+  }
+  for (let i = 0; i < input.benchmarks.length; i++) {
+    const bm = input.benchmarks[i];
+    if (typeof bm?.name !== "string" || bm.name.length === 0) {
+      throw new Error(`benchmarks[${i}].name must be a non-empty string`);
+    }
+    if (bm.known_elevation_ft !== undefined) {
+      requireFinite(bm.known_elevation_ft, `benchmarks[${i}].known_elevation_ft`);
+    }
+  }
+  for (let i = 0; i < input.observations.length; i++) {
+    const obs = input.observations[i];
+    if (typeof obs?.from !== "string" || typeof obs?.to !== "string") {
+      throw new Error(`observations[${i}].from/to must be strings`);
+    }
+    requireFinite(obs.delta_h_ft, `observations[${i}].delta_h_ft`);
+    if (obs.distance_ft !== undefined) {
+      const dist = requireFinite(obs.distance_ft, `observations[${i}].distance_ft`);
+      if (dist <= 0) {
+        throw new Error(`observations[${i}].distance_ft must be > 0 when provided`);
+      }
+    }
+  }
+
   // Build a map of known elevations from benchmarks
   const knownElev = new Map<string, number>();
   for (const bm of input.benchmarks) {
@@ -64,15 +100,7 @@ export function levelLoopAdjustment(
   }
 
   if (knownElev.size === 0) {
-    notes.push("At least one benchmark must have a known elevation.");
-    return {
-      adjusted_elevations: {},
-      loop_closure_ft: NaN,
-      allowable_closure_ft: null,
-      method: "equal_weight",
-      source: "Level loop adjustment. Reference: Wolf & Ghilani, Elementary Surveying, Ch. 5.",
-      notes,
-    };
+    throw new Error("At least one benchmark must have a known elevation");
   }
 
   // Determine if we have distances for weighted adjustment
@@ -216,6 +244,19 @@ export function levelLoopAdjustment(
     adjustedElevations[name] = r6(elev);
   }
 
+  if (!Number.isFinite(loopClosure)) {
+    throw new Error(
+      "Calculation produced non-finite result for loop_closure_ft: check inputs",
+    );
+  }
+  for (const [name, val] of Object.entries(adjustedElevations)) {
+    if (!Number.isFinite(val)) {
+      throw new Error(
+        `Calculation produced non-finite result for adjusted_elevations.${name}: check inputs`,
+      );
+    }
+  }
+
   return {
     adjusted_elevations: adjustedElevations,
     loop_closure_ft: r6(loopClosure),
@@ -223,5 +264,6 @@ export function levelLoopAdjustment(
     method,
     source: "Level loop adjustment. Reference: Wolf & Ghilani, Elementary Surveying, Ch. 5.",
     notes,
+    relatedContent: LEVEL_LOOP_RELATED,
   };
 }

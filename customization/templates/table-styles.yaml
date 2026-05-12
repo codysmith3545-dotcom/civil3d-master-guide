@@ -1,0 +1,92 @@
+# Table styles for survey deliverables.
+# Field names follow the AutoCAD TABLESTYLE dialog (Title, Header, Data rows).
+
+table_styles:
+
+  - name: SURVEY-LINE-TABLE
+    description: "Line table: number, bearing, distance."
+    direction: down
+    title_row:
+      enabled: true
+      text_style: SURVEY-120
+      text_height: 0.12
+      text_color: 7
+      fill_color: none
+      alignment: middle-center
+      margins: { horizontal: 0.06, vertical: 0.06 }
+    header_row:
+      enabled: true
+      text_style: SURVEY-100
+      text_height: 0.10
+      text_color: 7
+      fill_color: 8
+      alignment: middle-center
+      margins: { horizontal: 0.06, vertical: 0.06 }
+    data_rows:
+      text_style: SURVEY-080
+      text_height: 0.08
+      text_color: 7
+      fill_color: none
+      alignment: middle-left
+      margins: { horizontal: 0.06, vertical: 0.04 }
+    columns:
+      - { header: "LINE",     width: 0.50 }
+      - { header: "BEARING",  width: 1.80 }
+      - { header: "DISTANCE", width: 1.20 }
+
+  - name: SURVEY-CURVE-TABLE
+    description: "Curve table: number, length, radius, delta, chord bearing, chord distance."
+    direction: down
+    parent: SURVEY-LINE-TABLE
+    columns:
+      - { header: "CURVE",          width: 0.60 }
+      - { header: "LENGTH",         width: 1.00 }
+      - { header: "RADIUS",         width: 1.00 }
+      - { header: "DELTA",          width: 1.40 }
+      - { header: "CHORD BEARING",  width: 1.80 }
+      - { header: "CHORD DIST",     width: 1.20 }
+
+  - name: SURVEY-LEGAL-DESC
+    description: "Legal-description / metes-and-bounds narrative table."
+    direction: down
+    title_row:
+      enabled: true
+      text_style: SURVEY-LEGAL
+      text_height: 0.12
+      alignment: middle-center
+    header_row:
+      enabled: false
+    data_rows:
+      text_style: SURVEY-LEGAL
+      text_height: 0.10
+      alignment: middle-left
+      margins: { horizontal: 0.10, vertical: 0.08 }
+    columns:
+      - { header: "PARCEL DESCRIPTION", width: 7.00 }
+
+  - name: SURVEY-EASEMENT-SCHED
+    description: "Easement / encumbrance schedule for ALTA Table A item 10."
+    direction: down
+    parent: SURVEY-LINE-TABLE
+    columns:
+      - { header: "EXC #",           width: 0.55 }
+      - { header: "INSTRUMENT",      width: 1.50 }
+      - { header: "TYPE",            width: 1.10 }
+      - { header: "GRANTOR/GRANTEE", width: 2.40 }
+      - { header: "PLOTTED",         width: 0.80 }
+      - { header: "AFFECTS",         width: 1.20 }
+
+  - name: SURVEY-CONTROL
+    description: "Control-point coordinate table."
+    direction: down
+    parent: SURVEY-LINE-TABLE
+    columns:
+      - { header: "POINT",     width: 0.60 }
+      - { header: "NORTHING",  width: 1.40 }
+      - { header: "EASTING",   width: 1.40 }
+      - { header: "ELEVATION", width: 1.00 }
+      - { header: "DESC",      width: 2.00 }
+
+notes:
+  - "Table styles are annotative-friendly but the table object itself is sized at its insertion scale; use 1:1 in paperspace and rely on viewport scale for plan-sheet tables."
+  - "Legal-description text uses Arial (TrueType) for clean PDF rendering — RomanS.shx anti-aliases poorly in PDF viewers."

@@ -28,6 +28,12 @@ jobs:
       - name: Lint content
         run: node scripts/lint-content.mjs
 
+      - name: Lint AutoLISP routines
+        run: node scripts/lint-lisp.mjs
+
+      - name: Test AutoLISP linter
+        run: node --test scripts/__tests__/lint-lisp.test.mjs
+
       - name: Build llms.txt and llms-full.txt
         run: node scripts/build-llms-txt.mjs
 
@@ -58,3 +64,28 @@ jobs:
           else
             echo "mcp-server/package.json not found; skipping mcp-server build."
           fi
+
+      - name: Run vitest test suite
+        run: pnpm test
+
+  e2e:
+    name: e2e smoke
+    needs: build-and-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Run e2e harness
+        run: node tests/e2e/run-e2e.mjs --timeout 600

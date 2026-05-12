@@ -4,7 +4,7 @@ section: ""
 order: 0
 visibility: public
 tags: [index, table-of-contents]
-updated: 2026-05-06
+updated: 2026-05-11
 ---
 
 > **TL;DR**
@@ -27,10 +27,14 @@ updated: 2026-05-06
 | Set up a new project's CAD standards | [standards/cad-layer-standards](standards/cad-layer-standards/index.md), [customization/templates-and-kits](customization/templates-and-kits/index.md) |
 | Find good books / channels / forums | [resources](resources/index.md) |
 | Set up survey equipment | [field-and-boundary/survey-equipment](field-and-boundary/survey-equipment/index.md) |
+| Run an end-to-end workflow (deed to plat, ALTA, topo, etc.) | [playbooks](playbooks/00-index.md) |
 | Adjust a control network | [field-and-boundary/control-networks](field-and-boundary/control-networks/index.md) |
+| Pick a datum or track NSRS 2022 modernization | [field-and-boundary/datums](field-and-boundary/datums/index.md) |
 | Understand surveyor regulations | [field-and-boundary/professional-practice](field-and-boundary/professional-practice/index.md) |
 | Handle a tricky boundary | [field-and-boundary/advanced-boundary](field-and-boundary/advanced-boundary/index.md) |
 | Look up a term | [glossary](glossary.md) |
+| Prep for the Indiana PS exam | [exam-prep/ps-indiana](exam-prep/ps-indiana/_index.md) (study UI: `/study`) |
+| Look up CEU mapping | [ceu](ceu/_index.md) |
 
 ## Sections
 
@@ -43,10 +47,15 @@ updated: 2026-05-06
 - [Profiles](civil3d/profiles/index.md) — surface/layout profiles, profile views, vertical curves.
 - [Corridors](civil3d/corridors/index.md) — assemblies, subassemblies, targets, surfaces.
 - [Pipe networks](civil3d/pipe-networks/index.md) — gravity + pressure, parts list, rules.
+- [Pressure pipe networks](civil3d/pressure-pipe-networks/index.md) — pressure parts lists, rules, interferences, conversion.
+- [Surface analytics](civil3d/surfaces-analytics/index.md) — elevation/slope/aspect/watershed, volume surfaces, simplification.
 - [Grading](civil3d/grading/index.md) — feature lines, grading groups, daylighting.
 - [Parcels](civil3d/parcels/index.md) — creation, sizing, legal labeling.
 - [Plan production](civil3d/plan-production/index.md) — view frames, match lines, sheet sets.
+- [Sheet sets and plans production](civil3d/sheet-set-and-plans-production/index.md) — SSM, plan-profile, viewport scale, create sheets.
 - [Data shortcuts](civil3d/data-shortcuts/index.md) — shortcuts vs Vault, project structure.
+- [Interop](civil3d/interop/index.md) — LandXML, IFC 4.3, iModel/iTwin, point clouds, coord-system strings.
+- [Data shortcuts and collaboration](civil3d/data-shortcuts-and-collaboration/index.md) — Vault, BIM Collaborate, xref vs data ref, recovery.
 - [Commands](civil3d/commands/index.md) — every Civil 3D command.
 
 ### Field & boundary practice
@@ -58,6 +67,7 @@ updated: 2026-05-06
 - [Monuments & evidence](field-and-boundary/monuments-and-evidence/index.md)
 - [Easements & right-of-way](field-and-boundary/easements-and-row/index.md)
 - [Coordinate systems](field-and-boundary/coordinate-systems/index.md)
+- [Datums & reference frames](field-and-boundary/datums/index.md)
 - [Survey Equipment & Technology](field-and-boundary/survey-equipment/index.md)
 - [Control Networks & Adjustment](field-and-boundary/control-networks/index.md)
 - [Professional Practice](field-and-boundary/professional-practice/index.md)
@@ -65,12 +75,16 @@ updated: 2026-05-06
 
 ### Engineering
 - [Stormwater](engineering/stormwater/index.md)
+- [Stormwater design (deep)](engineering/stormwater-design/index.md)
 - [Sanitary sewer](engineering/sanitary-sewer/index.md)
+- [Sanitary sewer design (deep)](engineering/sanitary-sewer-design/index.md)
 - [Water distribution](engineering/water-distribution/index.md)
+- [Water distribution design (deep)](engineering/water-distribution-design/index.md)
 - [Roadway design](engineering/roadway-design/index.md)
 - [ADA & accessibility](engineering/ada-and-accessibility/index.md)
 - [Earthwork](engineering/earthwork/index.md)
 - [Erosion & sediment](engineering/erosion-and-sediment/index.md)
+- [Erosion & sediment control (deep)](engineering/erosion-and-sediment-control/index.md)
 - [Hydraulics](engineering/hydraulics/index.md)
 
 ### Standards
@@ -105,6 +119,19 @@ updated: 2026-05-06
 - [Podcasts](resources/podcasts.md)
 - [Training & certifications](resources/training-and-certs.md)
 - [Tools & companion software](resources/tools-and-software.md)
+
+### Developers
+- [Integrations overview](developers/index.md)
+- [Public REST API](developers/public-api.md)
+
+### Playbooks
+- [Playbooks index](playbooks/00-index.md) — end-to-end workflows that chain Deed Decoder, Jurisdiction Intelligence, Civil 3D Power Pack, MCP tools, calculators, and the AI Project Companion.
+
+### Exam prep
+- [Indiana PS exam prep](exam-prep/ps-indiana/_index.md) — fundamentals, legal principles, practice, and a 50-question bank with a spaced-repetition study UI at `/study`.
+
+### Continuing education
+- [CEU mapping](ceu/_index.md) — placeholder; maps existing pages to potential CE topics.
 
 ### Reference
 - [Glossary](glossary.md)

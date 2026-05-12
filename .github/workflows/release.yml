@@ -1,0 +1,87 @@
+# Release workflow.
+#
+# Trigger: pushing a tag that matches v*.*.* (e.g. v0.2.0, v1.0.0).
+#
+# Required repository secret:
+#   - NPM_TOKEN: npm automation token with publish rights for the
+#     @civil3d-master-guide scope. Used as NODE_AUTH_TOKEN below.
+#
+# Permissions:
+#   - contents: write   -> needed for the GitHub release.
+#   - id-token: write   -> needed for npm package provenance attestation.
+#
+# What this does on a tag push:
+#   1. Install + build all workspaces.
+#   2. Run tests (pnpm test). If Agent 2 has not yet wired tests this may
+#      currently fail; resolve at merge time.
+#   3. Publish @civil3d-master-guide/sdk to npm with provenance.
+#   4. Publish @civil3d-master-guide/mcp (the MCP server package) to npm with
+#      provenance.
+#   5. Create a GitHub release with auto-generated notes.
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Run tests
+        run: pnpm test
+        # Test runner is being added in parallel by Agent 2. If the script is
+        # missing this step will fail and must be resolved at merge time.
+
+      - name: Build all packages
+        run: |
+          if pnpm run | grep -qE '^\s*build:all'; then
+            pnpm run build:all
+          else
+            pnpm -r build
+          fi
+
+      - name: Publish @civil3d-master-guide/sdk
+        working-directory: packages/sdk
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @civil3d-master-guide/mcp
+        working-directory: mcp-server
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

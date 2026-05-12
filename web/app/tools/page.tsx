@@ -2,8 +2,16 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Calculators",
+  title: "Tools",
 };
+
+const customization = [
+  {
+    href: "/customization/lisp",
+    title: "LISP routine library",
+    body: "Browsable catalog of AutoLISP routines with copyable source and per-routine markdown docs. Filter by category (layer, points, cogo, parcel, annotation, qa, drafting, utilities).",
+  },
+];
 
 const engineering = [
   {
@@ -25,6 +33,14 @@ const engineering = [
     href: "/tools/mannings",
     title: "Manning's equation",
     body: "Open-channel flow velocity and discharge from Manning's n, flow area, hydraulic radius, and slope.",
+  },
+];
+
+const boundary = [
+  {
+    href: "/tools/deed-decoder",
+    title: "Deed decoder",
+    body: "Parse a metes-and-bounds legal description (paste, image, or PDF) into bearings, distances, and curve calls, plot the traverse, and report closure.",
   },
 ];
 
@@ -94,6 +110,19 @@ const survey = [
     title: "State Plane Indiana CSF",
     body: "Approximate Combined Scale Factor for Indiana SPC East/West zones from lat, lon, and elevation.",
   },
+  {
+    href: "/tools/datacollector-import",
+    title: "Data-collector import",
+    body: "Parse PNEZD, NEZD, PXYZ, Trimble CSV, Topcon CSV, and Carlson RW5 files; export to PNEZD CSV, custom CSV, or LandXML.",
+  },
+];
+
+const interop = [
+  {
+    href: "/tools/landxml-validator",
+    title: "LandXML validator",
+    body: "Inspect surfaces, alignments, parcels, surveys, and CgPoints in a LandXML file. Flags missing units, mixed unit blocks, empty surfaces, unclosed parcels, NaN coordinates, and more.",
+  },
 ];
 
 function ToolSection({
@@ -129,17 +158,21 @@ export default function ToolsIndex() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <header className="mb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">Calculators</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Tools</h1>
         <p className="mt-2 max-w-2xl text-ink-600">
-          Small, focused tools for screening-level civil-engineering math. Each
-          calculator runs in your browser and is also available as a pure
-          function for the MCP server to call. Verify any output that affects a
-          permit or construction document against the cited primary source.
+          Small, focused tools for screening-level civil-engineering math and a
+          curated AutoLISP library. Each calculator runs in your browser and is
+          also available as a pure function for the MCP server to call. Verify
+          any output that affects a permit or construction document against the
+          cited primary source.
         </p>
       </header>
       <div className="space-y-10">
+        <ToolSection title="Customization" tools={customization} />
         <ToolSection title="Engineering" tools={engineering} />
+        <ToolSection title="Boundary" tools={boundary} />
         <ToolSection title="Survey" tools={survey} />
+        <ToolSection title="Interop & QA" tools={interop} />
       </div>
     </div>
   );

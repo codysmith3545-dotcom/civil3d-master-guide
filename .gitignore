@@ -15,11 +15,14 @@ build/
 !.env.example
 
 # Generated artifacts
+web/.cache/
 llms.txt
 llms-full.txt
 content/civil3d/commands/_index.generated.md
 web/public/search-index.json
 web/public/jurisdictions.geojson
+web/public/jurisdiction-changes.rss
+mcp-server/dist-tests/
 exports/system-prompt.txt
 exports/gpt-config.json
 exports/llms-*.txt
@@ -42,6 +45,10 @@ yarn-debug.log*
 
 # Private companion content (Bucket 2)
 private/
+
+# Local analytics NDJSON store
+.analytics/
+web/.analytics/
 
 # Local Supabase
 supabase/.branches

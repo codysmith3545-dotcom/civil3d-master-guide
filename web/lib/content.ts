@@ -8,22 +8,63 @@ import remarkRehype from "remark-rehype";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSanitize, {
+  defaultSchema,
+  type Options as SanitizeOptions,
+} from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
+import { safeResolveContentPath, PathTraversalError } from "./path-safety";
 
-export type Frontmatter = {
-  title?: string;
-  section?: string;
-  order?: number;
-  visibility?: "public" | "invite";
-  tags?: string[];
-  appliesTo?: string[];
-  relatedCommands?: string[];
-  relatedCalculators?: string[];
-  jurisdictionRefs?: string[];
-  updated?: string;
-  sources?: { title: string; url: string; verified?: string }[];
-  [key: string]: unknown;
+/**
+ * Sanitization schema: start from rehype's defaults (which already strip
+ * <script>, <iframe>, on* handlers, javascript: URLs, etc) and add the
+ * className/data-* attributes that rehype-pretty-code emits onto <pre>,
+ * <code>, and <span> for syntax highlighting.
+ */
+const sanitizeSchema: SanitizeOptions = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    code: [
+      ...(defaultSchema.attributes?.code ?? []),
+      ["className", /^language-/, /^hljs$/, /^code-highlight$/],
+      "data-language",
+      "data-theme",
+    ],
+    pre: [
+      ...(defaultSchema.attributes?.pre ?? []),
+      "className",
+      "style",
+      "data-language",
+      "data-theme",
+      "tabIndex",
+    ],
+    span: [
+      ...(defaultSchema.attributes?.span ?? []),
+      "className",
+      "style",
+      "data-line",
+      "data-highlighted-line",
+      "data-highlighted-chars",
+      "data-chars-id",
+    ],
+    div: [
+      ...(defaultSchema.attributes?.div ?? []),
+      "className",
+      "data-rehype-pretty-code-fragment",
+      "data-rehype-pretty-code-title",
+      "data-rehype-pretty-code-caption",
+    ],
+    figure: [
+      ...(defaultSchema.attributes?.figure ?? []),
+      "data-rehype-pretty-code-figure",
+    ],
+  },
 };
+
+// Import the canonical Frontmatter type from the shared package and re-export.
+import type { Frontmatter } from "@civil3d-master-guide/content";
+export type { Frontmatter };
 
 export type Page = {
   /** Path-style slug from the content root, with no extension. e.g. `civil3d/surfaces/index`. */
@@ -112,15 +153,20 @@ export function listAll(): Page[] {
 }
 
 export function getPageBySlug(slugSegments: string[] | string): Page | null {
-  const slug = Array.isArray(slugSegments)
-    ? slugSegments.join("/")
-    : slugSegments;
-  const cleaned = slug.replace(/^\/+|\/+$/g, "");
-  // Try direct file, then index.md inside the folder.
-  const candidates = [
-    path.join(CONTENT_ROOT, cleaned + ".md"),
-    path.join(CONTENT_ROOT, cleaned, "index.md"),
-  ];
+  let safeBase: string;
+  try {
+    safeBase = safeResolveContentPath(slugSegments, CONTENT_ROOT);
+  } catch (err) {
+    if (err instanceof PathTraversalError) {
+      // Don't leak details to the caller — just behave as "not found".
+      return null;
+    }
+    throw err;
+  }
+  // Try direct file, then index.md inside the folder. Both candidates are
+  // built off the validated `safeBase` so they are guaranteed to stay inside
+  // the content root.
+  const candidates = [safeBase + ".md", path.join(safeBase, "index.md")];
   for (const c of candidates) {
     if (fs.existsSync(c)) return readPageAt(c, CONTENT_ROOT);
   }
@@ -216,8 +262,12 @@ export async function renderMarkdown(
       theme: "github-dark-dimmed",
       keepBackground: true,
     })
+    // Sanitize AFTER pretty-code adds its className/data-* metadata but BEFORE
+    // stringify, so any inline <script> / on* handlers / javascript: URLs in
+    // raw HTML blocks of authored markdown are stripped.
+    .use(rehypeSanitize, sanitizeSchema)
     .use(headingExtractor)
-    .use(rehypeStringify, { allowDangerousHtml: true })
+    .use(rehypeStringify)
     .process(body);
 
   const out = { html: String(file), headings };

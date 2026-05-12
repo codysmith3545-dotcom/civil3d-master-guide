@@ -45,7 +45,18 @@ export interface TrigLevelingResult {
   curvature_refraction_ft: number | null;
   source: string;
   notes: string[];
+  relatedContent: string | null;
 }
+
+function requireFinite(value: unknown, name: string): number {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new Error(`Invalid input for ${name}: must be a finite number`);
+  }
+  return value;
+}
+
+// TODO: no dedicated trigonometric-leveling page; nearest is level-networks.
+const TRIG_LEVELING_RELATED = "field-and-boundary/control-networks/level-networks";
 
 const DEG = Math.PI / 180;
 
@@ -56,8 +67,15 @@ function r6(x: number): number {
 export function trigLeveling(input: TrigLevelingInput): TrigLevelingResult {
   const notes: string[] = [];
 
-  const za = input.zenith_angle_deg * DEG;
-  const S = input.slope_distance_ft;
+  const slopeDist = requireFinite(input?.slope_distance_ft, "slope_distance_ft");
+  const zenithDeg = requireFinite(input?.zenith_angle_deg, "zenith_angle_deg");
+  const hi = requireFinite(input?.instrument_height_ft, "instrument_height_ft");
+  const ht = requireFinite(input?.target_height_ft, "target_height_ft");
+  const knownElev = requireFinite(input?.known_elevation_ft, "known_elevation_ft");
+  if (slopeDist < 0) throw new Error("slope_distance_ft must be >= 0");
+
+  const za = zenithDeg * DEG;
+  const S = slopeDist;
 
   // Horizontal distance
   const H = S * Math.sin(za);
@@ -86,25 +104,20 @@ export function trigLeveling(input: TrigLevelingInput): TrigLevelingResult {
   // Elev_remote = Elev_known + HI + V - HT + C&R
   // C&R is positive because curvature makes the earth fall away (target appears
   // lower than it actually is), so we add the correction.
-  const remoteElev =
-    input.known_elevation_ft +
-    input.instrument_height_ft +
-    V -
-    input.target_height_ft +
-    crValue;
+  const remoteElev = knownElev + hi + V - ht + crValue;
 
-  if (input.zenith_angle_deg < 0 || input.zenith_angle_deg > 180) {
+  if (zenithDeg < 0 || zenithDeg > 180) {
     notes.push(
       "Zenith angle should be between 0° (straight up) and 180° (straight down). " +
         "Check the input value.",
     );
   }
 
-  if (Math.abs(input.zenith_angle_deg - 90) < 0.001) {
+  if (Math.abs(zenithDeg - 90) < 0.001) {
     notes.push("Zenith angle is nearly horizontal (90°); vertical difference is near zero.");
   }
 
-  return {
+  const result: TrigLevelingResult = {
     horizontal_distance_ft: r6(H),
     vertical_difference_ft: r6(V),
     remote_elevation_ft: r6(remoteElev),
@@ -114,5 +127,23 @@ export function trigLeveling(input: TrigLevelingInput): TrigLevelingResult {
       "C&R = 0.0206*(H/1000)^2. " +
       "Reference: Wolf & Ghilani, Elementary Surveying, Ch. 4 & 6.",
     notes,
+    relatedContent: TRIG_LEVELING_RELATED,
   };
+
+  for (const key of [
+    "horizontal_distance_ft",
+    "vertical_difference_ft",
+    "remote_elevation_ft",
+  ] as const) {
+    if (!Number.isFinite(result[key])) {
+      throw new Error(`Calculation produced non-finite result for ${key}: check inputs`);
+    }
+  }
+  if (result.curvature_refraction_ft !== null && !Number.isFinite(result.curvature_refraction_ft)) {
+    throw new Error(
+      "Calculation produced non-finite result for curvature_refraction_ft: check inputs",
+    );
+  }
+
+  return result;
 }
