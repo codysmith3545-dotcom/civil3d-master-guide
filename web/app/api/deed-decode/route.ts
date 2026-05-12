@@ -12,7 +12,7 @@ import {
   estimateOpusCostCents,
   recordDeedVisionSpend,
 } from "@/lib/operator-budget";
-import { consume, clientIp } from "@/lib/rate-limit";
+import { check as consume, clientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -86,10 +86,11 @@ export async function POST(req: NextRequest) {
   // 2. Rate limit: N requests/hour per IP.
   const ip = clientIp(req);
   const limit = getDeedVisionRateLimitPerHour();
-  const rl = consume(`deed-decode:${ip}`, limit, 60 * 60 * 1000);
+  const rl = consume("deed-decode", ip, { limit, windowMs: 60 * 60 * 1000 });
   if (!rl.ok) {
-    return jsonError(429, `Rate limit exceeded. Retry in ${rl.retryAfterSeconds}s.`, {
-      retryAfterSeconds: rl.retryAfterSeconds,
+    const retryAfterSeconds = Math.max(1, Math.ceil((rl.resetAt - Date.now()) / 1000));
+    return jsonError(429, `Rate limit exceeded. Retry in ${retryAfterSeconds}s.`, {
+      retryAfterSeconds,
     });
   }
 

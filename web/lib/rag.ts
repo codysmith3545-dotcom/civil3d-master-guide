@@ -8,7 +8,19 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { tokenize, buildExcerpt } from "@civil3d-master-guide/search";
+import { tokenize } from "@civil3d-master-guide/search";
+
+function buildExcerpt(body: string, tokens: string[], maxLen = 240): string {
+  const text = body.replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  const lower = text.toLowerCase();
+  let bestPos = 0;
+  for (const t of tokens) {
+    const i = lower.indexOf(t.toLowerCase());
+    if (i >= 0) { bestPos = Math.max(0, i - 60); break; }
+  }
+  return text.slice(bestPos, bestPos + maxLen) + (text.length > bestPos + maxLen ? "…" : "");
+}
 
 export type RetrievedChunk = {
   path: string;

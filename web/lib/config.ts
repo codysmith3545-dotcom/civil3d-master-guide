@@ -153,3 +153,42 @@ export function buildEmbedCspHeader(): string {
   const ancestors = getEmbedFrameAncestors().join(" ");
   return `frame-ancestors ${ancestors};`;
 }
+
+// --- AI Project Companion (Phase 5B) ----------------------------------------
+function envNum(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (!raw) return fallback;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+export const PROJECT_DOC_VISION_DAILY_LIMIT_CENTS = envNum(
+  "PROJECT_DOC_VISION_DAILY_LIMIT_CENTS",
+  500,
+);
+export const PROJECT_DOC_MAX_BYTES = envNum("PROJECT_DOC_MAX_BYTES", 25_000_000);
+export const DEED_DECODE_DAILY_LIMIT_CENTS = envNum("DEED_DECODE_DAILY_LIMIT_CENTS", 500);
+export const VISION_MODEL = process.env.VISION_MODEL ?? "claude-opus-4-7";
+
+export const PROJECT_DOC_ACCEPTED_MIME = new Set<string>([
+  "application/pdf",
+  "image/png",
+  "image/jpeg",
+  "text/plain",
+  "text/markdown",
+]);
+
+export function getServerAnthropicKey(): string | null {
+  return process.env.ANTHROPIC_API_KEY || null;
+}
+
+// Compatibility shim for code that wants the old `getEnv()` shape.
+export function getEnv() {
+  return {
+    ANTHROPIC_API_KEY: serverEnv.ANTHROPIC_API_KEY,
+    INVITE_SECRET: serverEnv.INVITE_SECRET,
+    SUPABASE_SERVICE_ROLE_KEY: serverEnv.SUPABASE_SERVICE_ROLE_KEY,
+    NEXT_PUBLIC_SUPABASE_URL: publicEnv.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: publicEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  };
+}

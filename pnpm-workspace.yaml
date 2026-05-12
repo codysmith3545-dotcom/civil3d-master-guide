@@ -1,5 +1,4 @@
 packages:
   - 'web'
   - 'mcp-server'
-  - 'packages/sdk'
-  - 'packages/search'
+  - 'packages/*'

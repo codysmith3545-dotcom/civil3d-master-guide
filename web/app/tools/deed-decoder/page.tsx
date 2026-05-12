@@ -10,6 +10,7 @@ import {
   type PlottedTraverse,
   type Course,
   type Bearing,
+  type Anomaly,
 } from "@/lib/deed-decoder";
 
 type Tab = "paste" | "upload" | "manual";
@@ -594,7 +595,7 @@ export default function DeedDecoderPage() {
                   </tr>
                 </thead>
                 <tbody className="font-mono">
-                  {courses.map((c) => (
+                  {courses.map((c: Course) => (
                     <tr
                       key={c.index}
                       onMouseEnter={() => setHighlighted(c.index)}
@@ -691,7 +692,7 @@ export default function DeedDecoderPage() {
         <section className="mt-6 rounded-lg border border-ink-100 p-4">
           <h2 className="mb-3 text-base font-semibold">Anomalies</h2>
           <ul className="space-y-1 text-sm">
-            {anomalies.map((a, i) => (
+            {anomalies.map((a: Anomaly, i: number) => (
               <li
                 key={i}
                 className={
